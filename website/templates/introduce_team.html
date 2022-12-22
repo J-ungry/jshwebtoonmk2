@@ -1,0 +1,108 @@
+{% extends "nav.html" %}
+{% block title %}승환이네 만화방{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-6 px-5">
+    <div class="text-center mx-auto mb-5" style="max-width: 600px;">
+        <h1 class="display-5 text-uppercase mb-4">만화방 프로젝트 <span class="text-primary">개발팀</span></h1>
+    </div>
+    <div class="row g-5">
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="row g-0">
+                <div class="col-10" style="min-height: 300px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute w-100 h-100" src="{{url_for('static',filename='img/sjw.jpg')}}" style="object-fit: cover;">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light">
+                        <a class="btn" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-instagram"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="bg-light p-4">
+                        <h4 class="text-uppercase">서정우</h4>
+                        <span><strong>팀장</strong><br>일정관리, UI/UX 디자인, 데이터 수집 및 전처리</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="row g-0">
+                <div class="col-10" style="min-height: 300px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute w-100 h-100" src="{{url_for('static',filename='img/jsh.jpg')}}" style="object-fit: cover;">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light">
+                        <a class="btn" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-instagram"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="bg-light p-4">
+                        <h4 class="text-uppercase">정승환</h4>
+                        <span>산출물/문서관리<br>추천 시스템 모델 연구 및 개발</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="row g-0">
+                <div class="col-10" style="min-height: 300px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute w-100 h-100" src="{{url_for('static',filename='img/kjh.jpg')}}" style="object-fit: cover;">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light">
+                        <a class="btn" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-instagram"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="bg-light p-4">
+                        <h4 class="text-uppercase">김재현</h4>
+                        <span>시장 분석<br>추천 시스템 모델 연구 및 개발</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="row g-0">
+                <div class="col-10" style="min-height: 300px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute w-100 h-100" src="{{url_for('static',filename='img/kth.jpg')}}" style="object-fit: cover;">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light">
+                        <a class="btn" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-instagram"></i></a>
+                        <a class="btn" href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="bg-light p-4">
+                        <h4 class="text-uppercase">김태형</h4>
+                        <span>기획<br>웹 개발 / DB 설계</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "nav.html" %}
+{% block title %}승환이네 만화방{% endblock %}
+
+{% block content %}
+<!-- css 중복되는 코드가 너무 많아서 수정 필요 -->
+<style>
+    ul li {
+        cursor: pointer;
+    }
+
+    ul li:hover {
+        background-color: #efefef;
+    }
+
+    /* 서정우한테 맡긴다. */
+    ul li:focus {
+        background-color: #1e8ee7;
+    }
+</style>
+
+<!-- 사용자 keyword 입력 -->
+    <div class="w-75 p-3 mt-5" style="margin: 0 auto;">
+        <div class="p-3 d-flex justify-content-between align-items-center" style="background-color: #252c3a;">
+            <div class="align-self-center">
+                <img class="rounded float-start"    style="width:40px;" src="{{url_for('static',filename='img/baseline_search_white_24dp.png')}}">
+                <span class="me-1" style="color: #fff; font-size: 27px;"><strong>웹툰 키워드로 검색하기</strong></span>
+                <span style="color: #fff;">키워드로 마음에 드는 웹툰을 찾아보세요!</span>
+            </div>
+            <div class="p-2" style="border: 1px solid #fff; border-radius: 5px; cursor: pointer;">
+                <p style="color: #fff;"><strong>전체 해제</strong></p>
+            </div> 
+        </div>
+    <!-- 각 li에 키워드들이 들어갈 예정이고 hover,focus 추가해야함(cursor: pointer 추가) -->
+    <div class="p-2 d-flex justify-content-between" style="background-color: #e6f6ff; border: 1.5px solid #cddde6;">
+        <div class="w-25 me-2 p-2">           
+            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">장르</h5>
+            <div style="height: 100px; overflow: auto;">
+                <ul style="font-weight: bolder; color: #23466e;" class="p-2">
+                    {% for gen in genre %}
+                        <li class="p-1">{{gen}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="w-25 me-2 p-2">
+            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">소재</h5>
+            <div style="height: 100px; overflow: auto;">
+                <ul style="font-weight: bolder; color: #23466e;" class="p-2">
+                    <li class="p-1">판타지</li>
+                    <li class="p-1">액션</li>
+                    <li class="p-1">로맨스</li>
+                    <li class="p-1">학원물</li>
+                </ul>
+            </div>
+        </div>
+        <div class="w-25 me-2 p-2">
+            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">등장인물/관계</h5>
+            <div style="height: 100px; overflow: auto;">
+                <ul style="font-weight: bolder; color: #23466e;" class="p-2">
+                    <li class="p-1">판타지</li>
+                    <li class="p-1">액션</li>
+                    <li class="p-1">로맨스</li>
+                    <li class="p-1">학원물</li>
+                </ul> 
+            </div>
+        </div>
+        <div class="w-25 me-2 p-2">
+            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">소설 원작</h5>      
+            <div style="height: 100px; overflow: auto;">
+                <ul style="font-weight: bolder; color: #23466e;" class="p-2">
+                    <li class="p-1">판타지</li>
+                    <li class="p-1">액션</li>
+                    <li class="p-1">로맨스</li>
+                    <li class="p-1">학원물</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 키워드 결과 출력(Ajax로 부분 새로고침) -->
+
+
+
+<!---->
+{% endblock %}

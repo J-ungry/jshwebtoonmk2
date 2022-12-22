@@ -1,0 +1,171 @@
+{% extends "nav.html" %}
+{% block title %}승환이네 만화방{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-6 px-5 d-flex justify-content-center">
+    <div class="row g-5">
+        <div class="col-lg-7 w-100">
+            <h1 class="display-5 text-uppercase mb-4"><span class="text-primary">my page</span></h1>
+            <h4 class="text-uppercase mb-3 text-body">정보 보안을 위해 아이디는 여기서 확인할 수 없습니다.</h4>
+            <div class="row gx-5 py-2">
+                <div class="col-sm-6 mb-2">
+                    <p class="fw-bold mb-2"><i class="fa fa-check text-primary me-3"></i>이름 : {{session["user_name"]}}</p>
+                    {% if session["user_gender"]=="male" %}
+                        <p class="fw-bold mb-2"><i class="fa fa-check text-primary me-3"></i>성별 : 남자</p>
+                    {% elif session["user_gender"]=="female" %}
+                        <p class="fw-bold mb-2"><i class="fa fa-check text-primary me-3"></i>성별 : 여자</p>
+                    {% else %}
+                        <p class="fw-bold mb-2"><i class="fa fa-check text-primary me-3"></i>성별 : 비공개</p>
+                    {% endif %}
+                    <p class="fw-bold mb-2"><i class="fa fa-check text-primary me-3"></i>연령대 : {{session["user_age"]}}</p>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <!-- Modal 버튼 -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">
+                    정보수정
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    회원탈퇴
+                </button>
+
+                <!-- 회원탈퇴 Modal -->
+                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">회원정보를 삭제합니다.</h1>
+                            </div>
+                            <form action="/delete_user" method="POST">
+                                <div class="modal-body">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">Password</span>
+                                        <input type="password" name="password" class="form-control" aria-label="userPassword" aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkPassWordModal">
+                                            탈퇴하기
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 정보수정 Modal start -->
+                <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Infromation Update</h1>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/update_information" method="POST">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">이름</span>
+                                        <input type="text" name="name" class="form-control" aria-label="Username" aria-describedby="basic-addon1" value={{session["user_name"]}}>
+                                    </div>
+                                    <!-- 성별 수정 -->
+                                    {% if session["user_gender"]=="male" %}
+                                        <select name="gender" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                            <option selected value="male">남자</option>
+                                            <option value="female">여자</option>
+                                            <option value="no_gender">비공개</option>
+                                        </select>
+                                    {% elif session["user_gender"]=="female" %}
+                                        <select name="gender" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                            <option selected value="female">여자</option>
+                                            <option value="male">남자</option>
+                                            <option value="no_gender">비공개</option>
+                                        </select>
+                                    {% else %}
+                                        <select name="gender" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                            <option selected value="no_gender">비공개</option>
+                                            <option value="female">남자</option>
+                                            <option value="male">여자</option>
+                                        </select>
+                                    {% endif %}
+                                    <!-- 연령대 수정 -->
+                                    {% if session["user_age"]=="10대" %}
+                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                            <option selected value="10대">10대</option>
+                                            <option value="20대">20대</option>
+                                            <option value="30대">30대</option>
+                                            <option value="40대">40대</option>
+                                            <option value="50대이상">50대 이상</option>
+                                        </select>
+                                    {% elif session["user_age"]=="20대" %}
+                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                            <option selected value="20대">20대</option>
+                                            <option value="10대">10대</option>
+                                            <option value="30대">30대</option>
+                                            <option value="40대">40대</option>
+                                            <option value="50대이상">50대 이상</option>
+                                        </select>
+                                    {% elif session["user_age"]=="30대" %}
+                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                            <option selected value="30대">30대</option>
+                                            <option value="10대">10대</option>
+                                            <option value="20대">20대</option>
+                                            <option value="40대">40대</option>
+                                            <option value="50대이상">50대 이상</option>
+                                        </select>
+                                    {% elif session["user_age"]=="40대" %}
+                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                            <option selected value="40대">40대</option>
+                                            <option value="10대">10대</option>
+                                            <option value="20대">20대</option>
+                                            <option value="30대">30대</option>
+                                            <option value="50대이상">50대 이상</option>
+                                        </select>
+                                    {% else %}
+                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                            <option selected value="50대이상">50대 이상</option>
+                                            <option value="10대">10대</option>
+                                            <option value="20대">20대</option>
+                                            <option value="30대">30대</option>
+                                            <option value="40대">40대</option>
+                                        </select>
+                                    {% endif %}    
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkPasswordModal">
+                                        정보수정
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+
+                                    <div class="modal fade" id="checkPasswordModal" tabindex="-1" aria-labelledby="passwordCheckModal" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">비밀번호를 입력해주세요.</h1>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="/update_information" method="POST">
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text" id="basic-addon1">Password</span>
+                                                            <input type="password" name="password" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                                                        </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkPassWordModal">
+                                                            확인
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- 정보 수정 Modal end -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
