@@ -5,5 +5,10 @@ app=init.create_app()
 
 if __name__=="__main__": 
     app.run(debug=True)
-    
+
 #kth push
+
+
+#재현mk2
+
+#정구리
