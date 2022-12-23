@@ -6,8 +6,7 @@ views = Blueprint("views",__name__)
 
 @views.route("/")
 def index():
-    a,b=models.main()
-    return render_template("index.html",a=a,b=b)
+    return render_template("index.html")
 
 @views.route("/introduce_service")
 def introduce_service():

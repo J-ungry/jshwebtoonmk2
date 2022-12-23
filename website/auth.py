@@ -1,3 +1,4 @@
+from unicodedata import category
 from flask import Blueprint,render_template,request,flash,redirect,url_for,session
 from werkzeug.security import generate_password_hash,check_password_hash
 from website import db
@@ -15,8 +16,8 @@ webtoon_db = pymysql.connect(
         host="localhost",
         port=3306,
         user=DB_USER,
-        passwd="bread!123",
-        #passwd="duffufK123!",
+        #passwd="bread!123",
+        passwd="duffufK123!",
         db=DB_NAME,
         charset="utf8"
         )
@@ -208,3 +209,41 @@ def delete_user():
         else:
             flash("로그인 되어 있지 않습니다.")
             return redirect(url_for("views.index"))
+
+#정구리 작성 부분 => 별점 매기면 survey table 에 추가되는 페이지 !!!
+# +------------+-------------+------+-----+---------+-------+
+# | Field      | Type        | Null | Key | Default | Extra |
+# +------------+-------------+------+-----+---------+-------+
+# | user       | varchar(50) | NO   | PRI | NULL    |       |
+# | webtoon_no | int         | NO   | PRI | NULL    |       |
+# | score      | float       | NO   |     | NULL    |       |
+# +------------+-------------+------+-----+---------+-------+
+@auth.route("/input_rate",methods=["GET","POST"])
+def input_rate():
+    if session: #로그인 된 경우 (일단 안된 경우에는 return 되게 해놓기)
+        if request.method =="GET": #get 인 경우에는 화면에 뿌려주기
+            return render_template("input_rate.html")
+        elif request.method =="POST":   
+            print("work") 
+            user = session["user_id"] #세션의 유저 아이디를 user로
+            title = request.form.get("title") #입력된 타이틀 명 가져오기 (select no from webtoon_info where title="마루는 강쥐";  통해서 webtoon_no 생성)
+            score = request.form.get("score")
+
+            webtoon_no = db.query(webtoon_db,f"SELECT no FROM webtoon_info WHERE title='{title}'") #이렇게하면 webtoon_no 반환
+            print(user)
+            print(webtoon_no[0][0])
+            print("score = ",score)
+
+            insert_to_survey=f"INSERT INTO survey VALUES ('{user}',{webtoon_no[0][0]},{score})"
+            check_insert = db.query(webtoon_db,insert_to_survey)
+
+            #에러에 대한 처리 추가하기 12.23
+            webtoon_db.commit()
+            flash("별점 등록 완료 !",category="success")
+            return redirect(url_for("views.index"))
+            
+
+    else:
+        flash("로그인 되어 있지 않습니다.",category="error")
+        return redirect(url_for("views.index"))
+

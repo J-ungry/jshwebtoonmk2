@@ -1,0 +1,31 @@
+{% extends "nav.html" %}
+{% block title %}승환이네 만화방{% endblock %}
+
+{% block content %}
+<div>
+    <form method="POST">
+        <div> <!--header div-->
+            <h2>웹툰 평점 입력</h2>
+        </div>
+        <div> <!--input div-->
+            <div> <!--웹툰 명 검색 ( 나중에 ajax 로 처리해야함 )-->
+                <label for="InputTitle">웹툰명 검색</label>
+                <input name="title" type="text" id="InputTitle">
+            </div>
+            <div> <!--별점 입력하기 -->
+                <label for="InputRate">평점 입력하기</label>
+                    <select name="score" id="InputRate">
+                      <option value="1">★☆☆☆☆</option>
+                      <option value="2">★★☆☆☆</option>
+                      <option value="3">★★★☆☆</option>
+                      <option value="4">★★★★☆</option>
+                      <option value="5">★★★★★</option>
+                    </select>
+            </div>
+        </div>
+        <div>
+            <button type="submit"> 별점 입력하기 </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
