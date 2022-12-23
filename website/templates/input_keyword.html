@@ -98,20 +98,57 @@
                 </ul>
             </div>
         </div>
+        <!-- ajax+모델 테스트 -->
+        <div class="w-25 me-2 p-2">
+            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">원작웹툰</h5>      
+            <div style="height: 100px; overflow: auto;">
+                <ul style="font-weight: bolder; color: #23466e;" class="p-2">
+                    <!-- 제목 -->
+                    {% for title in titles %}
+                        <li name="title" class="p-1 user_keyword">{{title}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
+</div>
+
+<div id="keyword_result">
+
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-    console.log($("li[class='user_keyword']"))
+    const keyword_result=document.getElementById("keyword_result");
     $("li").on("click",function(event) {
-        let keyword=$(this).text()
+        let keyword=$(this).attr('name')    //키워드 종류
+        let user_keyword=$(this).text()     //user가 선택한 키워드명
         console.log(keyword)
-    });
+        console.log(user_keyword)
+        $.ajax ({
+            type : "POST",  //데이터를 전송하는 방법
+            url : "/input_keyword",
+            data : {"keyword":keyword,"user_keyword":user_keyword},
+            dataType : "json",
+            success : function(response) {
+                //alert(response["model_result"])
+                keyword_result.innerHTML+=`<p>"result":${response["keyword"]}</p>`
+                keyword_result.innerHTML+=`<p>"result":${response["user_keyword"]}</p>`
+                keyword_result.innerHTML+=`<p>"result":${response["model_result"]}</p>`
+                //console.log(result.length)
+                //for(let i=0;i<result.length;i++){
+                   //console.log(i)
+                    //keyword_result.innerHTML+=`<p>${result[i]}</p>`
+                //}
+            },
+            error : function(request,status,error) {
+                console.log("no ajax")
+            }
+        });
+    })
 </script>
 
 <!-- 키워드 결과 출력(Ajax로 부분 새로고침) -->
 
 <!---->
 {% endblock %}
-

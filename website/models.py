@@ -107,11 +107,11 @@ def dsModel(webtoon_no):
     return df.sort_values('sim', ascending=False)[:10].index + 1
 
 
-def main():
-    result = recommand_webtoon('마루는 강쥐')
+def main(title):
+    result = recommand_webtoon(title)
     #print(result)
     # print(dsModel(1))
-    return result,dsModel(1)
+    return result
 
 # if __name__ =='__main__':
 #     main()
