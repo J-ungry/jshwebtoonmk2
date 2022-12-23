@@ -30,14 +30,15 @@
                 <p style="color: #fff;"><strong>전체 해제</strong></p>
             </div> 
         </div>
-    <!-- 각 li에 키워드들이 들어갈 예정이고 hover,focus 추가해야함(cursor: pointer 추가) -->
+    <!-- focus 추가, height 추가(잘안댐..) -->
     <div class="p-2 d-flex justify-content-between" style="background-color: #e6f6ff; border: 1.5px solid #cddde6;">
         <div class="w-25 me-2 p-2">           
             <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">장르</h5>
             <div style="height: 100px; overflow: auto;">
                 <ul style="font-weight: bolder; color: #23466e;" class="p-2">
+                    <!-- 장르 -->
                     {% for gen in genre %}
-                        <li class="p-1">{{gen}}</li>
+                        <li name="genre" class="p-1 user_keyword">{{gen}}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -46,41 +47,71 @@
             <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">소재</h5>
             <div style="height: 100px; overflow: auto;">
                 <ul style="font-weight: bolder; color: #23466e;" class="p-2">
-                    <li class="p-1">판타지</li>
-                    <li class="p-1">액션</li>
-                    <li class="p-1">로맨스</li>
-                    <li class="p-1">학원물</li>
+                    <!-- 소재 -->
+                    {% for soj in sojae %}
+                        <li name="sojae" class="p-1 user_keyword">{{soj}}</li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
         <div class="w-25 me-2 p-2">
-            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">등장인물/관계</h5>
+            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">분위기</h5>
             <div style="height: 100px; overflow: auto;">
                 <ul style="font-weight: bolder; color: #23466e;" class="p-2">
-                    <li class="p-1">판타지</li>
-                    <li class="p-1">액션</li>
-                    <li class="p-1">로맨스</li>
-                    <li class="p-1">학원물</li>
+                    <!-- 분위기 -->
+                    {% for atm in atm %}
+                        <li name="atm" class="p-1 user_keyword">{{atm}}</li>
+                    {% endfor %}
                 </ul> 
             </div>
         </div>
         <div class="w-25 me-2 p-2">
-            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">소설 원작</h5>      
+            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">등장인물/관계</h5>      
             <div style="height: 100px; overflow: auto;">
                 <ul style="font-weight: bolder; color: #23466e;" class="p-2">
-                    <li class="p-1">판타지</li>
-                    <li class="p-1">액션</li>
-                    <li class="p-1">로맨스</li>
-                    <li class="p-1">학원물</li>
+                    <!-- 등장인물/관계 -->
+                    {% for chr in chrel %}
+                        <li name="chrel" class="p-1 user_keyword">{{chr}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="w-25 me-2 p-2">
+            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">수상작</h5>      
+            <div style="height: 100px; overflow: auto;">
+                <ul style="font-weight: bolder; color: #23466e;" class="p-2">
+                    <!-- 수상작 -->
+                    {% for soo in soosang %}
+                        <li name="soosang" class="p-1 user_keyword">{{soo}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="w-25 me-2 p-2">
+            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">원작웹툰</h5>      
+            <div style="height: 100px; overflow: auto;">
+                <ul style="font-weight: bolder; color: #23466e;" class="p-2">
+                    <!-- 원작웹툰 -->
+                    {% for ori in origin %}
+                        <li name="origin" class="p-1 user_keyword">{{ori}}</li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    console.log($("li[class='user_keyword']"))
+    $("li").on("click",function(event) {
+        let keyword=$(this).text()
+        console.log(keyword)
+    });
+</script>
+
 <!-- 키워드 결과 출력(Ajax로 부분 새로고침) -->
-
-
 
 <!---->
 {% endblock %}
+
