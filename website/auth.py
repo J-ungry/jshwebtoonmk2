@@ -192,8 +192,7 @@ def delete_user():
             delete_user_data=data[0]    #('rlawogusWkd', 'QHFMADLWLQSOrJ', '김재현', '20대', 'male')
             print(delete_user_data)
             print(request.form.get("password"))
-            
-            #flash 안뜸 12/22
+        
             if not request.form.get("password"):
                 flash("비밀번호를 입력해주세요.")
                 print("비밀번호를 입력해주세요.")
@@ -201,7 +200,7 @@ def delete_user():
             else:
                 if request.form.get("password")!=delete_user_data[1]:
                     print("비밀번호가 틀립니다.")
-                    flash("비밀번호가 틀립니다.") #여기에 category 안넣어서 안뜨는거 아닌가 ?
+                    flash("비밀번호가 틀립니다.",category="error")
                     return render_template("user_detail.html")
                 else:
                     session.pop("user_id",None)
@@ -240,14 +239,25 @@ def input_rate():
             print(webtoon_no[0][0])
             print("score = ",score)
 
-            insert_to_survey=f"INSERT INTO survey VALUES ('{user}',{webtoon_no[0][0]},{score})"
-            check_insert = db.query(webtoon_db,insert_to_survey)
+            insert_to_survey = f"INSERT INTO survey VALUES ('{user}',{webtoon_no[0][0]},{score})"
+            update_to_survey = f"UPDATE survey SET score={score} WHERE user='{user}' and webtoon_no={webtoon_no[0][0]};"
+            
+            try:
+                check_insert = db.query(webtoon_db,insert_to_survey) #insert 문을 실행시킨다 만약 동일한 값이 있으면 except 로 이동
+                webtoon_db.commit()
+                flash("별점 등록 완료 !",category="success")
+                return render_template("input_rate.html")
+            except:
+                update_survey = db.query(webtoon_db,update_to_survey) #만약 동일한 값이 있다면 기존 값을 수정하자 !!!
+                webtoon_db.commit()
+                flash("별점 등록 완료 !",category="success")
+                return render_template("input_rate.html")
 
-            #에러에 대한 처리 추가하기 12.23
-            webtoon_db.commit()
-            flash("별점 등록 완료 !",category="success")
-            return render_template("input_rate.html")
+            
+            
+            
 
     else:
+
         flash("로그인 되어 있지 않습니다.",category="error")
         return redirect(url_for("views.index"))
