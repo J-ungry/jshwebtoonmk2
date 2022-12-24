@@ -166,6 +166,16 @@
                 <!-- 정보 수정 Modal end -->
             </div>
         </div>
+
+        <!-- history -->
+        <div id="history">
+            <ol>
+                {% for date in dates %}
+                <li><a href="{{ url_for('/recommand' ,namespace='date[0]' ) }}">{{date[0]}}</a></li>
+                {% endfor %}
+            </ol>
+        </div>
+
     </div>
 </div>
 {% endblock %}

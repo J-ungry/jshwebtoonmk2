@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from website import db
 import pymysql
 import website.models as models
+import datetime
 
 DB_USER="jsh"   #MySQL 계정명
 #DB_USER = "root" #정구리 MySQL 계정명
@@ -125,11 +126,17 @@ def logout():
 def user_detail():
     if request.method=="GET":
         if session:
-            return render_template("user_detail.html")
+            dates=db.query(webtoon_db,f"select DISTINCT rcm_date from history where user_id='{session['user_id']}'")
+            return render_template("user_detail.html", dates = dates)
         else:
             #flash 안됨
             flash("해당 서비스는 로그인 한 사용자만 이용가능합니다.")
             return redirect(url_for("views.index"))
+
+@auth.route("/recommand/",methods=["GET"])
+def recommand():
+    print(request.args.get('namespace',type=datetime))
+    return render_template("recommand_page.html")
 
 @auth.route("/update_information",methods=["GET","POST"])
 def upate_information():
