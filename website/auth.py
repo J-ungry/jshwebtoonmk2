@@ -201,7 +201,7 @@ def delete_user():
             else:
                 if request.form.get("password")!=delete_user_data[1]:
                     print("비밀번호가 틀립니다.")
-                    flash("비밀번호가 틀립니다.")
+                    flash("비밀번호가 틀립니다.") #여기에 category 안넣어서 안뜨는거 아닌가 ?
                     return render_template("user_detail.html")
                 else:
                     session.pop("user_id",None)

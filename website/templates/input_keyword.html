@@ -113,14 +113,19 @@
 <script type="text/javascript">
     const output=document.getElementById("output_keyword");
     const select_user=document.getElementById("select_keyword");
-    let i=0;
     
     let select_user_keyword=[]
     $("li").on("click",function(event) {
         let keyword=$(this).attr('name')    //키워드 종류
         let user_keyword=$(this).text()     //user가 선택한 키워드명
        
-        select_user_keyword.push(user_keyword)
+        //동일한 값 안들어가도록 수정
+        if (select_user_keyword.includes(user_keyword)){
+            return
+        }else{
+            select_user_keyword.push(user_keyword);
+        }
+        
         console.log(select_user_keyword)
         console.log(keyword)
         console.log(user_keyword)
@@ -130,19 +135,17 @@
             data : {"keyword":keyword,"user_keyword":user_keyword},
             dataType : "json",
             success : function(response) {
-                //alert(response["model_result"])
-                //console.log(${response["keyword"]})
-
-                for(i;i<select_user_keyword.length;i++) {
-                    if(user_keyword==select_user_keyword[i]) {
+                for (let prop in select_user_keyword) {
+                    if(user_keyword==select_user_keyword[prop]){
                         select_user.innerHTML+=`
-                            <div id="keyword_btn${i}">
-                                <button type="button" class="btn btn-info">${select_user_keyword[i]}</button>
-                                <button name="${i}" type="button" class="btn-close" aria-label="Close"></button>
+                            <div id="keyword_btn${prop}">
+                                <button type="button" class="btn btn-info">${select_user_keyword[prop]}</button>
+                                <button name="${prop}" type="button" class="btn-close" aria-label="Close"></button>
                             </div>
                         `
                     }
                 }
+
                 
                 $('.btn-close').on('click',function(event) {
                     index="keyword_btn"+$(this).attr('name')
@@ -151,7 +154,8 @@
                     console.log(close_number)
                     select_user_keyword.splice(index,1)
                     console.log(select_user_keyword)
-                    close_number.innerHTML=''
+                    // close_number.innerHTML=''
+                    close_number.remove();
                 });
 
                 const list_len=$(response["webtoon_title"]).length
