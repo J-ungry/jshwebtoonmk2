@@ -240,7 +240,7 @@ def input_rate():
             #에러에 대한 처리 추가하기 12.23
             webtoon_db.commit()
             flash("별점 등록 완료 !",category="success")
-            return redirect(url_for("views.index"))
+            return render_template("input_rate.html")
             
 
     else:
