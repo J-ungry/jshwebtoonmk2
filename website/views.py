@@ -88,6 +88,7 @@ def input_keyword():
         return_webtoon_title=[]
         return_webtoon_thumb=[]
         return_webtoon_author=[]
+        return_webtoon_intro=[]
         
         #사용자가 선택한 키워드가 있는 웹툰 번호 출력
         keyword_webtoon_no_data=db.query(webtoon_db,f"SELECT no FROM keyword WHERE keyword IN('{keyword_user}') AND type='{keyword}'")
@@ -95,10 +96,11 @@ def input_keyword():
         print(len(keyword_webtoon_no_data))
         
         for i in range(len(keyword_webtoon_no_data)):
-            return_webtoon_data=db.query(webtoon_db,f"SELECT title,author,thumb_link FROM webtoon_info WHERE no='{keyword_webtoon_no_data[i][0]}'")
+            return_webtoon_data=db.query(webtoon_db,f"SELECT title,author,thumb_link,real_intro FROM webtoon_info WHERE no='{keyword_webtoon_no_data[i][0]}'")
             return_webtoon_title.append(return_webtoon_data[0][0])
             return_webtoon_author.append(return_webtoon_data[0][1])
             return_webtoon_thumb.append(return_webtoon_data[0][2])
+            return_webtoon_intro.append(return_webtoon_data[0][3])
         
-        return jsonify({"keyword":keyword,"user_keyword":keyword_user,"webtoon_title":return_webtoon_title,"webtoon_author":return_webtoon_author,"webtoon_thumb":return_webtoon_thumb})
+        return jsonify({"keyword":keyword,"user_keyword":keyword_user,"webtoon_title":return_webtoon_title,"webtoon_author":return_webtoon_author,"webtoon_thumb":return_webtoon_thumb,"webtoon_intro":return_webtoon_intro})
     
