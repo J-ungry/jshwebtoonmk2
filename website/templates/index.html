@@ -1,7 +1,7 @@
 <style>
-    /* body {
+    body {
       overflow: hidden;
-    } */
+    }
 </style>
 
 {% extends "nav.html" %}
@@ -9,12 +9,12 @@
 
 {% block content %}
 <!-- Carousel Start -->
-        <div class="container-fluid p-0" style="height: 100vh;">
+        <div class="container-fluid p-0" style="height: 100vh; background-color: #040f28;">
             <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <!-- video scroll 없이 -->
-                    <div class="carousel-item active">
-                        <video class="w-100" src="{{url_for('static',filename='video/index_video.mp4')}}" autoplay muted loop></video>
+                    <div style="width: 100%;" class="carousel-item active">
+                        <video style="width: 1150; margin: 0 auto;" src="{{url_for('static',filename='video/index_video.mp4')}}" autoplay muted loop></video>
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 900px; position: fixed; top: 55%; left: 50%; transform: translate(-50%, -50%);">
                                 <h1 style="font-size: 40px;" class="display-2 text-uppercase text-white mb-md-4">웹툰 추천 서비스 : 만화방</h1>
