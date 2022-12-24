@@ -127,11 +127,13 @@ def user_detail():
     if request.method=="GET":
         if session:
             dates=db.query(webtoon_db,f"select DISTINCT rcm_date from history where user_id='{session['user_id']}'")
+            print(dates)
             return render_template("user_detail.html", dates = dates)
         else:
             #flash 안됨
             flash("해당 서비스는 로그인 한 사용자만 이용가능합니다.")
             return redirect(url_for("views.index"))
+
 
 @auth.route("/recommand/<date>",methods=["GET"])
 def recommand(date):
@@ -179,6 +181,12 @@ def get_rcm(name):
     date = db.query(webtoon_db,f"select max(rcm_date) from history where user_id='{session['user_id']}'")
 
     return redirect(url_for("auth.recommand",date = date[0][0]))
+
+# @auth.route("/recommand/<arg>",methods=["GET"])
+# def recommand(arg):
+#     print(arg)
+#     return render_template("recommand_page.html")
+
 
 @auth.route("/update_information",methods=["GET","POST"])
 def upate_information():

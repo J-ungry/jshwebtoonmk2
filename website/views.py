@@ -101,6 +101,7 @@ def input_keyword():
             return_webtoon_author.append(return_webtoon_data[0][1])
             return_webtoon_thumb.append(return_webtoon_data[0][2])
             return_webtoon_intro.append(return_webtoon_data[0][3])
+        print(return_webtoon_title)
         
         return jsonify({"keyword":keyword,"user_keyword":keyword_user,"webtoon_title":return_webtoon_title,"webtoon_author":return_webtoon_author,"webtoon_thumb":return_webtoon_thumb,"webtoon_intro":return_webtoon_intro})
     
