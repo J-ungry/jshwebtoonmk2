@@ -17,8 +17,8 @@ webtoon_db = pymysql.connect(
         host="localhost",
         port=3306,
         user=DB_USER,
-        #passwd="bread!123",
-        passwd="duffufK123!",
+        passwd="bread!123",
+        #passwd="duffufK123!",
         db=DB_NAME,
         charset="utf8"
         )
@@ -127,15 +127,16 @@ def user_detail():
     if request.method=="GET":
         if session:
             dates=db.query(webtoon_db,f"select DISTINCT rcm_date from history where user_id='{session['user_id']}'")
+            print(dates)
             return render_template("user_detail.html", dates = dates)
         else:
             #flash 안됨
             flash("해당 서비스는 로그인 한 사용자만 이용가능합니다.")
             return redirect(url_for("views.index"))
 
-@auth.route("/recommand/",methods=["GET"])
-def recommand():
-    print(request.args.get('namespace',type=datetime))
+@auth.route("/recommand/<arg>",methods=["GET"])
+def recommand(arg):
+    print(arg)
     return render_template("recommand_page.html")
 
 @auth.route("/update_information",methods=["GET","POST"])

@@ -101,26 +101,42 @@
     </div>
 </div>
 
+<a href="/get_rcm/김부장">김부장</a>
+
 <div id="select_keyword" class="d-flex">
     
 </div>
 
 <div id="output_keyword">
-
+    
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-    const output=document.getElementById("output_keyword");
-    const select_user=document.getElementById("select_keyword");
-    let i=0;
+
+    var select_user=document.getElementById("select_keyword");
+    var whole_container=document.getElementById("output_keyword")
     
-    let select_user_keyword=[]
+    
+    var select_user_keyword=[]
     $("li").on("click",function(event) {
+        console.log("hello")
+        whole_container.innerHTML=`
+            <div id="reload_location">
+            </div>
+        `
+        var output=document.getElementById("reload_location")
         let keyword=$(this).attr('name')    //키워드 종류
+        console.log(keyword)
         let user_keyword=$(this).text()     //user가 선택한 키워드명
+        console.log(user_keyword)
        
-        select_user_keyword.push(user_keyword)
+        if (select_user_keyword.includes(user_keyword)){
+            return
+        }else{
+            select_user_keyword.push(user_keyword);
+        }
+
         console.log(select_user_keyword)
         console.log(keyword)
         console.log(user_keyword)
@@ -133,34 +149,23 @@
                 //alert(response["model_result"])
                 //console.log(${response["keyword"]})
 
-                for(i;i<select_user_keyword.length;i++) {
+                for (let i in select_user_keyword) {
                     if(user_keyword==select_user_keyword[i]) {
+                        console.log(select_user_keyword[i])
                         select_user.innerHTML+=`
                             <div id="keyword_btn${i}">
                                 <button type="button" class="btn btn-info">${select_user_keyword[i]}</button>
-                                <button name="${i}" type="button" class="btn-close" aria-label="Close"></button>
+                                <button onclick="btn(${i})" name="${i}" type="button" class="btn-close" aria-label="Close"></button>
                             </div>
                         `
                     }
                 }
-                
-                $('.btn-close').on('click',function(event) {
-                    index="keyword_btn"+$(this).attr('name')
-                    console.log(index)
-                    const close_number=document.getElementById(index)
-                    console.log(close_number)
-                    select_user_keyword.splice(index,1)
-                    console.log(select_user_keyword)
-                    close_number.innerHTML=''
-                });
 
                 const list_len=$(response["webtoon_title"]).length
                 console.log(list_len)
-                
-                output.innerHTML=''
+          
                 for(let i=0;i<list_len;i++){
                     output.innerHTML+=`
-                    <div id='reload_location'>
                         <div>
                             <img src='${response["webtoon_thumb"][i]}' style="width:100px; height:100px">
                         </div>
@@ -173,16 +178,26 @@
                         <div>
                             <p>${response["webtoon_intro"][i]}</p>
                         </div>
-                    </div>   
-                `
+                    `
                 }
                 //$('#reload_location').load(location.href+'#reload_location')
+
+                
             },
             error : function(request,status,error) {
                 console.log("no ajax")
             }
         });
     })
+
+    function btn(number) {
+        index="keyword_btn"+number
+        const close_number=document.getElementById(index)
+        select_user_keyword.splice(index,1)
+        close_number.remove();
+        var test=document.getElementById("reload_location")
+        test.innerHTML='';
+    }
 </script>
 
 <!-- 키워드 결과 출력(Ajax로 부분 새로고침) -->
