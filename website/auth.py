@@ -17,8 +17,8 @@ webtoon_db = pymysql.connect(
         host="localhost",
         port=3306,
         user=DB_USER,
-        #passwd="bread!123",
-        passwd="duffufK123!",
+        passwd="bread!123",
+        #passwd="duffufK123!",
         db=DB_NAME,
         charset="utf8"
         )
@@ -133,10 +133,52 @@ def user_detail():
             flash("해당 서비스는 로그인 한 사용자만 이용가능합니다.")
             return redirect(url_for("views.index"))
 
-@auth.route("/recommand/",methods=["GET"])
-def recommand():
-    print(request.args.get('namespace',type=datetime))
-    return render_template("recommand_page.html")
+@auth.route("/recommand/<date>",methods=["GET"])
+def recommand(date):
+    rcmed_webtoons = db.query(webtoon_db,f"select webtoon_no,rcm_type from history where user_id='{session['user_id']}' and rcm_date='{date}'")
+
+    ds = []
+    it = []
+    sv = []
+
+    for webtoon in rcmed_webtoons:
+        if(webtoon[1] == 'ds'):
+            ds.append(db.query(webtoon_db,f"select * from webtoon_info where no={webtoon[0]}"))
+        if(webtoon[1] == 'it'):
+            it.append(db.query(webtoon_db,f"select * from webtoon_info where no={webtoon[0]}"))
+        if(webtoon[1] == 'sv'):
+            sv.append(db.query(webtoon_db,f"select * from webtoon_info where no={webtoon[0]}"))
+
+    return render_template("recommand_page.html", dss = ds, its = it, svs = sv)
+
+@auth.route("/get_rcm/<name>",methods=["GET"])
+def get_rcm(name):
+    #추천 결과
+    no = db.query(webtoon_db,f"select no from webtoon_info where title='{name}'")
+    surveys, drawings = models.main(name,no[0][0])
+    print(surveys, drawings)
+
+    #survey의 title로 webtoon넘버 가져오기
+    surveys_no = []
+    for name in surveys:
+        surveys_no.append(db.query(webtoon_db,f"select no from webtoon_info where title='{name}'")[0][0])
+
+    #추천 결과 history insert sql
+    sql = "insert into history (user_id,webtoon_no,rcm_type) values "
+    for survey in surveys_no:
+        sql += f"('{session['user_id']}', {survey}, 'sv'),"
+    for drawing in drawings:
+        sql += f"('{session['user_id']}', {drawing}, 'ds'),"
+    sql = sql[:-1]
+
+    #history insert
+    db.query(webtoon_db,sql)
+    webtoon_db.commit()
+
+    #가장 최근 날짜
+    date = db.query(webtoon_db,f"select max(rcm_date) from history where user_id='{session['user_id']}'")
+
+    return redirect(url_for("auth.recommand",date = date[0][0]))
 
 @auth.route("/update_information",methods=["GET","POST"])
 def upate_information():

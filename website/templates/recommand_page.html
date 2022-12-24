@@ -2,5 +2,27 @@
 {% block title %}승환이네 만화방{% endblock %}
 
 {% block content %}
-    <div>123</div>
+    <p>ds</p>
+    <ol>    
+        {% for ds in dss %}
+        <li>
+            {{ds[0][1]}}
+            <img style="width: 100px; height: 100px;" src="{{ds[0][3]}}">
+        </li>
+        {% endfor %}
+    </ol>
+
+    <p>it</p>
+    <ol>    
+        {% for it in its %}
+        <li>{{it}}</li>
+        {% endfor %}
+    </ol>
+
+    <p>sv</p>
+    <ol>    
+        {% for sv in svs %}
+        <li>{{sv}}</li>
+        {% endfor %}
+    </ol>
 {% endblock %}

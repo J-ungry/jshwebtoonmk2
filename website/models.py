@@ -104,14 +104,14 @@ def dsModel(webtoon_no):
 
     #유사도 상위 10개 웹툰번호 return
     df = pd.DataFrame(sim, columns=['sim'])
-    return df.sort_values('sim', ascending=False)[:10].index + 1
+    return df.sort_values('sim', ascending=False)[:5].index + 1
 
 
-def main(title):
-    result = recommand_webtoon(title)
-    #print(result)
-    # print(dsModel(1))
-    return result
+def main(title,no):
+    survey = recommand_webtoon(title)
+    drawing = dsModel(no)
+
+    return survey, drawing
 
 # if __name__ =='__main__':
 #     main()
