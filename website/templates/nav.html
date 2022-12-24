@@ -55,6 +55,7 @@
                     <a href="/introduce_service" class="nav-item nav-link">Service</a>
                     <a href="/introduce_team" class="nav-item nav-link me-4">Develop Team</a>
                     {% if session["user_id"] %}
+                        <a href="/input_rate" class="nav-item nav-link me-4">Rating</a>
                         <a href="/user_detail" class="nav-item nav-link me-4"><strong>{{session["user_name"]}}님</strong></a>
                         <a href="/logout" class="nav-item nav-link me-4">Logout</a>
                     {% else %}

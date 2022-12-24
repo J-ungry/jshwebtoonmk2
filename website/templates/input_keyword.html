@@ -101,6 +101,10 @@
     </div>
 </div>
 
+<div id="select_keyword" class="d-flex">
+    
+</div>
+
 <div id="output_keyword">
 
 </div>
@@ -108,9 +112,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
     const output=document.getElementById("output_keyword");
+    const select_user=document.getElementById("select_keyword");
+    let i=0;
+    
+    let select_user_keyword=[]
     $("li").on("click",function(event) {
         let keyword=$(this).attr('name')    //키워드 종류
         let user_keyword=$(this).text()     //user가 선택한 키워드명
+       
+        select_user_keyword.push(user_keyword)
+        console.log(select_user_keyword)
         console.log(keyword)
         console.log(user_keyword)
         $.ajax ({
@@ -122,8 +133,31 @@
                 //alert(response["model_result"])
                 //console.log(${response["keyword"]})
 
+                for(i;i<select_user_keyword.length;i++) {
+                    if(user_keyword==select_user_keyword[i]) {
+                        select_user.innerHTML+=`
+                            <div id="keyword_btn${i}">
+                                <button type="button" class="btn btn-info">${select_user_keyword[i]}</button>
+                                <button name="${i}" type="button" class="btn-close" aria-label="Close"></button>
+                            </div>
+                        `
+                    }
+                }
+                
+                $('.btn-close').on('click',function(event) {
+                    index="keyword_btn"+$(this).attr('name')
+                    console.log(index)
+                    const close_number=document.getElementById(index)
+                    console.log(close_number)
+                    select_user_keyword.splice(index,1)
+                    console.log(select_user_keyword)
+                    close_number.innerHTML=''
+                });
+
                 const list_len=$(response["webtoon_title"]).length
                 console.log(list_len)
+                
+                output.innerHTML=''
                 for(let i=0;i<list_len;i++){
                     output.innerHTML+=`
                     <div id='reload_location'>
