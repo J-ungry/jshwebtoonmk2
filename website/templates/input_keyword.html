@@ -38,7 +38,7 @@
                 <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                     <!-- 장르 -->
                     {% for gen in genre %}
-                        <li name="genre" class="p-1 user_keyword">{{gen}}</li>
+                        <li name="1" class="p-1 user_keyword">{{gen}}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -49,7 +49,7 @@
                 <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                     <!-- 소재 -->
                     {% for soj in sojae %}
-                        <li name="sojae" class="p-1 user_keyword">{{soj}}</li>
+                        <li name="2" class="p-1 user_keyword">{{soj}}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -60,7 +60,7 @@
                 <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                     <!-- 분위기 -->
                     {% for atm in atm %}
-                        <li name="atm" class="p-1 user_keyword">{{atm}}</li>
+                        <li name="3" class="p-1 user_keyword">{{atm}}</li>
                     {% endfor %}
                 </ul> 
             </div>
@@ -71,7 +71,7 @@
                 <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                     <!-- 등장인물/관계 -->
                     {% for chr in chrel %}
-                        <li name="chrel" class="p-1 user_keyword">{{chr}}</li>
+                        <li name="5" class="p-1 user_keyword">{{chr}}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -82,7 +82,7 @@
                 <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                     <!-- 수상작 -->
                     {% for soo in soosang %}
-                        <li name="soosang" class="p-1 user_keyword">{{soo}}</li>
+                        <li name="4" class="p-1 user_keyword">{{soo}}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -93,19 +93,7 @@
                 <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                     <!-- 원작웹툰 -->
                     {% for ori in origin %}
-                        <li name="origin" class="p-1 user_keyword">{{ori}}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <!-- ajax+모델 테스트 -->
-        <div class="w-25 me-2 p-2">
-            <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">원작웹툰</h5>      
-            <div style="height: 100px; overflow: auto;">
-                <ul style="font-weight: bolder; color: #23466e;" class="p-2">
-                    <!-- 제목 -->
-                    {% for title in titles %}
-                        <li name="title" class="p-1 user_keyword">{{title}}</li>
+                        <li name="6" class="p-1 user_keyword">{{ori}}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -113,13 +101,13 @@
     </div>
 </div>
 
-<div id="keyword_result">
+<div id="output_keyword">
 
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-    const keyword_result=document.getElementById("keyword_result");
+    const output=document.getElementById("output_keyword");
     $("li").on("click",function(event) {
         let keyword=$(this).attr('name')    //키워드 종류
         let user_keyword=$(this).text()     //user가 선택한 키워드명
@@ -132,14 +120,26 @@
             dataType : "json",
             success : function(response) {
                 //alert(response["model_result"])
-                keyword_result.innerHTML+=`<p>"result":${response["keyword"]}</p>`
-                keyword_result.innerHTML+=`<p>"result":${response["user_keyword"]}</p>`
-                keyword_result.innerHTML+=`<p>"result":${response["model_result"]}</p>`
-                //console.log(result.length)
-                //for(let i=0;i<result.length;i++){
-                   //console.log(i)
-                    //keyword_result.innerHTML+=`<p>${result[i]}</p>`
-                //}
+                //console.log(${response["keyword"]})
+
+                const list_len=$(response["webtoon_title"]).length
+                console.log(list_len)
+                for(let i=0;i<list_len;i++){
+                    output.innerHTML+=`
+                    <div id='reload_location'>
+                        <div>
+                            <img src='${response["webtoon_thumb"][i]}' style="width:100px; height:100px">
+                        </div>
+                        <div>
+                            <p>${response["webtoon_title"][i]}</p>
+                        </div>
+                        <div>
+                            <p>${response["webtoon_author"][i]}</p>
+                        </div>
+                    </div>   
+                `
+                }
+                //$('#reload_location').load(location.href+'#reload_location')
             },
             error : function(request,status,error) {
                 console.log("no ajax")

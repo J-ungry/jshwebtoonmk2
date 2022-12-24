@@ -16,8 +16,8 @@ webtoon_db = pymysql.connect(
         host="localhost",
         port=3306,
         user=DB_USER,
-        #passwd="bread!123",
-        passwd="duffufK123!",
+        passwd="bread!123",
+        #passwd="duffufK123!",
         db=DB_NAME,
         charset="utf8"
         )
@@ -224,7 +224,6 @@ def input_rate():
         if request.method =="GET": #get 인 경우에는 화면에 뿌려주기
             return render_template("input_rate.html")
         elif request.method =="POST":   
-            print("work") 
             user = session["user_id"] #세션의 유저 아이디를 user로
             title = request.form.get("title") #입력된 타이틀 명 가져오기 (select no from webtoon_info where title="마루는 강쥐";  통해서 webtoon_no 생성)
             score = request.form.get("score")
@@ -246,4 +245,3 @@ def input_rate():
     else:
         flash("로그인 되어 있지 않습니다.",category="error")
         return redirect(url_for("views.index"))
-
