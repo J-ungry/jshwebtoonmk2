@@ -5,3 +5,18 @@ app=init.create_app()
 
 if __name__=="__main__": 
     app.run(debug=True)
+    
+"""
+    *** 남은 해야할 일
+    1. 전체적으로 css 다듬기
+    2. user 아이디/비밀번호 변경 및 찾기
+    3. introduce_service.html 완성
+    4. 홈페이지에 들어갈 로고
+    5. 키워드 들어간 웹툰 출력(input_keyword.html),키워드 검색 기능 추가 - 쿼리 고민
+        => ajax는 되는데 결과가 바뀌지 않고 쌓임(무한 스크롤)
+    6. 웹툰 모델 돌린 후 결과 페이지
+    7. input_rate 자동완성 검색 기능 추가
+    8. user_detail.html history 작성
+    9. nav.html 상단바 선택 시 효과 추가
+    10. 코드 정리
+"""
