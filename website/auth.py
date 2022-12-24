@@ -240,7 +240,6 @@ def input_rate():
             webtoon_db.commit()
             flash("별점 등록 완료 !",category="success")
             return render_template("input_rate.html")
-            
 
     else:
         flash("로그인 되어 있지 않습니다.",category="error")
