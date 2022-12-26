@@ -2,6 +2,11 @@
 {% block title %}승환이네 만화방{% endblock %}
 
 {% block content %}
+<style>
+    #nav-detail{
+    color:#FD5D14;   
+}
+</style>
 <div class="container-fluid py-6 px-5 d-flex justify-content-center">
     <div class="row g-5">
         <div class="col-lg-7 w-100">
@@ -166,12 +171,38 @@
                 <!-- 정보 수정 Modal end -->
             </div>
         </div>
+        <br>
 
+        <style>
+            #history {
+                margin-top : -40px;
+                border: 1.5px solid #FD5D14;
+            }
+            ol{
+                padding: 20px;
+            }
+            #recommend{
+                color: #2A2A2A;
+                font-weight: 500;
+            }
+            #recommend:hover{ /* history 에 hover 시 색상 변경 */
+                color : #FD5D14;
+                transition: all .3s ease;
+            }
+            #h1-history{
+                font-size: 35px; 
+                background-color: #FFFFFF; 
+                display: inline-block; 
+                padding-right: 30px; 
+                padding-bottom:10px;
+            }
+        </style>
         <!-- history -->
+        <h1 id="h1-history" class="display-5 text-uppercase mb-4"><span class="text-primary">추천 히스토리</span></h1>
         <div id="history">
             <ol>
                 {% for date in dates %}
-                <li><a href="/recommand/{{date[0]}}">{{date[0]}}</a></li>
+                <li><a id="recommend" href="/recommand/{{date[0]}}">{{date[0]}}</a></li>
                 {% endfor %}
             </ol>
         </div>

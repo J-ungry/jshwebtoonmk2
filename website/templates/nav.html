@@ -51,15 +51,15 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
                     <!-- active 추가 -->
-                    <a href="/" class="nav-item nav-link">Home</a>
-                    <a href="/introduce_service" class="nav-item nav-link">Service</a>
-                    <a href="/introduce_team" class="nav-item nav-link me-4">Develop Team</a>
+                    <a href="/" class="nav-item nav-link" id="nav-home">Home</a>
+                    <a href="/introduce_service" class="nav-item nav-link" id="nav-service">Service</a>
+                    <a href="/introduce_team" class="nav-item nav-link me-4" id="nav-team">Develop Team</a>
                     {% if session["user_id"] %}
-                        <a href="/input_rate" class="nav-item nav-link me-4">Rating</a>
-                        <a href="/user_detail" class="nav-item nav-link me-4"><strong>{{session["user_name"]}}님</strong></a>
+                        <a href="/input_rate" class="nav-item nav-link me-4" id="nav-rating">Rating</a>
+                        <a href="/user_detail" class="nav-item nav-link me-4" id="nav-detail"><strong>{{session["user_name"]}}님</strong></a>
                         <a href="/logout" class="nav-item nav-link me-4">Logout</a>
                     {% else %}
-                        <a href="/sign_up" class="nav-item nav-link me-4">SignUp</a>
+                        <a href="/sign_up" class="nav-item nav-link me-4" id="nav-signup">SignUp</a>
                     {% endif %}
                 </div>
             </div>

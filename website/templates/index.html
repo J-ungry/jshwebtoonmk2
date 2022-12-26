@@ -9,19 +9,38 @@
 
 {% block content %}
 <!-- Carousel Start -->
+
+<style>
+    #nav-home{
+    color:#FD5D14; 
+}
+    body{
+        width:100%;
+        height:100%;
+        position:fixed;
+    }
+    #background-video{
+        width : 100%;
+        margin-top : -3%;
+    }
+    h3 > span{
+        color : #FD5D14;
+    }
+</style>
         <div class="container-fluid p-0" style="background-color: #040f28;">
             <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <!-- video scroll 없이 -->
                     <div class="carousel-item active">
-                        <video src="{{url_for('static',filename='video/index_video.mp4')}}" autoplay muted loop></video>
+                        <video id="background-video" src="{{url_for('static',filename='video/index_video.mp4')}}" autoplay muted loop></video>
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 900px; position: fixed; top: 55%; left: 50%; transform: translate(-50%, -50%);">
-                                <h1 style="font-size: 40px;" class="display-2 text-uppercase text-white mb-md-4">웹툰 추천 서비스 : 만화방</h1>
+                                <h3 style="font-size: 20px;" class="display-2 text-uppercase text-white mb-md-4"><span>인공지능</span> 기반 웹툰 추천 서비스</h3>
+                                <h1 style="font-size: 50px;" class="display-2 text-uppercase text-white mb-md-4">승환이네 만화방</h1>
                                 {% if session["user_id"] %}
-                                    <a href="./input_keyword" class="btn btn-primary py-md-3 px-md-5 mt-2">START</a>
+                                    <a href="./input_keyword" class="btn btn-primary py-md-3 px-md-5 mt-2">시작하기</a>
                                 {% else %}
-                                    <a href="/user_login" class="btn btn-primary py-md-3 px-md-5 mt-2">SignIn</a>
+                                    <a href="/user_login" class="btn btn-primary py-md-3 px-md-5 mt-2">로그인</a>
                                 {% endif %}
                             </div>
                         </div>
