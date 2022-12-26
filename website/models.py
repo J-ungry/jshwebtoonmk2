@@ -105,9 +105,9 @@ def dsModel(webtoon_no):
     for x in range(0,2044):
         sim.append(cos_sim(vec[webtoon_no-1],vec[x]))
 
-    #유사도 상위 10개 웹툰번호 return
+    #유사도 상위 5개 웹툰번호 return
     df = pd.DataFrame(sim, columns=['sim'])
-    return df.sort_values('sim', ascending=False)[:5].index + 1
+    return df.sort_values('sim', ascending=False)[1:6].index + 1
 
 #승환이코드
 
