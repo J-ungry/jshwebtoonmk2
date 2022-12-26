@@ -6,8 +6,8 @@ import pymysql
 import website.models as models
 import datetime
 
-#DB_USER="jsh"   #MySQL 계정명
-DB_USER = "root" #정구리 MySQL 계정명
+DB_USER="jsh"   #MySQL 계정명
+#DB_USER = "root" #정구리 MySQL 계정명
 DB_NAME="jsh"   #MySQL DB명
 
 #auth.py에서는 주로 로그인에 관련된 코드 작성
@@ -17,8 +17,8 @@ webtoon_db = pymysql.connect(
         host="localhost",
         port=3306,
         user=DB_USER,
-        #passwd="bread!123",
-        passwd="duffufK123!",
+        passwd="bread!123",
+        #passwd="duffufK123!",
         db=DB_NAME,
         charset="utf8"
         )
@@ -126,8 +126,7 @@ def logout():
 def user_detail():
     if request.method=="GET":
         if session:
-            dates=db.query(webtoon_db,f"select DISTINCT rcm_date from history where user_id='{session['user_id']}'")
-            print(dates)
+            dates=db.query(webtoon_db,f"select DISTINCT rcm_date from history where user_id='{session['user_id']}' order by rcm_date desc")
             return render_template("user_detail.html", dates = dates)
         else:
             #flash 안됨
@@ -135,8 +134,8 @@ def user_detail():
             return redirect(url_for("views.index"))
 
 
-@auth.route("/recommand/<date>",methods=["GET"])
-def recommand(date):
+@auth.route("/recommend/<date>",methods=["GET"])
+def recommend(date):
     rcmed_webtoons = db.query(webtoon_db,f"select webtoon_no,rcm_type from history where user_id='{session['user_id']}' and rcm_date='{date}'")
 
     ds = []
@@ -151,14 +150,13 @@ def recommand(date):
         if(webtoon[1] == 'sv'):
             sv.append(db.query(webtoon_db,f"select * from webtoon_info where no={webtoon[0]}"))
 
-    return render_template("recommand_page.html", dss = ds, its = it, svs = sv)
+    return render_template("recommend_page.html", dss = ds, its = it, svs = sv)
 
 @auth.route("/get_rcm/<name>",methods=["GET"])
 def get_rcm(name):
     #추천 결과
     no = db.query(webtoon_db,f"select no from webtoon_info where title='{name}'")
     surveys, drawings = models.main(name,no[0][0])
-    print(surveys, drawings)
 
     #survey의 title로 webtoon넘버 가져오기
     surveys_no = []
@@ -180,12 +178,23 @@ def get_rcm(name):
     #가장 최근 날짜
     date = db.query(webtoon_db,f"select max(rcm_date) from history where user_id='{session['user_id']}'")
 
-    return redirect(url_for("auth.recommand",date = date[0][0]))
+    return redirect(url_for("auth.recommend",date = date[0][0]))
 
-# @auth.route("/recommand/<arg>",methods=["GET"])
-# def recommand(arg):
+# @auth.route("/recommend/<arg>",methods=["GET"])
+# def recommend(arg):
 #     print(arg)
-#     return render_template("recommand_page.html")
+#     return render_template("recommend_page.html")
+
+@auth.route("/autocomplete",methods=["POST"])
+def autocomplete():
+    val = request.form["value"]
+    resultList = db.query(webtoon_db,f"select title from webtoon_info where title like '%{val}%'")
+    titleList = []
+    for result in resultList:
+        titleList.append(result[0])
+
+    return titleList
+
 
 
 @auth.route("/update_information",methods=["GET","POST"])
