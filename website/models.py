@@ -12,12 +12,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 webtoon_db=auth.webtoon_db
 
-def make_list(datas):
-    lst = []
-    for i in datas:
-        lst.append(i[0])
-    return lst
-
 #데이터 호출함수=> 추후 DB 에서 호출하게끔 개선하기 (완료)
 def get_data():
 
@@ -70,7 +64,7 @@ def truncateSVD(rating_data,webtoon_data):
 
     return corr,webtoon_title
 
-def recommand_webtoon(title):
+def recommend_webtoon(title):
     result = [] #최종 결과 들어갈 list
     rating_data,webtoon_data = get_data() #데이터 호출하기 
     corr,webtoon_title = truncateSVD(rating_data,webtoon_data) #model 에 돌리기 
@@ -115,9 +109,12 @@ def itModel(wt_title):
     num = 5
 
     fake_intro = db.query(webtoon_db, "SELECT fake_intro FROM webtoon_info")
-
+    #print("fake_intro = ",fake_intro[0][0])
+    fake_intro_list = []
+    for x in fake_intro:
+        fake_intro_list.append(x[0])
     transformer = TfidfVectorizer()
-    tfidf_matrix = transformer.fit_transform(fake_intro)
+    tfidf_matrix = transformer.fit_transform(fake_intro_list)
     print(tfidf_matrix.shape) #(1000, 9662)
 
     cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
@@ -153,10 +150,11 @@ def itModel(wt_title):
 
 
 def main(title,no):
-    survey = recommand_webtoon(title)
+    survey = recommend_webtoon(title)
     drawing = dsModel(no)
-
-    return survey, drawing
+    intro = itModel(title)
+    print(intro)
+    return survey, drawing,intro
 
 # if __name__ =='__main__':
 #     main()

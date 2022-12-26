@@ -6,8 +6,8 @@ import pymysql
 import website.models as models
 import datetime
 
-DB_USER="jsh"   #MySQL 계정명
-# DB_USER = "root" #정구리 MySQL 계정명
+#DB_USER="jsh"   #MySQL 계정명
+DB_USER = "root" #정구리 MySQL 계정명
 DB_NAME="jsh"   #MySQL DB명
 
 #auth.py에서는 주로 로그인에 관련된 코드 작성
@@ -17,8 +17,8 @@ webtoon_db = pymysql.connect(
         host="localhost",
         port=3306,
         user=DB_USER,
-        passwd="bread!123",
-        # passwd="duffufK123!",
+        #passwd="bread!123",
+        passwd="duffufK123!",
         db=DB_NAME,
         charset="utf8"
         )
@@ -156,12 +156,17 @@ def recommend(date):
 def get_rcm(name):
     #추천 결과
     no = db.query(webtoon_db,f"select no from webtoon_info where title='{name}'")
-    surveys, drawings = models.main(name,no[0][0])
+    surveys, drawings,intros = models.main(name,no[0][0])
 
     #survey의 title로 webtoon넘버 가져오기
     surveys_no = []
     for name in surveys:
         surveys_no.append(db.query(webtoon_db,f"select no from webtoon_info where title='{name}'")[0][0])
+
+    #intro의 title 로 webtoon넘버 가져오기 (이렇게 하면 되나 ???)
+    intros_no = []
+    for x in intros:
+        intros_no.append(db.query(webtoon_db,f"select no from webtoon_info where title='{x}'")[0][0])
 
     #추천 결과 history insert sql
     sql = "insert into history (user_id,webtoon_no,rcm_type) values "
@@ -169,6 +174,8 @@ def get_rcm(name):
         sql += f"('{session['user_id']}', {survey}, 'sv'),"
     for drawing in drawings:
         sql += f"('{session['user_id']}', {drawing}, 'ds'),"
+    for intro in intros_no:
+        sql += f"('{session['user_id']}', {intro}, 'it'),"
     sql = sql[:-1]
 
     #history insert
