@@ -185,17 +185,6 @@ def get_rcm(name):
 #     print(arg)
 #     return render_template("recommend_page.html")
 
-@auth.route("/autocomplete",methods=["POST"])
-def autocomplete():
-    val = request.form["value"]
-    resultList = db.query(webtoon_db,f"select title from webtoon_info where title like '%{val}%'")
-    titleList = []
-    for result in resultList:
-        titleList.append(result[0])
-
-    return titleList
-
-
 
 @auth.route("/update_information",methods=["GET","POST"])
 def upate_information():
