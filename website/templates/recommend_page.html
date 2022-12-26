@@ -6,7 +6,8 @@
 <style>
     .container{
         /* border: 1px solid #000; */
-        width:70%
+        width:70%;
+        padding:20px;
     }
     .li-result{
         /* border: 1px solid #000; */
@@ -14,6 +15,10 @@
         border-bottom: 1px solid #2a2a2a;
         margin: 20px;
         padding: 20px;
+    }
+    .ol-result {
+        /* border: 1px solid #000; */
+        margin-bottom: 30px;
     }
     .li-result:hover{
         background-color: #f2f2f2
@@ -40,10 +45,17 @@
         color:#5e5e5e;
         font-size: 15px;
     }
+    .titles{
+        font-size: 30px;
+        font-weight: 700;
+    }
+    .titles > span{
+        color:#FD5D14;
+    }
 </style>
 <div class="container">
-    <h2>it(줄거리기반추천)</h2>
-    <ol>    
+    <h2 class="titles"><span>줄거리</span>가 비슷한 만화</h2>
+    <ol class="ol-result">    
         {% for it in its %}
         <li>
             <div class="li-result">
@@ -68,41 +80,58 @@
         {% endfor %}
     </ol>
 
-    <h2>ds(그림체기반추천)</h2>
-    <ol>    
+    <h2 class="titles"><span>그림체</span>가 비슷한 만화</h2>
+    <ol class="ol-result">    
         {% for ds in dss %}
         <li>
             <div class="li-result">
-                <a href="{{ds[0][2]}}">
-                    <img style="width: 100px; height: 100px;" src="{{ds[0][3]}}">
-                    <div>
-                        {{ds[0][1]}}  
-                        {{ds[0][5]}}
-                        {{ds[0][6]}}
+                <a id="a-result" href="{{ds[0][2]}}">
+                    <div class="result-contents">
+                        <div class="result-image">
+                            <img style="width: 100px; height: 100px;" src="{{ds[0][3]}}">
+                        </div>
+                        <div class="result-text">
+                            <div class="result-text-title-author">
+                                {{ds[0][1]}} | {{ds[0][5]}}
+                            </div>
+                            <div class="result-text-intro">
+                                {{ds[0][6]}}
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
+
         </li>
         {% endfor %}
     </ol>
 
-    <h2>sv(설문기반추천)</h2>
-    <ol>    
+
+    <h2 class="titles">이 웹툰을 <span>좋아하는 사람</span>들이 보는 만화</h2>
+    <ol class="ol-result">    
         {% for sv in svs %}
         <li>
             <div class="li-result">
-                <a href="{{sv[0][2]}}">
-                    <img style="width: 100px; height: 100px;" src="{{sv[0][3]}}">
-                    <div>
-                        {{sv[0][1]}}  
-                        {{sv[0][5]}}
-                        {{sv[0][6]}}
+                <a id="a-result" href="{{sv[0][2]}}">
+                    <div class="result-contents">
+                        <div class="result-image">
+                            <img style="width: 100px; height: 100px;" src="{{sv[0][3]}}">
+                        </div>
+                        <div class="result-text">
+                            <div class="result-text-title-author">
+                                {{sv[0][1]}} | {{sv[0][5]}}
+                            </div>
+                            <div class="result-text-intro">
+                                {{sv[0][6]}}
+                            </div>
+                        </div>
                     </div>
-    
                 </a>
             </div>
+
         </li>
         {% endfor %}
     </ol>
     {% endblock %}
+
 </div>

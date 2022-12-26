@@ -4,21 +4,99 @@
 {% block content %}
 <style>
     #nav-rating{
-    color:#FD5D14;   
-}
+    color:#FD5D14;      
+    }
+
+    .container{
+        /* border: 1px solid #000; */
+        width: 30%;
+        height: 50vh;
+        display: flex;
+
+    }
+    .form-rating{
+        /* border: 1px solid red; */
+        padding: 20px;
+        /* display: inline-block; */
+        width: 100%;
+        height: 100%;
+    }
+    .header > *{
+        /* border: 1px solid yellow; */
+        font-weight: 500;
+    }
+    .div-input > *{
+        /* border: 1px solid blue; */
+        margin: 20px;;
+    }
+    .div-input > * >*{
+        width : 100%;
+    }
+    #autoComplete{
+        border-radius: 5px;
+        border: 1px solid #FD5D14;
+        padding: 5px;
+        color: #FD5D14;
+    }
+    #autoComplete::placeholder{
+        color: #FD5D14;
+    }
+
+    #autoComplete:focus{
+        padding:5px;
+        outline: none;
+        background-color: #FD5D14;
+        color: #ffffff;
+    }
+    select{
+        appearance: none;
+        border-radius: 5px;
+        border: 1px solid #FD5D14;
+        padding: 5px;
+        color: #FD5D14;
+    }
+    select:focus{
+        padding: 5px;
+        outline: none;
+    }
+    .submit-btn{
+       border: 1px solid #FD5D14; 
+       padding: 8px;
+       background-color: #FFF;
+       border-radius: 5px;
+       color:#FD5D14;
+       transition: background 0.3s ease-out;
+    }
+
+    .submit-btn:hover{
+       border: 1px solid #FD5D14; 
+       /* padding: 5px; */
+       background-color: #FD5D14;
+       border-radius: 5px;
+       color:#FFFF;
+    }
+    .div-button{
+        /* border: 1px solid #000; */
+        float:right;
+    }
+
+
 </style>
-<div>
-    <form method="POST">
-        <div> <!--header div-->
+<div class="container">
+    <form method="POST" class="form-rating">
+        <div class="header"> <!--header div-->
             <h2>웹툰 평점 입력</h2>
         </div>
-        <div> <!--input div-->
+        <div class="div-input"> <!--input div-->
             <div> <!--웹툰 명 검색 ( 나중에 ajax 로 처리해야함 )-->
-                <label for="autoComplete">웹툰명 검색</label>
-                <input name="title" type="text" id="autoComplete" autocomplete="off">
+                <!-- <label for="autoComplete">웹툰명 검색</label> -->
+                <input name="title" type="text" id="autoComplete" autocomplete="off" placeholder="웹툰명 검색">
             </div>
             <div> <!--별점 입력하기 -->
-                <label for="InputRate">평점 입력하기</label>
+                <!-- <label for="InputRate">평점 입력하기</label> -->
+                <span>
+                    평점 입력
+                </span>
                     <select name="score" id="InputRate">
                       <option value="1">★☆☆☆☆</option>
                       <option value="2">★★☆☆☆</option>
@@ -28,8 +106,8 @@
                     </select>
             </div>
         </div>
-        <div>
-            <button type="submit"> 별점 입력하기 </button>
+        <div class="div-button">
+            <button type="submit" class="submit-btn"> 평점입력 </button>
         </div>
     </form>
 </div>
