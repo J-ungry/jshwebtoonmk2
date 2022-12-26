@@ -2,27 +2,43 @@
 {% block title %}승환이네 만화방{% endblock %}
 
 {% block content %}
-    <p>ds</p>
-    <ol>    
+    <h2>ds(그림체기반추천)</h2>
+<ol>    
         {% for ds in dss %}
         <li>
-            {{ds[0][1]}}
-            <img style="width: 100px; height: 100px;" src="{{ds[0][3]}}">
+            <a href="{{ds[0][2]}}">
+                <img style="width: 100px; height: 100px;" src="{{ds[0][3]}}">
+                <div>
+                    {{ds[0][1]}}  
+                    {{ds[0][5]}}
+                    {{ds[0][6]}}
+                </div>
+            </a>
         </li>
         {% endfor %}
     </ol>
 
-    <p>it</p>
+    <h2>it(줄거리기반추천)</h2>
     <ol>    
         {% for it in its %}
         <li>{{it}}</li>
         {% endfor %}
     </ol>
 
-    <p>sv</p>
+    <h2>sv(설문기반추천)</h2>
     <ol>    
         {% for sv in svs %}
-        <li>{{sv}}</li>
+        <li>
+            <a href="{{sv[0][2]}}">
+                <img style="width: 100px; height: 100px;" src="{{sv[0][3]}}">
+                <div>
+                    {{sv[0][1]}}  
+                    {{sv[0][5]}}
+                    {{sv[0][6]}}
+                </div>
+
+            </a>
+        </li>
         {% endfor %}
     </ol>
 {% endblock %}

@@ -107,6 +107,8 @@ def dsModel(webtoon_no):
     return df.sort_values('sim', ascending=False)[:5].index + 1
 
 
+
+
 def main(title,no):
     survey = recommand_webtoon(title)
     drawing = dsModel(no)
