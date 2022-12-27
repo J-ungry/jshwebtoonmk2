@@ -6,8 +6,8 @@ import pymysql
 import website.models as models
 import datetime
 
-DB_USER="jsh"   #MySQL 계정명
-# DB_USER = "root" #정구리 MySQL 계정명
+#DB_USER="jsh"   #MySQL 계정명
+DB_USER = "root" #정구리 MySQL 계정명
 DB_NAME="jsh"   #MySQL DB명
 
 #auth.py에서는 주로 로그인에 관련된 코드 작성
@@ -17,8 +17,8 @@ webtoon_db = pymysql.connect(
         host="localhost",
         port=3306,
         user=DB_USER,
-        passwd="bread!123",
-        # passwd="duffufK123!",
+        #passwd="bread!123",
+        passwd="duffufK123!",
         db=DB_NAME,
         charset="utf8"
         )
@@ -391,79 +391,3 @@ def update_information():
                 webtoon_db.commit()
                 flash("수정 완료되었습니다.",category="success")
                 return render_template("user_detail.html")
-
-#회원 탈퇴
-@auth.route("/delete_user",methods=["POST"])
-def delete_user():
-    if request.method=="POST":
-        if session:
-            id=session["user_id"]
-            data=db.query(webtoon_db,f"SELECT * FROM user WHERE id='{id}'")
-            delete_user_data=data[0]    #('rlawogusWkd', 'QHFMADLWLQSOrJ', '김재현', '20대', 'male')
-            print(delete_user_data)
-            print(request.form.get("password"))
-        
-            if not request.form.get("password"):
-                flash("비밀번호를 입력해주세요.")
-                print("비밀번호를 입력해주세요.")
-                return render_template("user_detail.html")
-            else:
-                if request.form.get("password")!=delete_user_data[1]:
-                    print("비밀번호가 틀립니다.")
-                    flash("비밀번호가 틀립니다.",category="error")
-                    return render_template("user_detail.html")
-                else:
-                    session.pop("user_id",None)
-                    session.pop("user_name",None)
-                    session.pop("user_gender",None)
-                    session.pop("user_age",None)
-                    print(session)
-                    db.query(webtoon_db,f"DELETE FROM user WHERE id='{id}'")
-                    webtoon_db.commit()
-                    flash("회원 탈퇴",category="success")
-                    return redirect(url_for("views.index"))
-        else:
-            flash("로그인 되어 있지 않습니다.")
-            return redirect(url_for("views.index"))
-
-#정구리 작성 부분 => 별점 매기면 survey table 에 추가되는 페이지 !!!
-# +------------+-------------+------+-----+---------+-------+
-# | Field      | Type        | Null | Key | Default | Extra |
-# +------------+-------------+------+-----+---------+-------+
-# | user       | varchar(50) | NO   | PRI | NULL    |       |
-# | webtoon_no | int         | NO   | PRI | NULL    |       |
-# | score      | float       | NO   |     | NULL    |       |
-# +------------+-------------+------+-----+---------+-------+
-@auth.route("/input_rate",methods=["GET","POST"])
-def input_rate():
-    if session: #로그인 된 경우 (일단 안된 경우에는 return 되게 해놓기)
-        if request.method =="GET": #get 인 경우에는 화면에 뿌려주기
-            return render_template("input_rate.html")
-        elif request.method =="POST":   
-            user = session["user_id"] #세션의 유저 아이디를 user로
-            title = request.form.get("title") #입력된 타이틀 명 가져오기 (select no from webtoon_info where title="마루는 강쥐";  통해서 webtoon_no 생성)
-            score = request.form.get("score")
-
-            webtoon_no = db.query(webtoon_db,f"SELECT no FROM webtoon_info WHERE title='{title}'") #이렇게하면 webtoon_no 반환
-            print(user)
-            print(webtoon_no[0][0])
-            print("score = ",score)
-
-            insert_to_survey = f"INSERT INTO survey VALUES ('{user}',{webtoon_no[0][0]},{score})"
-            update_to_survey = f"UPDATE survey SET score={score} WHERE user='{user}' and webtoon_no={webtoon_no[0][0]};"
-            
-            try:
-                check_insert = db.query(webtoon_db,insert_to_survey) #insert 문을 실행시킨다 만약 동일한 값이 있으면 except 로 이동
-                webtoon_db.commit()
-                flash("별점 등록 완료 !",category="success")
-                return render_template("input_rate.html")
-            except:
-                update_survey = db.query(webtoon_db,update_to_survey) #만약 동일한 값이 있다면 기존 값을 수정하자 !!!
-                webtoon_db.commit()
-                flash("별점 등록 완료 !",category="success")
-                return render_template("input_rate.html")
-
-    else:
-        flash("로그인 되어 있지 않습니다.",category="error")
-        return redirect(url_for("views.index"))
-
