@@ -1,0 +1,17 @@
+{% extends "nav.html" %}
+{% block title %}승환이네 만화방{% endblock %}
+
+{% block content %}
+
+<div class="p-3 text-center" style="position: fixed; top: 55%; left: 50%; transform: translate(-50%, -50%);">
+    <p class="fs-3">    
+        {% if id=='none' %}
+        <strong>존재하지 않는 정보입니다</strong>
+        {% else %}
+        회원님의 아이디는 <strong style="color: #FD7537;">{{id}}</strong> 입니다
+        {% endif %}
+    </p>
+    <a href="/user_login" class="btn btn-primary mt-5">로그인</a>
+</div>
+
+{% endblock %}

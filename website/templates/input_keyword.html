@@ -18,6 +18,11 @@
     }
 </style>
 
+    <div> <!--키워드명 검색 ( 나중에 ajax 로 처리해야함 )-->
+        <!-- <label for="autoComplete">웹툰명 검색</label> -->
+        <input name="title" type="text" id="autoComplete" autocomplete="off" placeholder="키워드 검색">
+    </div>
+
 <!-- 사용자 keyword 입력 -->
     <div class="w-75 p-3 mt-5" style="margin: 0 auto;">
         <div class="p-3 d-flex justify-content-between align-items-center" style="background-color: #252c3a;">
@@ -101,6 +106,7 @@
     </div>
 </div>
 
+<!-- 테스트용(추후 삭제) -->
 <div>
     <a href="/get_rcm/마루는 강쥐">마루는 강쥐</a>
 </div>
@@ -110,17 +116,18 @@
 </div>
 
 <div id="output_keyword">
-    <form action='' method="POST" id='reload_location'>
-
-
+    <form action='/recommendation' method="POST" id='reload_location'>
         
-    </form> 
+        <button id="recommend" type="submit">Recommend</button>
+    </form>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 
-    const output=document.getElementById("output_keyword")
+    const output=document.getElementById("reload_location")
     const select_user_keyword=[]
 
     $('li').on('click',function(event){
@@ -142,13 +149,13 @@
             data : {"keyword":keyword,"user_keyword":user_keyword},
             dataType : "json",
             success : function(response) {
-                console.log(user_keyword)
                 for (let prop in select_user_keyword) {
                     if(user_keyword==select_user_keyword[prop]) {
+                        fun_key=user_keyword.replace(' ','_')
                         select_user.innerHTML+=`
                             <div id="keyword_btn${prop}">
                                 <button type="button" class="btn btn-info">${select_user_keyword[prop]}</button>
-                                <button onclick="remove_btn(${prop},'${user_keyword}')" name="${prop}" type="button" class="btn-close" aria-label="Close"></button>
+                                <button onclick="remove_btn(${prop},'${fun_key}')" name="${prop}" type="button" class="btn-close" aria-label="Close"></button>
                             </div>
                         `
                     }
@@ -156,14 +163,18 @@
 
                 const list_len=$(response["webtoon_title"]).length
                 
+                output.innerHTML+=`
+                        <div id="${fun_key}">
+                `
+                let keyword_result=document.getElementById(fun_key)
                 for(let i=0;i<list_len;i++) {
                     //전체를 div를 감싼다. 어떤 키워드를 삭제할지 알아야함
-                    output.innerHTML+=`
+                    keyword_result.innerHTML+=`
                         <div>
                             <img src='${response["webtoon_thumb"][i]}' style="width:100px; height:100px">
                         </div>
                         <div>
-                            <input type="radio" name="webtoon_title"><p>${response["webtoon_title"][i]}</p>
+                            <input type="radio" name="webtoon_title" value="${response["webtoon_title"][i]}"><p>${response["webtoon_title"][i]}</p>
                         </div>
                         <div>
                             <p>${response["webtoon_author"][i]}</p>
@@ -173,7 +184,7 @@
                         </div>
                     `
                 }
-                output.innerHTML+=`<button type="submit">Recommend</button>`
+                output.innerHTML+=`</div>`
             },
             error : function(request,status,error) {
                 console.log("no ajax")
@@ -182,22 +193,41 @@
     });
 
     function remove_btn(number,keyword) {
-        console.log(keyword)
         index="keyword_btn"+number
         const close_number=document.getElementById(index)
-        const form_container=document.getElementById("reload_location")
+        const div_container=document.getElementById(keyword)
         select_user_keyword.splice(index,1)
-
-        key=keyword.replace(' ','_')
-        form_container.classList.toggle(key)
-        //if(form_container.classList.includes(key)) {    //div클래스리스트에서 keyword가 있으면
-            //해당 클래스를 가지고 있는 div 삭제(클래스 리스트의 길이가 1인 div만)
-            //길이가 2이고 해당 키워드를 가지고있다면 
-        //}
-        
+        div_container.remove()
         close_number.remove();
-        
-        console.log(form_container.classList.length)
     }
+
+    $('#autoComplete').autocomplete({
+        source : function(request, response) { //source: 입력시 보일 목록
+            $.ajax({
+                url : "/keyword_autocomplete"   
+                , type : "POST"
+                , data : {value: request.term}	// 검색 키워드
+                , success : function(data){ 	// 성공
+                    response(
+                        $.map(data.keywordList, function(item) {
+                            return {
+                                label : item  	// 목록에 표시되는 값
+                                , value : item		// 선택 시 input창에 표시되는 값
+                            };
+                        })
+                    );    //response
+                }
+                ,error : function(){ //실패
+                    alert("오류가 발생했습니다.");
+                }
+            });
+        }
+        ,focus : function(event, ui) { // 방향키로 자동완성단어 선택 가능하게 만들어줌	
+                return false;
+        }
+        ,minLength: 1// 최소 글자수
+        ,autoFocus : false // true == 첫 번째 항목에 자동으로 초점이 맞춰짐
+        ,delay: 100	//autocomplete 딜레이 시간(ms)
+    });
 </script>
 {% endblock %}

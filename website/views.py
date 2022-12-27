@@ -1,5 +1,9 @@
 from flask import Blueprint,render_template,session,request,jsonify
 from website import db,models,auth
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 
 webtoon_db=auth.webtoon_db  #db연결
 views = Blueprint("views",__name__)
@@ -102,5 +106,32 @@ def input_keyword():
             return_webtoon_thumb.append(return_webtoon_data[0][2])
             return_webtoon_intro.append(return_webtoon_data[0][3])
         print(return_webtoon_title)
-        
+
         return jsonify({"keyword":keyword,"user_keyword":keyword_user,"webtoon_title":return_webtoon_title,"webtoon_author":return_webtoon_author,"webtoon_thumb":return_webtoon_thumb,"webtoon_intro":return_webtoon_intro})
+
+
+@views.route("/autocomplete",methods=["POST"])
+def autocomplete():
+    val = request.form["value"]
+    resultList = db.query(webtoon_db,f"select title from webtoon_info where title like '%{val}%'")
+    titleList = []
+    for result in resultList:
+        titleList.append(result[0])
+
+    return jsonify({"titleList":titleList})
+
+@views.route("/keyword_autocomplete",methods=["POST"])
+def keyword_autocomplete():
+    val=request.form["value"]
+    resultList = db.query(webtoon_db,f"SELECT DISTINCT keyword FROM keyword WHERE keyword like '%{val}%'")
+    keywordList = []
+    for result in resultList:
+        keywordList.append(result[0])
+    print(keywordList)
+    return jsonify({"keywordList":keywordList})
+
+@views.route("/recommendation",methods=["POST"])
+def recommendation():
+    if request.method=="POST":
+        print(request.form.get("webtoon_title"))
+        return render_template("index.html")
