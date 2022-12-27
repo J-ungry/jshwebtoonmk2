@@ -110,69 +110,60 @@
 </div>
 
 <div id="output_keyword">
+    <form action='' method="POST" id='reload_location'>
 
+
+        
+    </form> 
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-    const output=document.getElementById("output_keyword");
-    const select_user=document.getElementById("select_keyword");
-    
-    let select_user_keyword=[]
-    $("li").on("click",function(event) {
-        let keyword=$(this).attr('name')    //키워드 종류
-        let user_keyword=$(this).text()     //user가 선택한 키워드명
-       
-        //동일한 값 안들어가도록 수정
+
+    const output=document.getElementById("output_keyword")
+    const select_user_keyword=[]
+
+    $('li').on('click',function(event){
+        const select_user=document.getElementById("select_keyword")
+        
+        let keyword=$(this).attr('name')
+        let user_keyword=$(this).text()
+
+        //동일한 키워드 추가 x
         if (select_user_keyword.includes(user_keyword)){
             return
         }else{
             select_user_keyword.push(user_keyword);
         }
-        
         console.log(select_user_keyword)
-        console.log(keyword)
-        console.log(user_keyword)
         $.ajax ({
-            type : "POST",  //데이터를 전송하는 방법
-            url : "/input_keyword",
+            type : 'POST',
+            url : '/input_keyword',
             data : {"keyword":keyword,"user_keyword":user_keyword},
             dataType : "json",
             success : function(response) {
+                console.log(user_keyword)
                 for (let prop in select_user_keyword) {
-                    if(user_keyword==select_user_keyword[prop]){
+                    if(user_keyword==select_user_keyword[prop]) {
                         select_user.innerHTML+=`
                             <div id="keyword_btn${prop}">
                                 <button type="button" class="btn btn-info">${select_user_keyword[prop]}</button>
-                                <button name="${prop}" type="button" class="btn-close" aria-label="Close"></button>
+                                <button onclick="remove_btn(${prop},'${user_keyword}')" name="${prop}" type="button" class="btn-close" aria-label="Close"></button>
                             </div>
                         `
                     }
                 }
 
-                $('.btn-close').on('click',function(event) {
-                    index="keyword_btn"+$(this).attr('name')
-                    console.log(index)
-                    const close_number=document.getElementById(index)
-                    console.log(close_number)
-                    select_user_keyword.splice(index,1)
-                    console.log(select_user_keyword)
-                    // close_number.innerHTML=''
-                    close_number.remove();
-                });
-
                 const list_len=$(response["webtoon_title"]).length
-                console.log(list_len)
                 
-                output.innerHTML=''
-                for(let i=0;i<list_len;i++){
+                for(let i=0;i<list_len;i++) {
+                    //전체를 div를 감싼다. 어떤 키워드를 삭제할지 알아야함
                     output.innerHTML+=`
-                    <div id='reload_location'>
                         <div>
                             <img src='${response["webtoon_thumb"][i]}' style="width:100px; height:100px">
                         </div>
                         <div>
-                            <p>${response["webtoon_title"][i]}</p>
+                            <input type="radio" name="webtoon_title"><p>${response["webtoon_title"][i]}</p>
                         </div>
                         <div>
                             <p>${response["webtoon_author"][i]}</p>
@@ -180,19 +171,33 @@
                         <div>
                             <p>${response["webtoon_intro"][i]}</p>
                         </div>
-                    </div>   
-                `
+                    `
                 }
-                //$('#reload_location').load(location.href+'#reload_location')
+                output.innerHTML+=`<button type="submit">Recommend</button>`
             },
             error : function(request,status,error) {
                 console.log("no ajax")
             }
-        });
-    })
+        })
+    });
+
+    function remove_btn(number,keyword) {
+        console.log(keyword)
+        index="keyword_btn"+number
+        const close_number=document.getElementById(index)
+        const form_container=document.getElementById("reload_location")
+        select_user_keyword.splice(index,1)
+
+        key=keyword.replace(' ','_')
+        form_container.classList.toggle(key)
+        //if(form_container.classList.includes(key)) {    //div클래스리스트에서 keyword가 있으면
+            //해당 클래스를 가지고 있는 div 삭제(클래스 리스트의 길이가 1인 div만)
+            //길이가 2이고 해당 키워드를 가지고있다면 
+        //}
+        
+        close_number.remove();
+        
+        console.log(form_container.classList.length)
+    }
 </script>
-
-<!— 키워드 결과 출력(Ajax로 부분 새로고침) —>
-
-<!——>
 {% endblock %}
