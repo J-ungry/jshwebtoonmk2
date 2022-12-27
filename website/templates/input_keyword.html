@@ -26,7 +26,7 @@
                 <span class="me-1" style="color: #fff; font-size: 27px;"><strong>웹툰 키워드로 검색하기</strong></span>
                 <span style="color: #fff;">키워드로 마음에 드는 웹툰을 찾아보세요!</span>
             </div>
-            <div class="p-2" style="border: 1px solid #fff; border-radius: 5px; cursor: pointer;">
+            <div class="p-2 release-btn" style="border: 1px solid #fff; border-radius: 5px; cursor: pointer;">
                 <p style="color: #fff;"><strong>전체 해제</strong></p>
             </div> 
         </div>
@@ -118,6 +118,11 @@
 <script type="text/javascript">
     const output=document.getElementById("output_keyword");
     const select_user=document.getElementById("select_keyword");
+    const release_btn = document.getElementsByClassName("release-btn");
+    
+    $(release_btn).on('click',function(event){
+        console.log("work@@")
+    })
     
     let select_user_keyword=[]
     $("li").on("click",function(event) {
@@ -191,9 +196,14 @@
             }
         });
     })
+
+    $(release_btn).on('click',function(event){
+        select_user_keyword = []
+        select_user.innerHTML = ''
+        output.innerHTML = ''
+    })
 </script>
 
-<!— 키워드 결과 출력(Ajax로 부분 새로고침) —>
+<!-- 키워드 결과 출력(Ajax로 부분 새로고침) -->
 
-<!——>
 {% endblock %}
