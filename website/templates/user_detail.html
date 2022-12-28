@@ -68,30 +68,30 @@
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Infromation Update</h1>
                             </div>
                             <div class="modal-body">
-                                <form action="/update_information" method="POST">
+                                <form action="/update_information" method="POST" id="infoForm">
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" id="basic-addon1">이름</span>
-                                        <input type="text" name="name" class="form-control" aria-label="Username" aria-describedby="basic-addon1" value={{session["user_name"]}}>
+                                        <input type="text" name="name" class="form-control is-valid" aria-label="Username" aria-describedby="basic-addon1" value={{session["user_name"]}} id="InputName">
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" id="basic-addon1">이메일</span>
-                                        <input type="text" name="email" class="form-control" aria-label="UserEmail" aria-describedby="basic-addon1" value={{session["user_email"]}}>
+                                        <input type="text" name="email" class="form-control is-valid" aria-label="UserEmail" aria-describedby="basic-addon1" value={{session["user_email"]}} id="InputEmail">
                                     </div>
                                     <!-- 성별 수정 -->
                                     {% if session["user_gender"]=="male" %}
-                                        <select name="gender" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                        <select name="gender" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;" id="InputGender">
                                             <option selected value="male">남자</option>
                                             <option value="female">여자</option>
                                             <option value="no_gender">비공개</option>
                                         </select>
                                     {% elif session["user_gender"]=="female" %}
-                                        <select name="gender" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                        <select name="gender" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;" id="InputGender">
                                             <option selected value="female">여자</option>
                                             <option value="male">남자</option>
                                             <option value="no_gender">비공개</option>
                                         </select>
                                     {% else %}
-                                        <select name="gender" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                        <select name="gender" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;" id="InputGender">
                                             <option selected value="no_gender">비공개</option>
                                             <option value="female">남자</option>
                                             <option value="male">여자</option>
@@ -99,7 +99,7 @@
                                     {% endif %}
                                     <!-- 연령대 수정 -->
                                     {% if session["user_age"]=="10대" %}
-                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;" id="InputAge">
                                             <option selected value="10대">10대</option>
                                             <option value="20대">20대</option>
                                             <option value="30대">30대</option>
@@ -107,7 +107,7 @@
                                             <option value="50대이상">50대 이상</option>
                                         </select>
                                     {% elif session["user_age"]=="20대" %}
-                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;" id="InputAge">
                                             <option selected value="20대">20대</option>
                                             <option value="10대">10대</option>
                                             <option value="30대">30대</option>
@@ -115,7 +115,7 @@
                                             <option value="50대이상">50대 이상</option>
                                         </select>
                                     {% elif session["user_age"]=="30대" %}
-                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;" id="InputAge">
                                             <option selected value="30대">30대</option>
                                             <option value="10대">10대</option>
                                             <option value="20대">20대</option>
@@ -123,7 +123,7 @@
                                             <option value="50대이상">50대 이상</option>
                                         </select>
                                     {% elif session["user_age"]=="40대" %}
-                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;" id="InputAge">
                                             <option selected value="40대">40대</option>
                                             <option value="10대">10대</option>
                                             <option value="20대">20대</option>
@@ -131,7 +131,7 @@
                                             <option value="50대이상">50대 이상</option>
                                         </select>
                                     {% else %}
-                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;">
+                                        <select name="age" class="form-select form-select-sm w-100 mb-3" aria-label=".form-select-sm example" style="margin: 0 auto;" id="InputAge">
                                             <option selected value="50대이상">50대 이상</option>
                                             <option value="10대">10대</option>
                                             <option value="20대">20대</option>
@@ -141,15 +141,15 @@
                                     {% endif %}
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" id="basic-addon1">새 비밀번호</span>
-                                        <input type="password" name="new_pw" class="form-control" aria-label="UserNewPw" aria-describedby="basic-addon1">
+                                        <input type="password" name="new_pw" class="form-control" aria-label="UserNewPw" aria-describedby="basic-addon1" id="InputPassword" placeholder="숫자,특수문자 포함 8자 이상">
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" id="basic-addon1">새 비밀번호 확인</span>
-                                        <input type="password" name="new_pw_check" class="form-control" aria-label="UserNewPwCheck" aria-describedby="basic-addon1">
+                                        <input type="password" name="new_pw_check" class="form-control" aria-label="UserNewPwCheck" aria-describedby="basic-addon1" id="InputPasswordCheck">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkPasswordModal">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkPasswordModal"  id="submitBtn" disabled="disabled" style="background-color: #ddd;">
                                         정보수정
                                     </button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -222,4 +222,7 @@
 
     </div>
 </div>
+
+<script src="../static/js/update_validation.js"></script>
+
 {% endblock %}
