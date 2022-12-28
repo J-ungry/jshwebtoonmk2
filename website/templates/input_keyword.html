@@ -13,18 +13,25 @@
     }
 
     /* 서정우한테 맡긴다. */
-    ul li:focus {
-        background-color: #1e8ee7;
+    ul li:hover {
+        background-color: #94bada;
+    }
+
+    .container{
+        width:70%;
+    }
+
+    .find-recommend{
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #000;
     }
 </style>
+<div class="container">
 
-    <div> <!--키워드명 검색 ( 나중에 ajax 로 처리해야함 )-->
-        <!-- <label for="autoComplete">웹툰명 검색</label> -->
-        <input name="title" type="text" id="autoComplete" autocomplete="off" placeholder="키워드 검색">
-    </div>
 
 <!-- 사용자 keyword 입력 -->
-    <div class="w-75 p-3 mt-5" style="margin: 0 auto;">
+    <div class="" style="margin: 0 auto;">
         <div class="p-3 d-flex justify-content-between align-items-center" style="background-color: #252c3a;">
             <div class="align-self-center">
                 <img class="rounded float-start"    style="width:40px;" src="{{url_for('static',filename='img/baseline_search_white_24dp.png')}}">
@@ -105,22 +112,29 @@
         </div>
     </div>
 </div>
+<!-- <div class="find-recommend"> 키워드명 검색 ( 나중에 ajax 로 처리해야함 ), 버튼 두개가 들어있는 div -->
+    <!-- <label for="autoComplete">웹툰명 검색</label> -->
+    <input name="title" type="text" id="autoComplete" autocomplete="off" placeholder="키워드 검색">
+    <div id="select_keyword" class="d-flex">
+    
+    </div>
+    <div id="output_keyword">
+        <form action='/recommendation' method="POST" id='reload_location'>  
+            <button id="recommend" type="submit">Recommend</button>
+        </form>
+    </div>
+<!-- </div> -->
 
 <!-- 테스트용(추후 삭제) -->
-<div>
+<!-- <div>
     <a href="/get_rcm/마루는 강쥐">마루는 강쥐</a>
+</div> -->
+
+
+
+
 </div>
 
-<div id="select_keyword" class="d-flex">
-    
-</div>
-
-<div id="output_keyword">
-    <form action='/recommendation' method="POST" id='reload_location'>
-        
-        <button id="recommend" type="submit">Recommend</button>
-    </form>
-</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
