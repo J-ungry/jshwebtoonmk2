@@ -118,14 +118,15 @@ def sign_up():
 
 @auth.route("/logout",methods=["GET"])
 def logout():
-    #session에 등록되어 있는 정보 삭제
-    session.pop("user_id",None)
-    session.pop("user_name",None)
-    session.pop("user_age",None)
-    session.pop("user_gender",None)
-    session.pop("user_email",None)
-    flash("로그아웃되었습니다.",category="success")
-    return render_template("index.html")
+    if session:
+        #session에 등록되어 있는 정보 삭제
+        session.pop("user_id",None)
+        session.pop("user_name",None)
+        session.pop("user_age",None)
+        session.pop("user_gender",None)
+        session.pop("user_email",None)
+        flash("로그아웃되었습니다.",category="success")
+        return render_template("index.html")
 
 @auth.route("/user_detail",methods=["GET"])
 def user_detail():
@@ -134,8 +135,7 @@ def user_detail():
             dates=db.query(webtoon_db,f"select DISTINCT rcm_date from history where user_id='{session['user_id']}' order by rcm_date desc")
             return render_template("user_detail.html", dates = dates)
         else:
-            #flash 안됨
-            flash("해당 서비스는 로그인 한 사용자만 이용가능합니다.")
+            flash("해당 서비스는 로그인 한 사용자만 이용가능합니다.",category="error")
             return redirect(url_for("views.index"))
 
 @auth.route("/update_information",methods=["GET","POST"])
@@ -192,17 +192,15 @@ def delete_user():
         if session:
             id=session["user_id"]
             data=db.query(webtoon_db,f"SELECT * FROM user WHERE id='{id}'")
-            delete_user_data=data[0]    #('rlawogusWkd', 'QHFMADLWLQSOrJ', '김재현', '20대', 'male')
+            delete_user_data=data[0] 
             print(delete_user_data)
             print(request.form.get("password"))
         
             if not request.form.get("password"):
                 flash("비밀번호를 입력해주세요.")
-                print("비밀번호를 입력해주세요.")
                 return render_template("user_detail.html")
             else:
                 if request.form.get("password")!=delete_user_data[1]:
-                    print("비밀번호가 틀립니다.")
                     flash("비밀번호가 틀립니다.",category="error")
                     return render_template("user_detail.html")
                 else:
@@ -256,11 +254,7 @@ def input_rate():
                 webtoon_db.commit()
                 flash("별점 등록 완료 !",category="success")
                 return render_template("input_rate.html")
-
             
-            
-            
-
     else:
 
         flash("로그인 되어 있지 않습니다.",category="error")

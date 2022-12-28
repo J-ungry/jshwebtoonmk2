@@ -130,6 +130,7 @@
     const output=document.getElementById("reload_location")
     const select_user_keyword=[]
 
+    //리스트 선택시 발생
     $('li').on('click',function(event){
         const select_user=document.getElementById("select_keyword")
         
@@ -192,6 +193,7 @@
         })
     });
 
+    //닫기버튼 클릭 시 이벤트 발생
     function remove_btn(number,keyword) {
         index="keyword_btn"+number
         const close_number=document.getElementById(index)
@@ -201,6 +203,7 @@
         close_number.remove();
     }
 
+    //키워드명 자동완성
     $('#autoComplete').autocomplete({
         source : function(request, response) { //source: 입력시 보일 목록
             $.ajax({

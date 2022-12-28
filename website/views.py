@@ -1,9 +1,5 @@
 from flask import Blueprint,render_template,session,request,jsonify
 from website import db,models,auth
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-
 
 webtoon_db=auth.webtoon_db  #db연결
 views = Blueprint("views",__name__)
@@ -134,4 +130,5 @@ def keyword_autocomplete():
 def recommendation():
     if request.method=="POST":
         print(request.form.get("webtoon_title"))
+        
         return render_template("index.html")
