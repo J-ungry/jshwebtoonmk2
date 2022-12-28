@@ -1,15 +1,12 @@
-from unicodedata import category
 from flask import Blueprint,render_template,request,flash,redirect,url_for,session
 from werkzeug.security import generate_password_hash,check_password_hash
 from website import db
 import pymysql
 import website.models as models
-import datetime
 import string
 import secrets
 from flask_mail import Mail, Message
 from website import init
-
 
 """
     **1228 예외처리 시작
@@ -20,9 +17,9 @@ from website import init
     3. 테스트 후 print는 거의 삭제하겠습니다.
 """
 
-DB_USER="jsh"   #MySQL 계정명
-#DB_USER = "root" #정구리 MySQL 계정명
-DB_NAME="jsh"   #MySQL DB명
+# DB_USER="jsh"   #MySQL 계정명
+# #DB_USER = "root" #정구리 MySQL 계정명
+# DB_NAME="jsh"   #MySQL DB명
 
 #auth.py에서는 주로 로그인에 관련된 코드 작성
 auth = Blueprint("auth",__name__)
@@ -30,15 +27,16 @@ auth = Blueprint("auth",__name__)
 webtoon_db = pymysql.connect(   
         host="localhost",
         port=3306,
-        user=DB_USER,
-        passwd="bread!123",
-        #passwd="duffufK123!",
-        db=DB_NAME,
+        user=db.DB_USER,
+        #passwd="bread!123",
+        passwd="duffufK123!",
+        db=db.DB_NAME,
         charset="utf8"
         )
-print("connect MySQL")
+print("connect MySQL🎉")
 
 #로그인
+
 @auth.route("/user_login",methods=["GET","POST"])
 def user_login():
     if request.method=="GET":
@@ -86,7 +84,9 @@ def user_login():
                     flash("다시 로그인 하세요.",category="error")
                     return redirect(url_for("auth.user_login"))
 
+
 #회원가입
+
 @auth.route("/sign_up",methods=["GET","POST"])
 def sign_up():
     if request.method=="GET":
@@ -188,9 +188,11 @@ def user_detail():
         flash("잘못된 접근입니다.",category="error")
         return redirect(url_for("views.index"))
 
+
 #회원정보 수정
+
 @auth.route("/update_information",methods=["GET","POST"])
-def upate_information():
+def update_information():
     if request.method=="GET":
         return redirect("/user_detail")
     elif request.method=="POST":
@@ -303,13 +305,13 @@ def input_rate():
                 webtoon_db.commit()
                 flash("별점 등록 완료 !",category="success")
                 return render_template("input_rate.html")
-            
     else:
         flash("로그인 되어 있지 않습니다.",category="error")
         return redirect(url_for("views.index"))
 
 #김재현 작성 부분
 
+# 아이디 찾기
 @auth.route("/find_id",methods=["POST"])
 def find_id():
     name=request.form.get("name")
@@ -369,6 +371,7 @@ def reset_pw():
     flash("임시비밀번호를 메일로 발송하였습니다.",category="success")
     return redirect(url_for('auth.user_login'))
 
+
 @auth.route("/recommend/<date>",methods=["GET"])
 def recommend(date):
     rcmed_webtoons = db.query(webtoon_db,f"select webtoon_no,rcm_type from history where user_id='{session['user_id']}' and rcm_date='{date}'")
@@ -386,6 +389,7 @@ def recommend(date):
             sv.append(db.query(webtoon_db,f"select * from webtoon_info where no={webtoon[0]}"))
 
     return render_template("recommend_page.html", dss = ds, its = it, svs = sv)
+
 
 @auth.route("/get_rcm/<name>",methods=["GET"])
 def get_rcm(name):
@@ -426,4 +430,6 @@ def get_rcm(name):
 # def recommend(arg):
 #     print(arg)
 
+
 #     return render_template("recommend_page.html")
+
