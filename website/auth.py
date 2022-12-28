@@ -1,18 +1,12 @@
-from unicodedata import category
 from flask import Blueprint,render_template,request,flash,redirect,url_for,session
 from werkzeug.security import generate_password_hash,check_password_hash
 from website import db
 import pymysql
 import website.models as models
-import datetime
 import string
 import secrets
 from flask_mail import Mail, Message
 from website import init
-
-#DB_USER="jsh"   #MySQL 계정명
-DB_USER = "root" #정구리 MySQL 계정명
-DB_NAME="jsh"   #MySQL DB명
 
 #auth.py에서는 주로 로그인에 관련된 코드 작성
 auth = Blueprint("auth",__name__)
@@ -20,14 +14,15 @@ auth = Blueprint("auth",__name__)
 webtoon_db = pymysql.connect(   
         host="localhost",
         port=3306,
-        user=DB_USER,
-        #passwd="bread!123",
-        passwd="duffufK123!",
-        db=DB_NAME,
+        user=db.DB_USER,
+        passwd="bread!123",
+        # passwd="duffufK123!",
+        db=db.DB_NAME,
         charset="utf8"
         )
-print("connect MySQL")
+print("connect MySQL🎉")
 
+# 로그인
 @auth.route("/user_login",methods=["GET","POST"])
 def user_login():
     if request.method=="GET":
@@ -74,6 +69,7 @@ def user_login():
             return redirect(url_for("views.index"))
         return render_template("login.html")
 
+# 회원가입
 @auth.route("/sign_up",methods=["GET","POST"])
 def sign_up():
     if request.method=="GET":
@@ -142,8 +138,9 @@ def user_detail():
             flash("해당 서비스는 로그인 한 사용자만 이용가능합니다.")
             return redirect(url_for("views.index"))
 
+# 정보 수정
 @auth.route("/update_information",methods=["GET","POST"])
-def upate_information():
+def update_information():
     if request.method=="GET":
         return redirect("/user_detail")
     elif request.method=="POST":
@@ -270,10 +267,6 @@ def input_rate():
                 flash("별점 등록 완료 !",category="success")
                 return render_template("input_rate.html")
 
-            
-            
-            
-
     else:
 
         flash("로그인 되어 있지 않습니다.",category="error")
@@ -283,6 +276,7 @@ def input_rate():
 
 #김재현 작성 부분
 
+# 아이디 찾기
 @auth.route("/find_id",methods=["POST"])
 def find_id():
     name=request.form.get("name")
@@ -342,6 +336,7 @@ def reset_pw():
     flash("임시비밀번호를 메일로 발송하였습니다.",category="success")
     return redirect(url_for('auth.user_login'))
 
+
 @auth.route("/recommend/<date>",methods=["GET"])
 def recommend(date):
     rcmed_webtoons = db.query(webtoon_db,f"select webtoon_no,rcm_type from history where user_id='{session['user_id']}' and rcm_date='{date}'")
@@ -359,6 +354,7 @@ def recommend(date):
             sv.append(db.query(webtoon_db,f"select * from webtoon_info where no={webtoon[0]}"))
 
     return render_template("recommend_page.html", dss = ds, its = it, svs = sv)
+
 
 @auth.route("/get_rcm/<name>",methods=["GET"])
 def get_rcm(name):
@@ -402,46 +398,3 @@ def get_rcm(name):
 #     return render_template("recommend_page.html")
 
 
-@auth.route("/update_information",methods=["GET","POST"])
-def update_information():
-    if request.method=="GET":
-        return render_template("user_detail.html")
-    elif request.method=="POST":
-        id=session["user_id"]
-        
-        data=db.query(webtoon_db,f"SELECT password FROM user WHERE id='{id}'")
-        print(data)
-        check_password=data[0][0]
-        print(check_password)
-        print(request.form.get("password"))
-        print(type(request.form.get("password")))
-    
-        if not request.form.get("password"):
-            flash("비밀번호를 입력해주세요.",category="error")
-            return render_template("user_detail.html")
-        else:
-            if check_password!=request.form.get("password"):
-                flash("비밀번호가 틀립니다.",category="error")
-                return render_template("user_detail.html")
-            else:
-                #update information
-                update_name=request.form.get("name")
-                update_gender=request.form.get("gender")
-                update_age=request.form.get("age")
-                
-                if update_name==session["user_name"] and update_age==session["user_age"] and update_gender==session["user_gender"]:
-                    flash("수정 할 내용이 없습니다.",category="error")
-                    return render_template("user_detail.html")
-                    
-                db.query(webtoon_db,f"UPDATE user SET name='{update_name}', gender='{update_gender}', age='{update_age}' WHERE id='{id}'")
-
-                #새로운 session 등록
-                session.pop("user_name",None)
-                session["user_name"]=update_name
-                session.pop("user_gender",None)
-                session["user_gender"]=update_gender
-                session.pop("user_age",None)
-                session["user_age"]=update_age
-                webtoon_db.commit()
-                flash("수정 완료되었습니다.",category="success")
-                return render_template("user_detail.html")

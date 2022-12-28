@@ -120,10 +120,13 @@ def autocomplete():
 
     return jsonify({"titleList":titleList})
 
+# 키워드 검색 자동완성 리스트
 @views.route("/keyword_autocomplete",methods=["POST"])
 def keyword_autocomplete():
     val=request.form["value"]
     resultList = db.query(webtoon_db,f"SELECT DISTINCT keyword FROM keyword WHERE keyword like '%{val}%'")
+
+     # 검색한 키워드가 리스트로 저장됨
     keywordList = []
     for result in resultList:
         keywordList.append(result[0])
@@ -135,3 +138,29 @@ def recommendation():
     if request.method=="POST":
         print(request.form.get("webtoon_title"))
         return render_template("index.html")
+
+
+# 검색한 키워드 추가
+@views.route("/addAutoCompleteKeyword",methods=["POST"])
+def addSearchedKeyword():
+    # AJAX 통신 확인
+    print("WOW AJAX!")
+
+    query_result = db.query(webtoon_db,f"SELECT DISTINCT keyword FROM keyword")
+    all_keyword_list = []
+    for result in query_result:
+        all_keyword_list.append(result[0])
+    print("all_keyword_list :", all_keyword_list)
+
+    inputValue = request.form["inputValue"]
+    print("inputValue 입력한 값 = ", inputValue)
+
+    # 키워드 검색창에 입력한 값이 DB에 있나요?
+    if (inputValue in all_keyword_list):
+        # 있어요 ^^b
+        print(True)
+    else:
+        # 없어요 ㅠㅠ
+        print(False)
+
+    return jsonify({"num" : 1})
