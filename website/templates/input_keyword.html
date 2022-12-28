@@ -130,7 +130,7 @@
 
     const release_btn = document.getElementsByClassName("release-btn");
     const output=document.getElementById("reload_location")
-    const select_user_keyword=[]
+    let select_user_keyword=[]
 
     $('li').on('click',function(event){
         const select_user=document.getElementById("select_keyword")
@@ -168,7 +168,7 @@
                 
 
                 output.innerHTML+=`
-                        <div id="${fun_key}">
+                        <div id="${fun_key}" class="keywords">
                 `
                 let keyword_result=document.getElementById(fun_key)
                 for(let i=0;i<list_len;i++) {
@@ -195,13 +195,6 @@
             }
 
         });
-    })
-
-    $(release_btn).on('click',function(event){
-        console.log("work")
-        select_user_keyword = []
-        select_user.innerHTML = ''
-        output.innerHTML = ''
     })
 
     function remove_btn(number,keyword) {
@@ -241,5 +234,13 @@
         ,autoFocus : false // true == 첫 번째 항목에 자동으로 초점이 맞춰짐
         ,delay: 100	//autocomplete 딜레이 시간(ms)
     });
+
+    $(release_btn).on('click',function(event){
+        let select_user=document.getElementById("select_keyword")
+        let keywords = $(output).find('div')
+        select_user_keyword = []
+        select_user.innerHTML = ''
+        keywords.remove();
+    })
 </script>
 {% endblock %}
