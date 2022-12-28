@@ -5,6 +5,10 @@ from website import db
 import pymysql
 import website.models as models
 import datetime
+import string
+import secrets
+from flask_mail import Mail, Message
+from website import init
 
 #DB_USER="jsh"   #MySQL 계정명
 DB_USER = "root" #정구리 MySQL 계정명
@@ -32,7 +36,7 @@ def user_login():
         id=request.form.get("id")   #name 속성 값이 id인 input 가져옴(사용자가 입력한 값 가져옴)
         password=request.form.get("password")
         #쿼리문 안에 변수 쓸 때 포매팅으로 f 쓰는데 '{변수}' 처럼 따옴표 꼭 붙여야 함
-        select_user=db.query(webtoon_db,f"SELECT * FROM user WHERE id='{id}'")
+        select_user=db.query(webtoon_db,f"SELECT * FROM user WHERE id='{id}'")  #try_catch
         print(select_user)
         login_user_check=select_user[0]
         print(login_user_check)
@@ -40,11 +44,13 @@ def user_login():
         login_user_id=login_user_check[0]
         login_user_password=login_user_check[1]
         
+        print(login_user_password, password)
+        
         #flash는 js에서 alert랑 똑같은 기능(알람)
         #category는 success랑 error로 분류. 말 그대로 문제 있는 걸 알려주려면 error 문제 없음 success
         if id not in login_user_id:
             flash("아이디가 존재하지 않습니다.",category="error")
-        elif password!=login_user_password:
+        elif not check_password_hash(login_user_password, password):
             flash("비밀번호가 틀립니다.",category="error")
         elif len(id)<1:
             flash("아이디를 입력하세요",category="error")
@@ -55,10 +61,6 @@ def user_login():
             user_email=login_user_check[3]
             user_age=login_user_check[4]
             user_gender=login_user_check[5]
-            
-            #session 등록하기 위해서는 필수. 생략 안됨
-            from main import app
-            app.secret_key="kth"
             
             #session에서 id는 user_id,name은 user_name,age는 user_age,gender는 user_gender
             session["user_id"]=id
@@ -105,7 +107,8 @@ def sign_up():
             elif age=="else":
                 flash("연령대를 선택해주세요.",category="error")
             else:
-                insert_user_data=f"INSERT INTO user VALUES ('{id}','{password}','{name}','{email}','{age}','{gender}')"
+                pw = generate_password_hash(password)
+                insert_user_data=f"INSERT INTO user VALUES ('{id}','{pw}','{name}','{email}','{age}','{gender}')"
                 check=db.query(webtoon_db,insert_user_data)
                 print(check)
                 print(type(check))
@@ -157,7 +160,7 @@ def upate_information():
             flash("비밀번호를 입력해주세요.",category="error")
             return redirect("/user_detail")
         else:
-            if check_password!=request.form.get("password"):
+            if not check_password_hash(check_password,request.form.get("password")):
                 flash("비밀번호가 틀립니다.",category="error")
                 return redirect("/user_detail")
             else:
@@ -166,12 +169,21 @@ def upate_information():
                 update_gender=request.form.get("gender")
                 update_age=request.form.get("age")
                 update_email=request.form.get("email")
+                update_new_pw=request.form.get("new_pw")
+                update_new_pw_check=request.form.get("new_pw_check")
                 
-                if update_name==session["user_name"] and update_age==session["user_age"] and update_gender==session["user_gender"] and update_email==session["user_email"]:
+                if update_name==session["user_name"] and update_age==session["user_age"] and update_gender==session["user_gender"] and update_email==session["user_email"] and check_password_hash(check_password, update_new_pw):
                     flash("수정 할 내용이 없습니다.",category="error")
                     return redirect("/user_detail")
-                    
-                db.query(webtoon_db,f"UPDATE user SET name='{update_name}', gender='{update_gender}', age='{update_age}', email='{update_email}' WHERE id='{id}'")
+
+                #-------------------------------유효성검사 후 삭제
+                if update_new_pw != update_new_pw_check:
+                    flash("새 비밀번호 확인값이 다릅니다.",category="error")
+                    return redirect("/user_detail")
+                #-------------------------------
+
+                hashed_new_pw = generate_password_hash(update_new_pw)
+                db.query(webtoon_db,f"UPDATE user SET name='{update_name}', gender='{update_gender}', age='{update_age}', email='{update_email}', password='{hashed_new_pw}' WHERE id='{id}'")
 
                 #새로운 session 등록
                 session.pop("user_name",None)
@@ -202,7 +214,7 @@ def delete_user():
                 print("비밀번호를 입력해주세요.")
                 return render_template("user_detail.html")
             else:
-                if request.form.get("password")!=delete_user_data[1]:
+                if not check_password_hash(delete_user_data[1],request.form.get("password")):
                     print("비밀번호가 틀립니다.")
                     flash("비밀번호가 틀립니다.",category="error")
                     return render_template("user_detail.html")
@@ -278,15 +290,57 @@ def find_id():
 
     #-------------------
     if name == "" or email == "":
-        return render_template("find_id.html", id='none')
+        flash("존재하지 않는 정보입니다!",category="error")
+        return render_template("login.html")
     #-------------------js로 유효성 검사 후 삭제
 
     id = db.query(webtoon_db,f"select id from user where email = '{email}' and name = '{name}'")
 
     if len(id) == 0:
-        return render_template("find_id.html", id='none')
+        flash("존재하지 않는 정보입니다!",category="error")
+        return render_template("login.html")
 
     return render_template("find_id.html", id=id[0][0])
+
+@auth.route("/reset_pw",methods=["POST"])
+def reset_pw():
+    name=request.form.get("name")
+    email=request.form.get("email")
+    id=request.form.get("id")
+
+    #-------------------
+    if name == "" or email == "" or id == "":
+        flash("존재하지 않는 정보입니다!",category="error")
+        return render_template("login.html")
+    #-------------------js로 유효성 검사 후 삭제
+
+    user = db.query(webtoon_db,f"select * from user where email = '{email}' and name = '{name}' and id = '{id}'")
+
+    if len(user) == 0:
+        flash("존재하지 않는 정보입니다!",category="error")
+        return render_template("login.html")
+
+    #임시 비밀번호 생성
+    alphabet = string.ascii_letters + string.digits
+    new_pw = ''.join(secrets.choice(alphabet) for x in range(8))
+
+    #db에서 임시비밀번호로 변경
+    hashed_pw = generate_password_hash(new_pw)
+    db.query(webtoon_db,f"update user set password = '{hashed_pw}' where id = '{id}'")
+    webtoon_db.commit()
+    
+    #메일로 발송
+    msg = Message(
+        "jsh's comic room temporary password",
+        body=new_pw,
+        sender="webtoonroomnoreply@gmail.com",
+        recipients=[email]
+    )
+    email_lib = init.create_mail()
+    email_lib.send(msg)
+
+    flash("임시비밀번호를 메일로 발송하였습니다.",category="success")
+    return redirect(url_for('auth.user_login'))
 
 @auth.route("/recommend/<date>",methods=["GET"])
 def recommend(date):

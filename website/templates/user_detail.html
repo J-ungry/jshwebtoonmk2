@@ -138,7 +138,15 @@
                                             <option value="30대">30대</option>
                                             <option value="40대">40대</option>
                                         </select>
-                                    {% endif %}    
+                                    {% endif %}
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">새 비밀번호</span>
+                                        <input type="password" name="new_pw" class="form-control" aria-label="UserNewPw" aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">새 비밀번호 확인</span>
+                                        <input type="password" name="new_pw_check" class="form-control" aria-label="UserNewPwCheck" aria-describedby="basic-addon1">
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkPasswordModal">

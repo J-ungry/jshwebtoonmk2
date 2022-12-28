@@ -146,15 +146,12 @@ def itModel(wt_title):
 
     return recommended_it_lists
 
-
-
-
 def main(title,no):
     survey = recommend_webtoon(title)
     drawing = dsModel(no)
     intro = itModel(title)
     print(intro)
-    return survey, drawing,intro
+    return survey,drawing,intro
 
 # if __name__ =='__main__':
 #     main()

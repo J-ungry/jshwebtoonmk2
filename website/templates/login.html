@@ -16,6 +16,9 @@
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#findIdModal">
             아이디 찾기
         </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#findPwModal">
+            비밀번호 찾기
+        </button>
         <button type="submit" class="btn btn-primary">로그인</button>
     </div>
 </form>
@@ -40,6 +43,39 @@
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkUserInfoModal">
                             아이디 찾기
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 비밀번호 찾기 Modal -->
+<div class="modal fade" id="findPwModal" tabindex="-1" aria-labelledby="findPwModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="findPwModalLabel">비밀번호 찾기</h1>
+            </div>
+            <form action="/reset_pw" method="POST">
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">아이디</span>
+                        <input type="text" name="id" class="form-control" aria-label="id" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">이메일</span>
+                        <input type="text" name="email" class="form-control" aria-label="email" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">이름</span>
+                        <input type="text" name="name" class="form-control" aria-label="name" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkUserPwModal">
+                            비밀번호 찾기
                         </button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                     </div>
