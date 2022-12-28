@@ -24,6 +24,7 @@
     .header > *{
         /* border: 1px solid yellow; */
         font-weight: 500;
+        margin:10px;
     }
     .div-input > *{
         /* border: 1px solid blue; */
@@ -43,10 +44,7 @@
     }
 
     #autoComplete:focus{
-        padding:5px;
-        outline: none;
-        background-color: #FD5D14;
-        color: #ffffff;
+        outline: 1px solid #FD5D14;
     }
     select{
         appearance: none;
@@ -86,6 +84,9 @@
     <form method="POST" class="form-rating">
         <div class="header"> <!--header div-->
             <h2>웹툰 평점 입력</h2>
+            <span class ="caption">
+                좋아하는 웹툰을 검색하고 평점을 입력하세요 !
+            </span>
         </div>
         <div class="div-input"> <!--input div-->
             <div> <!--웹툰 명 검색 ( 나중에 ajax 로 처리해야함 )-->

@@ -39,6 +39,7 @@
     <script src="{{url_for('static',filename='js/animation.js')}}"></script>
     <script src="{{url_for('static',filename='js/imagesloaded.js')}}"></script>
     <script src="{{url_for('static',filename='js/custom.js')}}"></script>
+    
     <title>{% block title %}Default Title{% endblock %}</title>
 </head>
 <body>  <!-- style="overflow: hidden;" -->        
@@ -46,7 +47,7 @@
     <div class="container-fluid sticky-top bg-dark bg-light-radial shadow-sm px-5 pe-lg-0">
         <nav class="navbar navbar-expand-lg bg-dark bg-light-radial navbar-dark py-3 py-lg-0">
             <a href="/" class="navbar-brand">
-                <h1 class="m-0 display-4 text-uppercase text-white"><i class="bi bi-building text-primary me-2"></i>만화방</h1>
+                <img class ="logo" src="../static/img/logo.png" style="height: 90px;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
