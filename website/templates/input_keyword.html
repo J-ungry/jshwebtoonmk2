@@ -26,6 +26,16 @@
         justify-content: space-between;
         border: 1px solid #000;
     }
+    .button-result{
+        border:0;
+        outline: 0;
+        width: 100%;
+        background-color: #fff;
+    }
+    .button-result:hover{
+        background: #EEE;
+    }
+
 </style>
 
 <div class="container">
@@ -120,7 +130,7 @@
     </div>
     <div id="output_keyword">
         <form action='/recommendation' method="POST" id='reload_location'>  
-            <button id="recommend" type="submit">Recommend</button>
+            <!-- <button id="recommend" type="submit">Recommend</button> -->
         </form>
     </div>
 <!-- </div> -->
@@ -138,8 +148,15 @@
     const output=document.getElementById("reload_location")
     let select_user_keyword=[]
 
+    const test = document.getElementById("test");
+    // 버튼태그 test
+    $('.button-result').on('click',function(event){
+        console.log($(this).attr('value'))
+    })
+
     //리스트 선택시 발생
     $('li').on('click',function(event){
+        
         const select_user=document.getElementById("select_keyword")
         
         let keyword=$(this).attr('name')
@@ -179,19 +196,25 @@
                 let keyword_result=document.getElementById(fun_key)
                 for(let i=0;i<list_len;i++) {
                     //전체를 div를 감싼다. 어떤 키워드를 삭제할지 알아야함
+
+                    
                     keyword_result.innerHTML+=`
-                        <div>
-                            <img src='${response["webtoon_thumb"][i]}' style="width:100px; height:100px">
-                        </div>
-                        <div>
-                            <input type="radio" name="webtoon_title" value="${response["webtoon_title"][i]}"><p>${response["webtoon_title"][i]}</p>
-                        </div>
-                        <div>
-                            <p>${response["webtoon_author"][i]}</p>
-                        </div>
-                        <div>
-                            <p>${response["webtoon_intro"][i]}</p>
-                        </div>
+                        <a class="button-result" href="/get_rcm/${response["webtoon_title"][i]}">
+                            <div>
+                                <img src='${response["webtoon_thumb"][i]}' style="width:100px; height:100px">
+                            </div>  
+
+                            <div>
+                                <p>${response["webtoon_title"][i]}</p>
+                            </div>
+
+                            <div>
+                                <p>${response["webtoon_author"][i]}</p>
+                            </div>
+                            <div>
+                                <p>${response["webtoon_intro"][i]}</p>
+                            </div>                    
+                        </a>
                     `
                 }
                 output.innerHTML+=`</div>`
