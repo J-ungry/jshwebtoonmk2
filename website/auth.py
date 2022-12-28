@@ -36,7 +36,7 @@ def user_login():
         id=request.form.get("id")   #name 속성 값이 id인 input 가져옴(사용자가 입력한 값 가져옴)
         password=request.form.get("password")
         #쿼리문 안에 변수 쓸 때 포매팅으로 f 쓰는데 '{변수}' 처럼 따옴표 꼭 붙여야 함
-        select_user=db.query(webtoon_db,f"SELECT * FROM user WHERE id='{id}'")
+        select_user=db.query(webtoon_db,f"SELECT * FROM user WHERE id='{id}'")  #try_catch
         print(select_user)
         login_user_check=select_user[0]
         print(login_user_check)
