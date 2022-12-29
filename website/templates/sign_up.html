@@ -7,6 +7,8 @@
     <div class="mb-3 w-25" style="margin: 0 auto;">
         <label for="InputId" class="form-label">아이디</label>
         <input name="id" type="text" class="form-control" id="InputId" placeholder="5글자 이상">
+        <p id="duplicateId" style="font-size: 13px; color: red; ">이미 존재하는 아이디입니다.</p>
+        <p id="posibleId" style="font-size: 13px; color: blue; ">사용 가능한 아이디입니다.</p>
     </div>
     <div class="mb-3 w-25" style="margin: 0 auto;">
         <label for="InputName" class="form-label">이름</label>
@@ -44,6 +46,9 @@
     </div>
 </form>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="../static/js/signup_validation.js"></script>
 
 {% endblock %}

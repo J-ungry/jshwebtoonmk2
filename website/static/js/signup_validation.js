@@ -7,13 +7,50 @@ var InputName = document.getElementById("InputName")
 var InputGender = document.getElementById("InputGender")
 var InputAge = document.getElementById("InputAge")
 var submitBtn = document.getElementById("submitBtn")
+$('#duplicateId').hide();
+$('#posibleId').hide();
 
 InputId.addEventListener("input",function(){
     InputId.classList.remove("is-invalid")
     InputId.classList.remove("is-valid")
 
-    if(InputId.value.length < 5) InputId.classList.add("is-invalid")
-    else InputId.classList.add("is-valid")
+    if(InputId.value.length < 1) {
+        InputId.classList.remove("is-invalid")
+        InputId.classList.remove("is-valid")
+        $('#duplicateId').hide();
+        $('#posibleId').hide();
+
+        return
+    }
+
+    if(InputId.value.length < 5) {
+        InputId.classList.add("is-invalid")
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: '/duplicate_id',
+            data: {"input_id":InputId.value},
+            dataType: "json",
+            success: function(response) {
+                if(response["check"]) { 
+                    //회원가입 가능
+                    $('#duplicateId').hide();
+                    $('#posibleId').show();
+                    InputId.classList.add("is-valid")
+                    InputId.classList.remove("is-invalid")
+                } else {
+                    //회원가입 불가능
+                    $('#duplicateId').show();
+                    $('#posibleId').hide();
+                    InputId.classList.add("is-invalid")
+                    InputId.classList.remove("is-valid")
+                }
+            },
+            error: function(request,status,error) {
+                console.log("no ajax")
+            }
+        });
+    }
 })
 
 InputPassword.addEventListener("input",function(){

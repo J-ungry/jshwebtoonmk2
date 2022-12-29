@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,request,flash,redirect,url_for,session
+from flask import Blueprint,render_template,request,flash,redirect,url_for,session,jsonify
 from werkzeug.security import generate_password_hash,check_password_hash
 from website import db
 import pymysql
@@ -28,8 +28,8 @@ webtoon_db = pymysql.connect(
         host="localhost",
         port=3306,
         user=db.DB_USER,
-        #passwd="bread!123",
-        passwd="duffufK123!",
+        passwd="bread!123",
+        #passwd="duffufK123!",
         db=db.DB_NAME,
         charset="utf8"
         )
@@ -86,69 +86,43 @@ def user_login():
 
 
 #회원가입
-
 @auth.route("/sign_up",methods=["GET","POST"])
 def sign_up():
     if request.method=="GET":
         return render_template("sign_up.html")
     elif request.method=="POST":
         id=request.form.get("id")
-        name=request.form.get("name")
-        password=request.form.get("password")
-        repassword=request.form.get("repassword")
-        gender=request.form.get("gender")
-        age=request.form.get("age")
-        email=request.form.get("email")
-        
+        password=request.form.get("password") 
         #각 input 입력 했을 때만 쿼리 호출, 유효성 검사는 js로 대체
-        if len(id)<5:
-            flash("아이디는 5글자 이상입니다.",category="error")
-            return render_template("sign_up.html")
-        else:
-            if len(name)<1:
-                flash("이름을 입력하세요.",category="error")
-                return render_template("sign_up.html")
-            else:
-                if len(password)<1:
-                    flash("비밀번호를 입력하세요.",category="error")
-                    return render_template("sign_up.html")
-                elif len(password)<7:
-                    flash("비밀번호가 너무 짧습니다.",category="error")
-                    return render_template("sign_up.html")
-                elif password != repassword:
-                    flash("재확인 비밀번호를 다시 입력해주세요.",category="error")
-                    return render_template("sign_up.html")
-                else:
-                    if gender=="else":
-                        flash("성별을 선택해주세요.",category="error")
-                        return render_template("sign_up.html")
-                    elif age=="else":
-                        flash("연령대를 선택해주세요.",category="error")
-                        return render_template("sign_up.html")
-                    else:
-                         #check_id 값이 없을 경우 에러처리
-                        try:
-                            check_id=db.query(webtoon_db,f"SELECT id FROM user WHERE id='{id}'")
-                            if check_id:
-                                flash("이미 존재하는 아이디입니다.",category="error")
-                                return redirect(url_for("auth.user_login"))
-                            else:
-                                pw = generate_password_hash(password)
-                                try:
-                                    insert_user_data=f"INSERT INTO user VALUES ('{id}','{pw}','{name}','{email}','{age}','{gender}')"
-                                    check=db.query(webtoon_db,insert_user_data)           
-                                    webtoon_db.commit()
-                                    flash("회원가입 완료.",category="success")
-                                    webtoon_db.close()
-                                    return redirect(url_for("views.index"))
-                                except:
-                                    #insert 에러 처리
-                                    flash("다시 시도해주세요.",category="error")
-                                    return redirect("sign_up.html")
-                        except:
-                            #DB에러가 발생했을 때 처리
-                            flash("다시 시도해주세요.",category="error")
-                            return redirect("sign_up.html")
+        pw = generate_password_hash(password)
+        try:
+            check=db.query(webtoon_db,f"""
+                INSERT INTO user 
+                VALUES 
+                ("{id}","{pw}","{request.form.get('name')}","{request.form.get('email')}","{request.form.get('age')}","{request.form.get('gender')}")
+            """)
+        except:
+            #insert 에러 처리
+            flash("다시 시도해주세요.",category="error")
+            return redirect(url_for("auth.sign_up"))
+        finally:
+            webtoon_db.commit()
+            webtoon_db.close()
+        flash("회원가입 완료.",category="success")
+        return redirect(url_for("views.index"))
+
+# 회원가입 id 유효성 검사
+@auth.route("/duplicate_id",methods=["POST"])
+def duplicate_id():
+    if request.method=="POST":
+        check_id=db.query(webtoon_db,f"""
+            SELECT id FROM user WHERE id="{request.form['input_id']}"
+        """)
+        if check_id:    #아이디가 있으면 False
+            check=False
+        else:           #없으면 True
+            check=True
+        return jsonify({"check":check})
 
 #로그아웃
 @auth.route("/logout",methods=["GET"])

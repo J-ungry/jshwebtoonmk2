@@ -72,8 +72,8 @@ def input_keyword():
             return render_template("input_keyword.html",genre=return_genre,sojae=return_sojae,atm=return_atm,soosang=return_soosang,chrel=return_chrel,origin=return_origin,titles=return_title)
     
     elif request.method=="POST":    #키워드 결과 ajax
-        keyword=request.form["keyword"]
-        keyword_user=request.form["user_keyword"]
+        keyword=request.form["keyword"]             #6
+        keyword_user=request.form["user_keyword"]   #2017 최강자전
         
         return_webtoon_data=[]    #html에 넘길 웹툰 데이터
         return_webtoon_title=[]
@@ -83,6 +83,7 @@ def input_keyword():
         
         #사용자가 선택한 키워드가 있는 웹툰 번호 출력
         keyword_webtoon_no_data=db.query(webtoon_db,f"SELECT no FROM keyword WHERE keyword IN('{keyword_user}') AND type='{keyword}'")
+        print(keyword_webtoon_no_data)
         
         for i in range(len(keyword_webtoon_no_data)):
             return_webtoon_data=db.query(webtoon_db,f"SELECT title,author,thumb_link,real_intro FROM webtoon_info WHERE no='{keyword_webtoon_no_data[i][0]}'")
