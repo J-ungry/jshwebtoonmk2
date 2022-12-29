@@ -71,7 +71,7 @@
                                 <form action="/update_information" method="POST" id="infoForm">
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" id="basic-addon1">이름</span>
-                                        <input type="text" name="name" class="form-control is-valid" aria-label="Username" aria-describedby="basic-addon1" value={{session["user_name"]}} id="InputName">
+                                        <input type="text" name="name" class="form-control" aria-label="Username" aria-describedby="basic-addon1" value={{session["user_name"]}} id="InputName">
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" id="basic-addon1">이메일</span>
@@ -149,7 +149,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkPasswordModal"  id="submitBtn" disabled="disabled" style="background-color: #ddd;">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkPasswordModal"  id="submitBtn">
                                         정보수정
                                     </button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>

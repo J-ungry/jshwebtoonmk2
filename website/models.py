@@ -2,7 +2,7 @@ from matplotlib.pyplot import get
 import numpy as np 
 import pandas as pd
 from sklearn.decomposition import TruncatedSVD
-from website import db,auth
+from website import db,auth,views
 
 from numpy import dot
 from numpy.linalg import norm
@@ -10,26 +10,38 @@ from numpy.linalg import norm
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-webtoon_db=auth.webtoon_db
+from flask import flash,redirect,url_for
 
 #데이터 호출함수=> 추후 DB 에서 호출하게끔 개선하기 (완료)
 def get_data():
 
-    #webtoon_info to dataframe
-    datas = db.query(webtoon_db,"select column_name from information_schema.columns where table_name='webtoon_info'")
-    column = ['no', 'title', 'link', 'thumb_link', 'status', 'author', 'fake_intro', 'real_intro','likes', 'episodes', 'first_register_date', 'last_register_date', 'age','rate', 'genre1_pre', 'genre2_pre']
-    
-    datas = db.query(webtoon_db,"select * from webtoon_info")
-    webtoon_data = pd.DataFrame(datas,columns=column)
-    
-    #survey to dataframe 
-    datas = db.query(webtoon_db,"select column_name from information_schema.columns where table_name='survey'")
-    column = ['user', 'webtoon_no', 'score']
+    try:
+        webtoon_db = db.conn()
+        try:
+            #webtoon_info to dataframe
+            datas = db.select_query(webtoon_db,"select column_name from information_schema.columns where table_name='webtoon_info'")
+            column = ['no', 'title', 'link', 'thumb_link', 'status', 'author', 'fake_intro', 'real_intro','likes', 'episodes', 'first_register_date', 'last_register_date', 'age','rate', 'genre1_pre', 'genre2_pre']
+            
+            datas = db.select_query(webtoon_db,"select * from webtoon_info")
+            webtoon_data = pd.DataFrame(datas,columns=column)
+            
+            #survey to dataframe 
+            datas = db.select_query(webtoon_db,"select column_name from information_schema.columns where table_name='survey'")
+            column = ['user', 'webtoon_no', 'score']
 
-    datas = db.query(webtoon_db,"select * from survey")
-    rating_data = pd.DataFrame(datas,columns=column)
-    
-    return rating_data,webtoon_data
+            datas = db.select_query(webtoon_db,"select * from survey")
+            rating_data = pd.DataFrame(datas,columns=column)
+            
+            return rating_data,webtoon_data
+        except:
+            flash("execute error",category="error")
+            return redirect(url_for("views.index"))
+        finally:
+            webtoon_db.close()
+    except:
+        #DB 에러 발생 시 실행되는 코드
+        flash("DB connect error",category="error")
+        return redirect(url_for("views.index"))
 
 # -정구리- 협업필터링
 #데이터 전처리
@@ -87,64 +99,88 @@ def cos_sim(A, B):
 
 def dsModel(webtoon_no):
 
-    #이미지 특징 vector select
-    tup = db.query(webtoon_db,"select resnet from thumb")
+    try:
+        webtoon_db = db.conn()
+        try:
+            #이미지 특징 vector select
+            tup = db.select_query(webtoon_db,"select resnet from thumb")
 
-    vec = []
-    for y in range(len(tup)):
-        vec.append(eval(tup[y][0]))
+            vec = []
+            for y in range(len(tup)):
+                vec.append(eval(tup[y][0]))
 
-    #유사도 계산
-    sim = []
-    for x in range(0,2044):
-        sim.append(cos_sim(vec[webtoon_no-1],vec[x]))
+            #유사도 계산
+            sim = []
+            for x in range(0,2044):
+                sim.append(cos_sim(vec[webtoon_no-1],vec[x]))
 
-    #유사도 상위 5개 웹툰번호 return
-    df = pd.DataFrame(sim, columns=['sim'])
-    return df.sort_values('sim', ascending=False)[1:6].index + 1
+            #유사도 상위 5개 웹툰번호 return
+            df = pd.DataFrame(sim, columns=['sim'])
+            return df.sort_values('sim', ascending=False)[1:6].index + 1
+        except:
+            flash("execute error",category="error")
+            return redirect(url_for("views.index"))
+        finally:
+            webtoon_db.close()
+    except:
+        #DB 에러 발생 시 실행되는 코드
+        flash("DB connect error",category="error")
+        return redirect(url_for("views.index"))
 
 #승환이코드
 
 def itModel(wt_title):
     num = 5
 
-    fake_intro = db.query(webtoon_db, "SELECT fake_intro FROM webtoon_info")
-    #print("fake_intro = ",fake_intro[0][0])
-    fake_intro_list = []
-    for x in fake_intro:
-        fake_intro_list.append(x[0])
-    transformer = TfidfVectorizer()
-    tfidf_matrix = transformer.fit_transform(fake_intro_list)
-    print(tfidf_matrix.shape) #(1000, 9662)
+    try:
+        webtoon_db = db.conn()
+        try:
+            fake_intro = db.select_query(webtoon_db, "SELECT fake_intro FROM webtoon_info")
+            #print("fake_intro = ",fake_intro[0][0])
+            fake_intro_list = []
+            for x in fake_intro:
+                fake_intro_list.append(x[0])
+            transformer = TfidfVectorizer()
+            tfidf_matrix = transformer.fit_transform(fake_intro_list)
+            print(tfidf_matrix.shape) #(1000, 9662)
 
-    cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
-    print(cosine_sim.shape) #(2044, 2044)
+            cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+            print(cosine_sim.shape) #(2044, 2044)
 
-    # webtoon_info to dataframe
-    column = ['no', 'title', 'link', 'thumb_link', 'status', 'author', 'fake_intro', 'real_intro','likes', 'episodes', 'first_register_date', 'last_register_date', 'age','rate', 'genre1_pre', 'genre2_pre']
-    datas = db.query(webtoon_db,"select * from webtoon_info")
-    webtoon_data = pd.DataFrame(datas,columns=column)
+            # webtoon_info to dataframe
+            column = ['no', 'title', 'link', 'thumb_link', 'status', 'author', 'fake_intro', 'real_intro','likes', 'episodes', 'first_register_date', 'last_register_date', 'age','rate', 'genre1_pre', 'genre2_pre']
+            datas = db.select_query(webtoon_db,"select * from webtoon_info")
+            webtoon_data = pd.DataFrame(datas,columns=column)
 
-    # 선택한 웹툰의 title로부터 해당되는 인덱스를 받아옵니다. 이제 선택한 웹툰를 가지고 연산할 수 있습니다.
-    indices = pd.Series(webtoon_data.index, index=webtoon_data['title'])
-    idx = indices[wt_title]
+            # 선택한 웹툰의 title로부터 해당되는 인덱스를 받아옵니다. 이제 선택한 웹툰를 가지고 연산할 수 있습니다.
+            indices = pd.Series(webtoon_data.index, index=webtoon_data['title'])
+            idx = indices[wt_title]
 
-    # 모든 웹툰에 대해서 해당 웹툰과 유사도를 구합니다.
-    sim_scores = cosine_sim[idx]
-    sim_scores = list(enumerate(sim_scores))
+            # 모든 웹툰에 대해서 해당 웹툰과 유사도를 구합니다.
+            sim_scores = cosine_sim[idx]
+            sim_scores = list(enumerate(sim_scores))
 
-    # 유사도에 따라 웹툰을 정렬합니다.
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+            # 유사도에 따라 웹툰을 정렬합니다.
+            sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
-    # 가장 유사한 num개의 웹툰를 받아옵니다.
-    sim_scores = sim_scores[1:num+1]
+            # 가장 유사한 num개의 웹툰를 받아옵니다.
+            sim_scores = sim_scores[1:num+1]
 
-    # 가장 유사한 5개의 영화의 인덱스를 받아옵니다.
-    webtoon_indices = [i[0] for i in sim_scores]
-    recommended_it_lists = webtoon_data['title'].iloc[webtoon_indices].to_list()
-    print(recommended_it_lists) # ['오직 나의 주인님', '개를 낳았다', '토니와 함께', '그 개, 만두', '언럭키 맨션']
+            # 가장 유사한 5개의 영화의 인덱스를 받아옵니다.
+            webtoon_indices = [i[0] for i in sim_scores]
+            recommended_it_lists = webtoon_data['title'].iloc[webtoon_indices].to_list()
+            print(recommended_it_lists) # ['오직 나의 주인님', '개를 낳았다', '토니와 함께', '그 개, 만두', '언럭키 맨션']
 
-    return recommended_it_lists
+            return recommended_it_lists
+        except:
+            flash("execute error",category="error")
+            return redirect(url_for("views.index"))
+        finally:
+            webtoon_db.close()
+    except:
+        #DB 에러 발생 시 실행되는 코드
+        flash("DB connect error",category="error")
+        return redirect(url_for("views.index"))
 
 def main(title,no):
     survey = recommend_webtoon(title)
