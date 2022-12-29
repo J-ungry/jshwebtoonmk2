@@ -61,11 +61,25 @@ InputPassword.addEventListener("input",function(){
 
     if( !reg.test(InputPassword.value) ) InputPassword.classList.add("is-invalid")
     else InputPassword.classList.add("is-valid")
+
+    if(InputPassword.value == "") {
+        InputPasswordCheck.classList.remove("is-invalid")
+        InputPasswordCheck.classList.remove("is-valid")
+
+        return
+    }
+
+    InputPasswordCheck.classList.remove("is-invalid")
+    InputPasswordCheck.classList.remove("is-valid")
+    if( InputPassword.value != InputPasswordCheck.value) InputPasswordCheck.classList.add("is-invalid")
+    else InputPasswordCheck.classList.add("is-valid")
 })
 
 InputPasswordCheck.addEventListener("input",function(){
     InputPasswordCheck.classList.remove("is-invalid")
     InputPasswordCheck.classList.remove("is-valid")
+
+    if(InputPasswordCheck.value == "") return
 
     if( InputPassword.value != InputPasswordCheck.value) InputPasswordCheck.classList.add("is-invalid")
     else InputPasswordCheck.classList.add("is-valid")
