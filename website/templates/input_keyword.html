@@ -17,25 +17,26 @@
         background-color: #94bada;
     }
 
-    .container{
-        width:70%;
+    .container {
+        width: 70%;
     }
 
-    .find-recommend{
+    .find-recommend {
         display: flex;
         justify-content: space-between;
         border: 1px solid #000;
     }
-    .button-result{
-        border:0;
+
+    .button-result {
+        border: 0;
         outline: 0;
         width: 100%;
         background-color: #fff;
     }
-    .button-result:hover{
+
+    .button-result:hover {
         background: #EEE;
     }
-
 
     .search-box{
         width: fit-content;
@@ -146,8 +147,7 @@
                 </div>
             </div>
             <div class="w-25 me-2 p-2">
-                <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">등장인물/관계
-                </h5>
+                <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">등장인물/관계</h5>
                 <div style="height: 100px; overflow: auto;">
                     <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                         <!-- 등장인물/관계 -->
@@ -181,6 +181,7 @@
             </div>
         </div>
     </div>
+
     <!--
         <div>
             <input name="title" type="text" id="inputAutoCompleteKeyword" autocomplete="off" placeholder="키워드 입력">
@@ -191,14 +192,17 @@
     
     
 <!-- <div class="find-recommend"> 키워드명 검색 ( 나중에 ajax 로 처리해야함 ), 버튼 두개가 들어있는 div -->
+
+    <!-- <div class="find-recommend"> 키워드명 검색 ( 나중에 ajax 로 처리해야함 ), 버튼 두개가 들어있는 div -->
+>
     <!-- <label for="autoComplete">웹툰명 검색</label> -->
 
 
     <div id="select_keyword" class="d-flex">
-    
+
     </div>
     <div id="output_keyword">
-        <form action='/recommendation' method="POST" id='reload_location'>  
+        <form action='/recommendation' method="POST" id='reload_location'>
             <!-- <button id="recommend" type="submit">Recommend</button> -->
         </form>
     </div>

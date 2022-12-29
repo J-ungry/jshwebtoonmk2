@@ -6,6 +6,25 @@
     #nav-team {
         color: #FD5D14;
     }
+
+    .box1 {
+        border-radius: 10px 0 0 0;
+    }
+
+    .box2 {
+        border-radius: 0 10px 0 0;
+        box-shadow: 2px 4px 2px 1px #dbdbdb;
+    }
+
+    .box3 {
+        border-radius: 0 0 10px 10px;
+        box-shadow: 2px 4px 2px 1px #dbdbdb;
+    }
+
+    .loogoo {
+        font-size: 24px;
+        padding: 25px 0;
+    }
 </style>
 <div class="container-fluid py-6 px-5">
     <div class="text-center mx-auto mb-5" style="max-width: 600px;">
@@ -16,46 +35,57 @@
             <div class="row g-0">
                 <div class="col-10" style="min-height: 300px;">
                     <div class="position-relative h-100">
-                        <img class="position-absolute w-100 h-100" src="{{url_for('static',filename='img/sjw.jpg')}}"
-                            style="object-fit: cover;">
+                        <img class="position-absolute w-100 h-100 box1"
+                            src="{{url_for('static',filename='img/sjw.jpg')}}" style="object-fit: cover;">
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light">
-                        <a class="btn" href="https://github.com/J-ungry"><i class="fab fa-github"></i></a>
+                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light box2">
+                        <a class="btn" href="https://github.com/J-ungry">
+                            <!-- <i class="fab fa-github"></i> -->
+                            <ion-icon name="logo-github" class="loogoo"></ion-icon>
+                        </a>
                         <!-- <a class="btn" href="#"><i class="fab fa-facebook-f"></i></a>
                         <a class="btn" href="#"><i class="fab fa-linkedin-in"></i></a> -->
-                        <a class="btn" href="https://www.instagram.com/jungry_/"><i class="fab fa-instagram"></i></a>
-                        <a class="btn" href="https://www.youtube.com/watch?v=bHUTclbMU6k"><i
-                                class="fab fa-youtube"></i></a>
+                        <a class="btn" href="https://www.instagram.com/jungry_/">
+                            <ion-icon name="logo-instagram" class="loogoo"></ion-icon>
+                        </a>
+                        <a class="btn" href="https://www.youtube.com/watch?v=bHUTclbMU6k">
+                            <ion-icon name="logo-youtube" class="loogoo"></ion-icon>
+                        </a>
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="bg-light p-4">
+                    <div class="bg-light p-4 box3">
                         <h4 class="text-uppercase">서정우</h4>
                         <span><strong>팀장</strong><br>일정관리, UI/UX 디자인, 데이터 수집 및 전처리</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="row g-0">
+        <div class="col-xl-3 col-lg-4 col-md-6 box">
+            <div class="row g-0 box">
                 <div class="col-10" style="min-height: 300px;">
                     <div class="position-relative h-100">
-                        <img class="position-absolute w-100 h-100" src="{{url_for('static',filename='img/jsh.jpg')}}"
-                            style="object-fit: cover;">
+                        <img class="position-absolute w-100 h-100 box1"
+                            src="{{url_for('static',filename='img/jsh.jpg')}}" style="object-fit: cover;">
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light">
-                        <a class="btn" href="https://github.com/kuma1105"><i class="fab fa-github"></i></a>
-
-                        <a class="btn" href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
-                        <a class="btn" href="https://youtu.be/N4rFMUW9Fsk"><i class="fab fa-youtube"></i></a>
+                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light box2">
+                        <a class="btn" href="https://github.com/kuma1105">
+                            <ion-icon name="logo-github" class="loogoo"></ion-icon>
+                        </a>
+                        <a class="btn" href="https://www.instagram.com/">
+                            <ion-icon name="logo-instagram" class="loogoo"></ion-icon>
+                        </a>
+                        <a class="btn" href="https://youtu.be/N4rFMUW9Fsk">
+                            <ion-icon name="logo-youtube" class="loogoo"></ion-icon>
+                        </a>
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="bg-light p-4">
+                    <div class="bg-light p-4 box3">
                         <h4 class="text-uppercase">정승환</h4>
                         <span>산출물/문서관리<br>추천 시스템 모델 연구 및 개발</span>
                     </div>
@@ -66,19 +96,25 @@
             <div class="row g-0">
                 <div class="col-10" style="min-height: 300px;">
                     <div class="position-relative h-100">
-                        <img class="position-absolute w-100 h-100" src="{{url_for('static',filename='img/kjh.jpg')}}"
-                            style="object-fit: cover;">
+                        <img class="position-absolute w-100 h-100 box1"
+                            src="{{url_for('static',filename='img/kjh.jpg')}}" style="object-fit: cover;">
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light">
-                        <a class="btn" href="https://github.com/jaehyunkkk"><i class="fab fa-github"></i></a>
-                        <a class="btn" href="https://www.instagram.com/j_hyun413/"><i class="fab fa-instagram"></i></a>
-                        <a class="btn" href="https://youtu.be/XUd7edLu_4Y"><i class="fab fa-youtube"></i></a>
+                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light box2">
+                        <a class="btn" href="https://github.com/jaehyunkkk">
+                            <ion-icon name="logo-github" class="loogoo"></ion-icon>
+                        </a>
+                        <a class="btn" href="https://www.instagram.com/j_hyun413/">
+                            <ion-icon name="logo-instagram" class="loogoo"></ion-icon>
+                        </a>
+                        <a class="btn" href="https://youtu.be/XUd7edLu_4Y">
+                            <ion-icon name="logo-youtube" class="loogoo"></ion-icon>
+                        </a>
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="bg-light p-4">
+                    <div class="bg-light p-4 box3">
                         <h4 class="text-uppercase">김재현</h4>
                         <span>시장 분석<br>추천 시스템 모델 연구 및 개발</span>
                     </div>
@@ -94,15 +130,20 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light">
-                        <a class="btn" href="https://github.com/webkth"><i class="fab fa-github"></i></a>
-                        <a class="btn" href="https://www.instagram.com/taehyeong973/"><i
-                                class="fab fa-instagram"></i></a>
-                        <a class="btn" href="#"><i class="fab fa-youtube"></i></a>
+                    <div class="h-100 d-flex flex-column align-items-center justify-content-between bg-light box2">
+                        <a class="btn" href="https://github.com/webkth">
+                            <ion-icon name="logo-github" class="loogoo"></ion-icon>
+                        </a>
+                        <a class="btn" href="https://www.instagram.com/taehyeong973/">
+                            <ion-icon name="logo-instagram" class="loogoo"></ion-icon>
+                        </a>
+                        <a class="btn" href="#">
+                            <ion-icon name="logo-youtube" class="loogoo"></ion-icon>
+                        </a>
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="bg-light p-4">
+                    <div class="bg-light p-4 box3">
                         <h4 class="text-uppercase">김태형</h4>
                         <span>기획<br>웹 개발 / DB 설계</span>
                     </div>
