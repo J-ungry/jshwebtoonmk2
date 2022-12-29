@@ -18,4 +18,4 @@ def query(db,query):
     print(query)
     cursor.execute(query)
     datas = cursor.fetchall()
-    return datas  
+    return datas

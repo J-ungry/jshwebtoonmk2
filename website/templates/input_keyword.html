@@ -36,20 +36,76 @@
         background: #EEE;
     }
 
+
+    .search-box{
+        width: fit-content;
+        height: fit-content;
+        position: relative;
+    }
+    .input-search{
+        height: 50px;
+        width: 50px;
+        border-style: none;
+        padding: 10px;
+        font-size: 18px;
+        letter-spacing: 2px;
+        outline: none;
+        border-radius: 25px;
+        transition: all .5s ease-in-out;
+        background-color: #22a6b3;
+        padding-right: 40px;
+        color:#fff;
+    }
+    .input-search::placeholder{
+        color:rgba(255,255,255,.5);
+        font-size: 18px;
+        letter-spacing: 2px;
+        font-weight: 100;
+    }
+    .btn-search{
+        width: 50px;
+        height: 50px;
+        border-style: none;
+        font-size: 20px;
+        font-weight: bold;
+        outline: none;
+        cursor: pointer;
+        border-radius: 50%;
+        position: absolute;
+        right: 0px;
+        color:#ffffff ;
+        background-color:transparent;
+        pointer-events: painted;  
+    }
+    .btn-search:focus ~ .input-search{
+        width: 300px;
+        border-radius: 0px;
+        background-color: transparent;
+        border-bottom:1px solid rgba(255,255,255,.5);
+        transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+    }
+        .input-search:focus{
+        width: 300px;
+        border-radius: 0px;
+        background-color: transparent;
+        border-bottom:1px solid rgba(255,255,255,.5);
+        transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);  
+    }
+    
 </style>
 
-
-<div class="container">
+<div class="container mt-5">
     <!-- 사용자 keyword 입력 -->
     <div style="margin: 0 auto;">
         <div class="p-3 d-flex justify-content-between align-items-center" style="background-color: #252c3a;">
             <div class="align-self-center">
-                <img class="rounded float-start" style="width:40px;"
-                    src="{{url_for('static',filename='img/baseline_search_white_24dp.png')}}">
                 <span class="me-1" style="color: #fff; font-size: 27px;"><strong>웹툰 키워드로 검색하기</strong></span>
                 <span style="color: #fff;">키워드로 마음에 드는 웹툰을 찾아보세요!</span>
-
             </div>
+            <div style="margin-left: 200px" class="search-box">
+                <button class="btn-search addAutoCompleteKeyword"><i class="fas fa-search"></i></button>
+                <input autocomplete="off" id="inputAutoCompleteKeyword" type="text" class="input-search" placeholder="Keyword">
+            </div>    
             <div class="p-2 release-btn" style="border: 1px solid #fff; border-radius: 5px; cursor: pointer;">
                 <p style="color: #fff;"><strong>전체 해제</strong></p>
             </div>
@@ -125,14 +181,19 @@
             </div>
         </div>
     </div>
-
+    <!--
+        <div>
+            <input name="title" type="text" id="inputAutoCompleteKeyword" autocomplete="off" placeholder="키워드 입력">
+            <input type='button' class="addAutoCompleteKeyword" value='추가' />
+        </div>
+    -->
+    
+    
+    
 <!-- <div class="find-recommend"> 키워드명 검색 ( 나중에 ajax 로 처리해야함 ), 버튼 두개가 들어있는 div -->
     <!-- <label for="autoComplete">웹툰명 검색</label> -->
-    <div> <!--키워드명 검색 ( 나중에 ajax 로 처리해야함 )-->
-        <label for="inputAutoCompleteKeyword">키워드 검색</label>
-        <input name="title" type="text" id="inputAutoCompleteKeyword" autocomplete="off" placeholder="키워드 입력">
-        <input type='button' class="addAutoCompleteKeyword" value='추가' />
-    </div>
+
+
     <div id="select_keyword" class="d-flex">
     
     </div>

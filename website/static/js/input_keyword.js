@@ -115,7 +115,6 @@ $('#inputAutoCompleteKeyword').autocomplete({
     , delay: 100	//autocomplete 딜레이 시간(ms)
 });
 
-
 $(release_btn).on('click',function(event){
     let select_user=document.getElementById("select_keyword")
     let keywords = $(output).find('div')
@@ -142,3 +141,4 @@ $('.addAutoCompleteKeyword').on('click', function (event) {
         }
     });
 })
+

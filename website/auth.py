@@ -164,7 +164,6 @@ def user_detail():
 
 
 #회원정보 수정
-
 @auth.route("/update_information",methods=["GET","POST"])
 def update_information():
     if request.method=="GET":
