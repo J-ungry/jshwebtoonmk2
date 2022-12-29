@@ -3,88 +3,97 @@
 
 {% block content %}
 <style>
-    #nav-rating{
-    color:#FD5D14;      
+    #nav-rating {
+        color: #FD5D14;
     }
 
-    .container{
+    .container {
         /* border: 1px solid #000; */
         width: 30%;
         height: 50vh;
         display: flex;
-
+        margin-top: 40px;
     }
-    .form-rating{
+
+    .form-rating {
         /* border: 1px solid red; */
         padding: 20px;
         /* display: inline-block; */
         width: 100%;
         height: 100%;
     }
-    .header > *{
+
+    .header>* {
         /* border: 1px solid yellow; */
         font-weight: 500;
-        margin:10px;
+        margin: 10px;
     }
-    .div-input > *{
+
+    .div-input>* {
         /* border: 1px solid blue; */
-        margin: 20px;;
+        margin: 20px;
+        ;
     }
-    .div-input > * >*{
-        width : 100%;
+
+    .div-input>*>* {
+        width: 100%;
     }
-    #autoComplete{
+
+    #autoComplete {
         border-radius: 5px;
         border: 1px solid #FD5D14;
         padding: 5px;
         color: #FD5D14;
     }
-    #autoComplete::placeholder{
+
+    #autoComplete::placeholder {
         color: #FD5D14;
     }
 
-    #autoComplete:focus{
+    #autoComplete:focus {
         outline: 1px solid #FD5D14;
     }
-    select{
+
+    select {
         appearance: none;
         border-radius: 5px;
         border: 1px solid #FD5D14;
         padding: 5px;
         color: #FD5D14;
     }
-    select:focus{
+
+    select:focus {
         padding: 5px;
         outline: none;
     }
-    .submit-btn{
-       border: 1px solid #FD5D14; 
-       padding: 8px;
-       background-color: #FFF;
-       border-radius: 5px;
-       color:#FD5D14;
-       transition: background 0.3s ease-out;
+
+    .submit-btn {
+        border: 1px solid #FD5D14;
+        padding: 8px;
+        background-color: #FFF;
+        border-radius: 5px;
+        color: #FD5D14;
+        transition: background 0.3s ease-out;
     }
 
-    .submit-btn:hover{
-       border: 1px solid #FD5D14; 
-       /* padding: 5px; */
-       background-color: #FD5D14;
-       border-radius: 5px;
-       color:#FFFF;
+    .submit-btn:hover {
+        border: 1px solid #FD5D14;
+        /* padding: 5px; */
+        background-color: #FD5D14;
+        border-radius: 5px;
+        color: #FFFF;
     }
-    .div-button{
+
+    .div-button {
         /* border: 1px solid #000; */
-        float:right;
+        float: right;
     }
-
-
 </style>
 <div class="container">
     <form method="POST" class="form-rating">
         <div class="header"> <!--header div-->
             <h2>웹툰 평점 입력</h2>
-            <span class ="caption">
+            <span class="caption">
                 좋아하는 웹툰을 검색하고 평점을 입력하세요 !
             </span>
         </div>
@@ -98,17 +107,17 @@
                 <span>
                     평점 입력
                 </span>
-                    <select name="score" id="InputRate">
-                      <option value="1">★☆☆☆☆</option>
-                      <option value="2">★★☆☆☆</option>
-                      <option value="3">★★★☆☆</option>
-                      <option value="4">★★★★☆</option>
-                      <option value="5">★★★★★</option>
-                    </select>
+                <select name="score" id="InputRate">
+                    <option value="1">★☆☆☆☆</option>
+                    <option value="2">★★☆☆☆</option>
+                    <option value="3">★★★☆☆</option>
+                    <option value="4">★★★★☆</option>
+                    <option value="5">★★★★★</option>
+                </select>
             </div>
         </div>
         <div class="div-button">
-            <button type="submit" class="submit-btn"> 평점입력 </button>
+            <button type="submit" class="submit-btn" style="margin-right: 10px;"> 입력 </button>
         </div>
     </form>
 </div>
@@ -119,32 +128,32 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
     $('#autoComplete').autocomplete({
-        source : function(request, response) { //source: 입력시 보일 목록
+        source: function (request, response) { //source: 입력시 보일 목록
             $.ajax({
-                url : "/autocomplete"   
-                , type : "POST"
-                , data : {value: request.term}	// 검색 키워드
-                , success : function(data){ 	// 성공
+                url: "/autocomplete"
+                , type: "POST"
+                , data: { value: request.term }	// 검색 키워드
+                , success: function (data) { 	// 성공
                     response(
-                        $.map(data.titleList, function(item) {
+                        $.map(data.titleList, function (item) {
                             return {
-                                label : item  	// 목록에 표시되는 값
-                                , value : item		// 선택 시 input창에 표시되는 값
+                                label: item  	// 목록에 표시되는 값
+                                , value: item		// 선택 시 input창에 표시되는 값
                             };
                         })
                     );    //response
                 }
-                ,error : function(){ //실패
+                , error: function () { //실패
                     alert("오류가 발생했습니다.");
                 }
             });
         }
-        ,focus : function(event, ui) { // 방향키로 자동완성단어 선택 가능하게 만들어줌	
-                return false;
+        , focus: function (event, ui) { // 방향키로 자동완성단어 선택 가능하게 만들어줌	
+            return false;
         }
-        ,minLength: 1// 최소 글자수
-        ,autoFocus : false // true == 첫 번째 항목에 자동으로 초점이 맞춰짐
-        ,delay: 100	//autocomplete 딜레이 시간(ms)
+        , minLength: 1// 최소 글자수
+        , autoFocus: false // true == 첫 번째 항목에 자동으로 초점이 맞춰짐
+        , delay: 100	//autocomplete 딜레이 시간(ms)
     });
 </script>
 
