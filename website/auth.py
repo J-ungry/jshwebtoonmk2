@@ -424,8 +424,9 @@ def reset_pw():
         return redirect(url_for('auth.user_login'))
 
 #추천 페이지 출력
-@auth.route("/recommend/<date>",methods=["GET"])
-def recommend(date):
+@auth.route("/recommend/<date>/<cs>",methods=["GET"])
+def recommend(date,cs):
+    print(cs)
     try:
         webtoon_db = db.conn()
         try:
@@ -443,7 +444,7 @@ def recommend(date):
                 if(webtoon[1] == 'sv'):
                     sv.append(db.select_query(webtoon_db,f"select * from webtoon_info where no={webtoon[0]}"))
 
-            return render_template("recommend_page.html", dss = ds, its = it, svs = sv)
+            return render_template("recommend_page.html", dss = ds, its = it, svs = sv, cs=cs)
         except:
             flash("execute error",category="error")
             return redirect(url_for("views.index"))
@@ -463,7 +464,7 @@ def get_rcm(name):
         try:
             #추천 결과
             no = db.select_query(webtoon_db,f"select no from webtoon_info where title='{name}'")
-            surveys, drawings,intros = models.main(name,no[0][0])
+            surveys,check_survey, drawings,intros = models.main(name,no[0][0])
 
             #survey의 title로 webtoon넘버 가져오기
             surveys_no = []
@@ -491,7 +492,7 @@ def get_rcm(name):
             #가장 최근 날짜
             date = db.select_query(webtoon_db,f"select max(rcm_date) from history where user_id='{session['user_id']}'")
 
-            return redirect(url_for("auth.recommend",date = date[0][0]))
+            return redirect(url_for("auth.recommend",date = date[0][0],cs=check_survey))
         except:
             flash("execute error",category="error")
             return render_template("input_keyword.html")

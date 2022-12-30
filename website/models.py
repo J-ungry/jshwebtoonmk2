@@ -81,15 +81,18 @@ def recommend_webtoon(title):
     rating_data,webtoon_data = get_data() #데이터 호출하기 
     corr,webtoon_title = truncateSVD(rating_data,webtoon_data) #model 에 돌리기 
     webtoon_title_list = list(webtoon_title) #웹툰 제목 호출하기
-    target = webtoon_title_list.index(title) #입력받은 웹툰의 index
-    corr_target = corr[target]
-    
-    #딕셔너리로 바꾼 뒤에 상위 5개만 출력 + 자기 자신 제외하기
-    dic_corr = dict(enumerate(corr_target))
-    dic_corr = list(dict(sorted(dic_corr.items(),key=lambda item:item[1],reverse=1)).keys())[:6] #6인 이유는 자기자신 제외를 위해
-    for i in dic_corr:
-        result.append(webtoon_title[i])
-    return result[1:]
+    try:     
+        target = webtoon_title_list.index(title) #입력받은 웹툰의 index
+        corr_target = corr[target]
+        
+        #딕셔너리로 바꾼 뒤에 상위 5개만 출력 + 자기 자신 제외하기
+        dic_corr = dict(enumerate(corr_target))
+        dic_corr = list(dict(sorted(dic_corr.items(),key=lambda item:item[1],reverse=1)).keys())[:6] #6인 이유는 자기자신 제외를 위해
+        for i in dic_corr:
+            result.append(webtoon_title[i])
+        return result[1:],1 #1 : 결과가 있는 상태 
+    except:
+        return ["마루는 강쥐","레사 시즌1","마음의소리","김부장","화산귀환"],0 #결과가 없는 상태
 
 #재현이소스
 
@@ -183,11 +186,11 @@ def itModel(wt_title):
         return redirect(url_for("views.index"))
 
 def main(title,no):
-    survey = recommend_webtoon(title)
+    survey,check_survey = recommend_webtoon(title)
     drawing = dsModel(no)
     intro = itModel(title)
     print(intro)
-    return survey,drawing,intro
+    return survey,check_survey,drawing,intro
 
 # if __name__ =='__main__':
 #     main()
