@@ -1,12 +1,13 @@
 //자동완성 클릭 시 키워드 추가 필요
 const release_btn = document.getElementsByClassName("release-btn");
+
 const output=document.getElementById("reload_location")
 const select_user=document.getElementById("select_keyword")
 let select_user_keyword=[]
 
 const test = document.getElementById("test");
 // 버튼태그 test
-$('.button-result').on('click',function(event){
+$('.button-result').on('click', function (event) {
     console.log($(this).attr('value'))
 })
 
@@ -16,7 +17,7 @@ $('li').on('click',function(event){
     let user_keyword=$(this).text()
 
     //동일한 값 안들어가도록 수정
-    if (select_user_keyword.includes(user_keyword)){
+    if (select_user_keyword.includes(user_keyword)) {
         return
     } else {
         select_user_keyword.push(user_keyword);
@@ -32,7 +33,7 @@ $('li').on('click',function(event){
                 if (user_keyword == select_user_keyword[prop]) {
                     fun_key = user_keyword.replace(' ', '_')
                     select_user.innerHTML += `
-                        <div id="keyword_btn${prop}">
+                        <div id="keyword_btn${prop}" class="button-keywords">
                             <button type="button" class="btn btn-info">${select_user_keyword[prop]}</button>
                             <button onclick="remove_btn(${prop},'${fun_key}')" name="${prop}" type="button" class="btn-close" aria-label="Close"></button>
                         </div>
@@ -41,29 +42,32 @@ $('li').on('click',function(event){
             }
 
             const list_len = $(response["webtoon_title"]).length
-            output.innerHTML+=`
+            output.innerHTML += `
                     <div id="${fun_key}" class="keywords">
             `
             let keyword_result = document.getElementById(fun_key)
             for (let i = 0; i < list_len; i++) {
                 //전체를 div를 감싼다. 어떤 키워드를 삭제할지 알아야함
-                keyword_result.innerHTML+=`
+                keyword_result.innerHTML += `
+                <div class="div-result">
                     <a class="button-result" href="/get_rcm/${response["webtoon_title"][i]}">
                         <div>
                             <img src='${response["webtoon_thumb"][i]}' style="width:100px; height:100px">
                         </div>  
-
-                        <div>
+                        <div class="div-tai">
+                        <div class="div-title">
                             <p>${response["webtoon_title"][i]}</p>
                         </div>
 
-                        <div>
+                        <div class="div-author">
                             <p>${response["webtoon_author"][i]}</p>
                         </div>
-                        <div>
+                        <div class="div-intro">
                             <p>${response["webtoon_intro"][i]}</p>
-                        </div>                    
+                        </div>    
+                        </div>                
                     </a>
+                </div>
                 `
             }
             output.innerHTML += `</div>`
@@ -157,7 +161,7 @@ $('.addAutoCompleteKeyword').on('click', function (event) {
                     if (user_keyword == select_user_keyword[prop]) {
                         fun_key = user_keyword.replace(' ', '_')
                         select_user.innerHTML += `
-                        <div id="keyword_btn${prop}">
+                        <div id="keyword_btn${prop}" class="button-keywords">
                             <button type="button" class="btn btn-info">${select_user_keyword[prop]}</button>
                             <button onclick="remove_btn(${prop},'${fun_key}')" name="${prop}" type="button" class="btn-close" aria-label="Close"></button>
                         </div>
@@ -174,23 +178,25 @@ $('.addAutoCompleteKeyword').on('click', function (event) {
                     //전체를 div를 감싼다. 어떤 키워드를 삭제할지 알아야함
 
                     keyword_result.innerHTML += `
+                    <div class="div-result">
                     <a class="button-result" href="/get_rcm/${response["webtoon_title"][i]}">
                         <div>
                             <img src='${response["webtoon_thumb"][i]}' style="width:100px; height:100px">
                         </div>  
-
-                        <div>
+                        <div class="div-tai">
+                        <div class="div-title">
                             <p>${response["webtoon_title"][i]}</p>
                         </div>
 
-                        <div>
+                        <div class="div-author">
                             <p>${response["webtoon_author"][i]}</p>
                         </div>
-                        <div>
+                        <div class="div-intro">
                             <p>${response["webtoon_intro"][i]}</p>
-                        </div>                    
+                        </div>   
+                        </div>
                     </a>
-
+                    </div>
                 `
                 }
                 output.innerHTML += `</div>`
