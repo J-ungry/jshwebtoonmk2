@@ -1,8 +1,9 @@
 //자동완성 클릭 시 키워드 추가 필요
 const release_btn = document.getElementsByClassName("release-btn");
-const output = document.getElementById("reload_location")
-const select_user = document.getElementById("select_keyword")
-let select_user_keyword = []
+
+const output=document.getElementById("reload_location")
+const select_user=document.getElementById("select_keyword")
+let select_user_keyword=[]
 
 const test = document.getElementById("test");
 // 버튼태그 test
@@ -11,9 +12,9 @@ $('.button-result').on('click', function (event) {
 })
 
 //리스트 선택시 발생
-$('li').on('click', function (event) {
-    let keyword = $(this).attr('name')
-    let user_keyword = $(this).text()
+$('li').on('click',function(event){
+    let keyword=$(this).attr('name')    
+    let user_keyword=$(this).text()
 
     //동일한 값 안들어가도록 수정
     if (select_user_keyword.includes(user_keyword)) {

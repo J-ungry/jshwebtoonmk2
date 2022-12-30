@@ -11,6 +11,3 @@
 환경 : window, mac
 웹 프레임워크 : Flask
 라이브러리 : pandas,numpy,
-
-
-

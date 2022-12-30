@@ -3,7 +3,6 @@ from flask import Flask
 from flask_mail import Mail
 
 def create_app():
-    
     global app
     app=Flask(__name__)
     app.config["SECRET_KEY"]="sdjisnoafsada"    #비밀키인데 의미 없음. 바꾸지 마세요.
@@ -20,7 +19,6 @@ def create_app():
 
 
 def create_mail():
-
     app.config["MAIL_SERVER"] = "smtp.gmail.com"
     app.config["MAIL_PORT"] = 465
     app.config["MAIL_USERNAME"] = "webtoonroomnoreply@gmail.com"
