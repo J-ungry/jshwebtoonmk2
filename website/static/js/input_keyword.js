@@ -1,6 +1,7 @@
 //자동완성 클릭 시 키워드 추가 필요
 const release_btn = document.getElementsByClassName("release-btn");
 const output=document.getElementById("reload_location")
+const select_user=document.getElementById("select_keyword")
 let select_user_keyword=[]
 
 const test = document.getElementById("test");
@@ -11,7 +12,6 @@ $('.button-result').on('click',function(event){
 
 //리스트 선택시 발생
 $('li').on('click',function(event){
-    const select_user=document.getElementById("select_keyword")
     let keyword=$(this).attr('name')    
     let user_keyword=$(this).text()
 

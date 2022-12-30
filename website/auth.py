@@ -28,54 +28,42 @@ def user_login():
     elif request.method=="POST":
         id=request.form.get("id")
         password=request.form.get("password")
-        
-        #유효성 검사는 js로 대체예정, 아이디와 비밀번호가 모두 입력 되었을 때만 쿼리 호출로 수정
-        if len(id)<1:
-            flash("아이디를 입력하세요.",category="error")
-            #return redirect(url_for("auth.user_login"))
-            return render_template("login.html")
-        else:
-            if len(password)<1:
-                flash("비밀번호를 입력하세요.",category="error")
-                return render_template("login.html")
-            else:
-                try:
-                    webtoon_db = db.conn()
+    
+        try:
+            webtoon_db = db.conn()
+            try:
+                select_user=db.select_query(webtoon_db,f"SELECT * FROM user WHERE id='{id}'")
+                # 해당 id에 해당하는 정보가 있을 경우
+                if select_user:
+                    login_user_check=select_user[0]
+                    login_user_password=login_user_check[1]
+            
+                    if not check_password_hash(login_user_password, password):
+                        flash("비밀번호가 틀립니다.",category="error")
+                        return redirect(url_for("auth.user_login"))
+                    else:
+                        #session에서 id는 user_id,name은 user_name,age는 user_age,gender는 user_gender
+                        session["user_id"]=id
+                        session["user_name"]=login_user_check[2]
+                        session["user_email"]=login_user_check[3]
+                        session["user_age"]=login_user_check[4]
+                        session["user_gender"]=login_user_check[5]
 
-                    try:
-                        select_user=db.select_query(webtoon_db,f"SELECT * FROM user WHERE id='{id}'")
-
-                        # 해당 id에 해당하는 정보가 있을 경우
-                        if select_user:
-                            login_user_check=select_user[0]
-                            login_user_password=login_user_check[1]
-                    
-                            if not check_password_hash(login_user_password, password):
-                                flash("비밀번호가 틀립니다.",category="error")
-                                return redirect(url_for("auth.user_login"))
-                            else:
-                                #session에서 id는 user_id,name은 user_name,age는 user_age,gender는 user_gender
-                                session["user_id"]=id
-                                session["user_name"]=login_user_check[2]
-                                session["user_email"]=login_user_check[3]
-                                session["user_age"]=login_user_check[4]
-                                session["user_gender"]=login_user_check[5]
-
-                                flash("로그인 성공",category="success")
-                                return redirect(url_for("views.index"))
-                        else:
-                            flash("아이디가 존재하지 않습니다.",category="error")
-                            return redirect(url_for("auth.user_login"))
-                    except:
-                        flash("execute error",category="error")
-                        return redirect(url_for("auth.user_login"))              
-                    finally:
-                        webtoon_db.close()
-                        print('close')
-                except:
-                    #DB 에러 발생 시 실행되는 코드
-                    flash("DB connect error",category="error")
+                        flash("로그인 성공",category="success")
+                        return redirect(url_for("views.index"))
+                else:
+                    flash("아이디가 존재하지 않습니다.",category="error")
                     return redirect(url_for("auth.user_login"))
+            except:
+                flash("execute error",category="error")
+                return redirect(url_for("auth.user_login"))              
+            finally:
+                webtoon_db.close()
+                print('close')
+        except:
+            #DB 에러 발생 시 실행되는 코드
+            flash("DB connect error",category="error")
+            return redirect(url_for("auth.user_login"))
 
 
 #회원가입
@@ -83,22 +71,47 @@ def user_login():
 def sign_up():
     if request.method=="GET":
         return render_template("sign_up.html")
-    elif request.method=="POST":
-        id=request.form.get("id")
-        name=request.form.get("name")
-        password=request.form.get("password")
-        gender=request.form.get("gender")
-        age=request.form.get("age")
-        email=request.form.get("email")
-        
-        pw = generate_password_hash(password)
+    elif request.method=="POST":    #한번만 쓰는 변수는 삭제함
+        id=request.form.get("id")   
+        pw = generate_password_hash(request.form.get("password"))
         try:
             webtoon_db = db.conn()
             try:
-                insert_user_data=f"INSERT INTO user VALUES ('{id}','{pw}','{name}','{email}','{age}','{gender}')"
+                insert_user_data=f"""
+                    INSERT INTO user
+                    VALUES 
+                    ("{id}","{pw}","{request.form.get('name')}","{request.form.get('email')}","{request.form.get('age')}","{request.form.get('gender')}")
+                """
                 check=db.update_query(webtoon_db,insert_user_data)
                 flash("회원가입 완료.",category="success")
                 return redirect(url_for("views.index"))
+            except:
+                flash("execute error",category="error")
+                return redirect(url_for("auth.sign_up"))
+                    
+            finally:
+                webtoon_db.close()
+                print('close')
+        except:
+            #DB 에러 발생 시 실행되는 코드
+            flash("DB connect error",category="error")
+            return redirect(url_for("auth.sign_up"))
+
+# 회원가입 id 유효성 검사
+@auth.route("/duplicate_id",methods=["POST"])
+def duplicate_id():
+    if request.method=="POST":
+        try:
+            webtoon_db=db.conn()
+            try:    
+                check_id=db.select_query(webtoon_db,f"""
+                    SELECT id FROM user WHERE id="{request.form['input_id']}"
+                """)
+                if check_id:    #아이디가 있으면 False
+                    check=False
+                else:           #없으면 True
+                    check=True
+                return jsonify({"check":check})
             except:
                 flash("execute error",category="error")
                 return redirect(url_for("auth.sign_up"))

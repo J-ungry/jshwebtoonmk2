@@ -2,15 +2,17 @@
 {% block title %}승환이네 만화방{% endblock %}
 
 {% block content %}
-<form method="POST" class="mt-5">
+<form id="loginForm" method="POST" class="mt-5">
     <h2 align="center">LOGIN</h2>
     <div class="mb-3 w-25" style="margin: 0 auto;">
         <label for="InputId" class="form-label">ID</label>
-        <input name="id" type="text" class="form-control" id="InputId">
+        <input name="id" type="text" class="form-control is-invalid" id="InputId">
+        <p id="noInputId" style="font-size: 13px; color: red; ">아이디를 입력해주세요.</p>
     </div>
     <div class="mb-3 w-25" style="margin: 0 auto;">
         <label for="InputPassword" class="form-label">PASSWORD</label>
         <input name="password" type="password" class="form-control" id="InputPassword">
+        <p id="noInputPw" style="font-size: 13px; color: red; ">비밀번호를 입력해주세요.</p>
     </div>
     <div class="d-flex justify-content-between mb-2 w-25" style="margin: 0 auto;">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#findIdModal">
@@ -19,7 +21,7 @@
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#findPwModal">
             비밀번호 찾기
         </button>
-        <button type="submit" class="btn btn-primary">로그인</button>
+        <button id="loginBtn" type="submit" class="btn btn-primary">로그인</button>
     </div>
 </form>
 
@@ -84,5 +86,10 @@
         </div>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="../static/js/login_validation.js"></script>
 
 {% endblock %}

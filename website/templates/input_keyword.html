@@ -2,98 +2,8 @@
 {% block title %}승환이네 만화방{% endblock %}
 
 {% block content %}
-<!-- css 중복되는 코드가 너무 많아서 수정 필요 -->
-<style>
-    ul li {
-        cursor: pointer;
-    }
 
-    ul li:hover {
-        background-color: #efefef;
-    }
-
-    /* 서정우한테 맡긴다. */
-    ul li:hover {
-        background-color: #94bada;
-    }
-
-    .container {
-        width: 70%;
-    }
-
-    .find-recommend {
-        display: flex;
-        justify-content: space-between;
-        border: 1px solid #000;
-    }
-
-    .button-result {
-        border: 0;
-        outline: 0;
-        width: 100%;
-        background-color: #fff;
-    }
-
-    .button-result:hover {
-        background: #EEE;
-    }
-
-    .search-box{
-        width: fit-content;
-        height: fit-content;
-        position: relative;
-    }
-    .input-search{
-        height: 50px;
-        width: 50px;
-        border-style: none;
-        padding: 10px;
-        font-size: 18px;
-        letter-spacing: 2px;
-        outline: none;
-        border-radius: 25px;
-        transition: all .5s ease-in-out;
-        background-color: #22a6b3;
-        padding-right: 40px;
-        color:#fff;
-    }
-    .input-search::placeholder{
-        color:rgba(255,255,255,.5);
-        font-size: 18px;
-        letter-spacing: 2px;
-        font-weight: 100;
-    }
-    .btn-search{
-        width: 50px;
-        height: 50px;
-        border-style: none;
-        font-size: 20px;
-        font-weight: bold;
-        outline: none;
-        cursor: pointer;
-        border-radius: 50%;
-        position: absolute;
-        right: 0px;
-        color:#ffffff ;
-        background-color:transparent;
-        pointer-events: painted;  
-    }
-    .btn-search:focus ~ .input-search{
-        width: 300px;
-        border-radius: 0px;
-        background-color: transparent;
-        border-bottom:1px solid rgba(255,255,255,.5);
-        transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
-    }
-        .input-search:focus{
-        width: 300px;
-        border-radius: 0px;
-        background-color: transparent;
-        border-bottom:1px solid rgba(255,255,255,.5);
-        transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);  
-    }
-    
-</style>
+<link rel="stylesheet" href="../static/css/input_keyword.css">
 
 <div class="container mt-5">
     <!-- 사용자 keyword 입력 -->
@@ -106,7 +16,7 @@
             <div style="margin-left: 200px" class="search-box">
                 <button class="btn-search addAutoCompleteKeyword"><i class="fas fa-search"></i></button>
                 <input autocomplete="off" id="inputAutoCompleteKeyword" type="text" class="input-search" placeholder="Keyword">
-            </div>    
+            </div>
             <div class="p-2 release-btn" style="border: 1px solid #fff; border-radius: 5px; cursor: pointer;">
                 <p style="color: #fff;"><strong>전체 해제</strong></p>
             </div>
@@ -188,15 +98,6 @@
             <input type='button' class="addAutoCompleteKeyword" value='추가' />
         </div>
     -->
-    
-    
-    
-<!-- <div class="find-recommend"> 키워드명 검색 ( 나중에 ajax 로 처리해야함 ), 버튼 두개가 들어있는 div -->
-
-    <!-- <div class="find-recommend"> 키워드명 검색 ( 나중에 ajax 로 처리해야함 ), 버튼 두개가 들어있는 div -->
->
-    <!-- <label for="autoComplete">웹툰명 검색</label> -->
-
 
     <div id="select_keyword" class="d-flex">
 

@@ -19,7 +19,6 @@ InputId.addEventListener("input",function(){
         InputId.classList.remove("is-valid")
         $('#duplicateId').hide();
         $('#posibleId').hide();
-
         return
     }
 
