@@ -32,7 +32,7 @@ $('li').on('click', function (event) {
                 if (user_keyword == select_user_keyword[prop]) {
                     fun_key = user_keyword.replace(' ', '_')
                     select_user.innerHTML += `
-                        <div id="keyword_btn${prop}">
+                        <div id="keyword_btn${prop}" class="button-keywords">
                             <button type="button" class="btn btn-info">${select_user_keyword[prop]}</button>
                             <button onclick="remove_btn(${prop},'${fun_key}')" name="${prop}" type="button" class="btn-close" aria-label="Close"></button>
                         </div>
@@ -48,22 +48,25 @@ $('li').on('click', function (event) {
             for (let i = 0; i < list_len; i++) {
                 //전체를 div를 감싼다. 어떤 키워드를 삭제할지 알아야함
                 keyword_result.innerHTML += `
+                <div class="div-result">
                     <a class="button-result" href="/get_rcm/${response["webtoon_title"][i]}">
                         <div>
                             <img src='${response["webtoon_thumb"][i]}' style="width:100px; height:100px">
                         </div>  
-
-                        <div>
+                        <div class="div-tai">
+                        <div class="div-title">
                             <p>${response["webtoon_title"][i]}</p>
                         </div>
 
-                        <div>
+                        <div class="div-author">
                             <p>${response["webtoon_author"][i]}</p>
                         </div>
-                        <div>
+                        <div class="div-intro">
                             <p>${response["webtoon_intro"][i]}</p>
-                        </div>                    
+                        </div>    
+                        </div>                
                     </a>
+                </div>
                 `
             }
             output.innerHTML += `</div>`
