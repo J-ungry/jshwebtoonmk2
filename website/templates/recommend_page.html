@@ -4,58 +4,69 @@
 {% block content %}
 
 <style>
-    .container{
+    .container {
         /* border: 1px solid #000; */
-        width:70%;
-        padding:20px;
+        width: 70%;
+        padding: 20px;
     }
-    .li-result{
+
+    .li-result {
         /* border: 1px solid #000; */
         /* background-color: #F2f2f2; */
         border-bottom: 1px solid #2a2a2a;
         margin: 20px;
         padding: 20px;
     }
+
     .ol-result {
         /* border: 1px solid #000; */
         margin-bottom: 30px;
     }
-    .li-result:hover{
+
+    .li-result:hover {
         background-color: #f2f2f2
     }
-    #a-result{
+
+    #a-result {
         color: #2a2a2a;
     }
-    .result-contents{
+
+    .result-contents {
         /* border: 1px solid yellow; */
         display: flex;
         padding: 10px;
 
     }
-    .result-text{
-        margin:10px;
+
+    .result-text {
+        margin: 10px;
     }
-    .result-text-title-author{
+
+    .result-text-title-author {
         /* border: 1px solid blue; */
-        font-size: 20px;
+        font-size: 24px;
         font-weight: 700;
     }
-    .result-text-intro{
+
+    .result-text-intro {
         /* border: 1px solid green; */
-        color:#5e5e5e;
-        font-size: 15px;
+        color: #5e5e5e;
+        font-size: 16px;
+        line-height: 1.5;
     }
-    .titles{
+
+    .titles {
         font-size: 30px;
         font-weight: 700;
     }
-    .titles > span{
-        color:#FD5D14;
+
+    .titles>span {
+        color: #FD5D14;
     }
 </style>
 <div class="container">
     <h2 class="titles"><span>줄거리</span>가 비슷한 만화</h2>
-    <ol class="ol-result">    
+    <ol class="ol-result">
         {% for it in its %}
         <li>
             <div class="li-result">
@@ -81,7 +92,7 @@
     </ol>
 
     <h2 class="titles"><span>그림체</span>가 비슷한 만화</h2>
-    <ol class="ol-result">    
+    <ol class="ol-result">
         {% for ds in dss %}
         <li>
             <div class="li-result">
@@ -114,8 +125,8 @@
     {% else %}
     <span>endend</span>
     {% endif %}
-    
-    <ol class="ol-result">    
+
+    <ol class="ol-result">
         {% for sv in svs %}
         <li>
             <div class="li-result">
