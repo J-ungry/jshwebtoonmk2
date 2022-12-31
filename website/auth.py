@@ -451,8 +451,6 @@ def recommend(date):
                     cs = 0
                     sv.append(db.select_query(webtoon_db,f"select * from webtoon_info where no={webtoon[0]}"))
 
-            print(cs)
-
             return render_template("recommend_page.html", dss = ds, its = it, svs = sv, cs=cs)
         except:
             flash("execute error",category="error")
@@ -464,6 +462,7 @@ def recommend(date):
         #DB 에러 발생 시 실행되는 코드
         flash("DB connect error",category="error")
         return redirect(url_for("views.index"))
+    
 
 #추천 웹툰 검색(db 예외처리 생략)
 @auth.route("/get_rcm/<name>",methods=["GET"])

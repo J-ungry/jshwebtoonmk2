@@ -73,13 +73,13 @@ def input_keyword():
                 return render_template("input_keyword.html",genre=return_genre,sojae=return_sojae,atm=return_atm,soosang=return_soosang,chrel=return_chrel,origin=return_origin,titles=return_title)
             except:
                 flash("execute error",category="error")
-                return redirect(url_for("/input_keyword"))
+                return redirect(url_for("views.index"))
             finally:
                 webtoon_db.close()
         except:
             #DB 에러 발생 시 실행되는 코드
             flash("DB connect error",category="error")
-            return redirect(url_for("/input_keyword"))
+            return redirect(url_for("views.index"))
     
     elif request.method=="POST":    #키워드 결과 ajax
         keyword=request.form["keyword"]             #6
@@ -107,14 +107,14 @@ def input_keyword():
                 return jsonify({"keyword":keyword,"user_keyword":keyword_user,"webtoon_title":return_webtoon_title,"webtoon_author":return_webtoon_author,"webtoon_thumb":return_webtoon_thumb,"webtoon_intro":return_webtoon_intro})
             except:
                 flash("execute error",category="error")
-                return redirect(url_for("/input_keyword"))
+                return redirect(url_for("views.input_keyword"))
             finally:
                 webtoon_db.close()
 
         except:
             #DB 에러 발생 시 실행되는 코드
             flash("DB connect error",category="error")
-            return redirect(url_for("/input_keyword"))
+            return redirect(url_for("views.input_keyword"))
 
 #웹툰명 자동완성
 @views.route("/autocomplete",methods=["POST"])
