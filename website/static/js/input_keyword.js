@@ -1,9 +1,9 @@
 //자동완성 클릭 시 키워드 추가 필요
 const release_btn = document.getElementsByClassName("release-btn");
 
-const output=document.getElementById("reload_location")
-const select_user=document.getElementById("select_keyword")
-let select_user_keyword=[]
+const output = document.getElementById("reload_location")
+const select_user = document.getElementById("select_keyword")
+let select_user_keyword = []
 
 const test = document.getElementById("test");
 // 버튼태그 test
@@ -12,9 +12,9 @@ $('.button-result').on('click', function (event) {
 })
 
 //리스트 선택시 발생
-$('li').on('click',function(event){
-    let keyword=$(this).attr('name')    
-    let user_keyword=$(this).text()
+$('li').on('click', function (event) {
+    let keyword = $(this).attr('name')
+    let user_keyword = $(this).text()
 
     //동일한 값 안들어가도록 수정
     if (select_user_keyword.includes(user_keyword)) {
@@ -56,14 +56,14 @@ $('li').on('click',function(event){
                         </div>  
                         <div class="div-tai">
                         <div class="div-title">
-                            <p>${response["webtoon_title"][i]}</p>
+                            <p style="font-size:24px;">${response["webtoon_title"][i]}</p>
                         </div>
 
                         <div class="div-author">
-                            <p>${response["webtoon_author"][i]}</p>
+                            <p style="font-size:16px;">${response["webtoon_author"][i]}</p>
                         </div>
                         <div class="div-intro">
-                            <p>${response["webtoon_intro"][i]}</p>
+                            <p style="font-size:16px; line-height: 2;">${response["webtoon_intro"][i]}</p>
                         </div>    
                         </div>                
                     </a>
