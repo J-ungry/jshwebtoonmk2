@@ -167,13 +167,6 @@ def keyword_autocomplete():
         flash("DB connect error",category="error")
         return redirect(url_for("views.index"))
 
-#최종 추천 결과
-@views.route("/recommendation",methods=["POST"])
-def recommendation():
-    if request.method=="POST":
-        print(request.form.get("webtoon_title"))
-        return render_template("index.html")
-
 # 검색한 키워드 추가
 @views.route("/addAutoCompleteKeyword",methods=["POST"])
 def addSearchedKeyword():

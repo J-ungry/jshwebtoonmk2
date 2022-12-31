@@ -38,7 +38,7 @@ inputPw.addEventListener('input',function(){
     }
 })
 
-loginForm.addEventListener('change',function(){
+loginForm.addEventListener('input',function(){
     if(inputId.classList.contains('is-valid') && inputPw.classList.contains('is-valid')) {
         //로그인 가능
         loginBtn.removeAttribute('disabled',false)
