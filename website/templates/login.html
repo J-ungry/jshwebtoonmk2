@@ -15,13 +15,21 @@
         <p id="noInputPw" style="font-size: 13px; color: red; ">비밀번호를 입력해주세요.</p>
     </div>
     <div class="d-flex justify-content-between mb-2 w-25" style="margin: 0 auto;">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#findIdModal">
-            아이디 찾기
-        </button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#findPwModal">
-            비밀번호 찾기
-        </button>
-        <button style="background-color: #ddd;" id="loginBtn" type="submit" disabled="disabled" class="btn btn-primary">로그인</button>
+        <div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#findIdModal">
+                아이디 찾기
+            </button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#findPwModal">
+                비밀번호 찾기
+            </button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" onclick="location.href='sign_up'">
+                회원가입
+            </button>
+            <button style="background-color: #ddd;" id="loginBtn" type="submit" disabled="disabled" class="btn btn-primary">로그인</button>
+        </div>
+
     </div>
 </form>
 
