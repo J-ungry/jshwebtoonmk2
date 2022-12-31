@@ -46,3 +46,91 @@
 .titles > span{
     color:#FD5D14;
 }
+.result-text{
+    margin:10px;
+}
+.result-text-title-author{
+    /* border: 1px solid blue; */
+    font-size: 20px;
+    font-weight: 700;
+}
+.result-text-intro{
+    /* border: 1px solid green; */
+    color:#5e5e5e;
+    font-size: 15px;
+}
+.titles{
+    font-size: 30px;
+    font-weight: 700;
+}
+.titles > span{
+    color:#FD5D14;
+}
+
+.blur {
+    filter: blur(20px);
+    -webkit-filter: blur(20px);
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* .div-blur-alert{
+    border: 2px solid #000;
+    position: fixed; top: 10%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 25px;
+    width: 60%;
+    text-align: center;
+    background-color: rgb(107, 106, 106);
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+} */
+.div-blur-alert{
+    text-align: center;
+    position:fixed; 
+    width:500px;
+    display:inline-block;
+    top:70%; 
+    background-color: transparent;
+    margin:0;
+
+    
+    position: fixed; left: 50%; transform: translate(-50%, -50%);
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 5px 5px 30px #ddd;
+    z-index: 1;
+}
+.div-first{
+    margin: 20px;
+    padding: 20px;
+    border-bottom: 0.5px solid #e2e2e2;
+    color: #a06768;
+}
+.div-second{
+    padding-bottom: 40px;
+    color: #5d5d5d;
+}
+.div-second > p{
+    color: #FD5D14;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 5px;
+}
+.div-button{
+    margin: 20px;
+    background-color: #fff;
+    border: 1px solid #FD5D14;
+    color: #FD5D14;
+    border-radius: 2px;
+    padding: 8px;
+}
+.div-button:hover{
+    background-color: #FD5D14;
+    color: #fff;
+    transition: 0.3s;
+}

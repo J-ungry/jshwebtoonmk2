@@ -464,6 +464,42 @@ def recommend(date):
         return redirect(url_for("views.index"))
     
 
+#비회원 추천 페이지 데이터 추출
+@auth.route("/recommend_nonmember/<surveys_no>/<drawing_no>/<intros_no>/<check_survey>",methods=["GET"])
+def recommend_nonmember(surveys_no,drawing_no,intros_no,check_survey):
+    try:
+        webtoon_db = db.conn()
+        try:
+            ds = []
+            it = []
+            sv = []
+
+            surveys = eval(surveys_no)
+            intros = eval(intros_no)
+            drawing = eval(drawing_no)
+
+            for x in drawing:
+                ds.append(db.select_query(webtoon_db,f"select * from webtoon_info where no={x}"))
+
+            for x in intros:
+                it.append(db.select_query(webtoon_db,f"select * from webtoon_info where no={x}"))
+
+            for x in surveys:
+                sv.append(db.select_query(webtoon_db,f"select * from webtoon_info where no={x}"))
+
+            return render_template("recommend_page.html", dss = ds, its = it, svs = sv, cs=int(check_survey))
+        except:
+            flash("execute error",category="error")
+            return redirect(url_for("views.index"))
+        finally:
+            webtoon_db.close()
+            print('close')
+    except:
+        #DB 에러 발생 시 실행되는 코드
+        flash("DB connect error",category="error")
+        return redirect(url_for("views.index"))
+
+
 #추천 웹툰 검색(db 예외처리 생략)
 @auth.route("/get_rcm/<name>",methods=["GET"])
 def get_rcm(name):
@@ -483,6 +519,13 @@ def get_rcm(name):
             intros_no = []
             for x in intros:
                 intros_no.append(db.select_query(webtoon_db,f"select no from webtoon_info where title='{x}'")[0][0])
+
+            drawing_no = []
+            for x in drawings:
+                drawing_no.append(x)
+
+            if not session:
+                return redirect(url_for("auth.recommend_nonmember",surveys_no = surveys_no, drawing_no = drawing_no, intros_no = intros_no, check_survey = check_survey))
 
             #추천 결과 history insert sql
             sql = "insert into history (user_id,webtoon_no,rcm_type) values "
