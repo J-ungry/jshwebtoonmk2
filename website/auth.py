@@ -551,6 +551,7 @@ def get_rcm(name):
 
             return redirect(url_for("auth.recommend",date = date[0][0]))
         except:
+            print("야야야야")
             flash("execute error",category="error")
             return render_template("input_keyword.html")
         finally:

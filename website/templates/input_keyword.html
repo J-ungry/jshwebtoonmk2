@@ -9,7 +9,8 @@
 <div id="keyword_container" class="container mt-5">
     <!-- 사용자 keyword 입력 -->
     <div style="margin: 0 auto;">
-        <div class="p-3 d-flex justify-content-between align-items-center" style="background-color: #252c3a;">
+        <div class="p-3 d-flex justify-content-between align-items-center"
+            style="background-color: #252c3a; border-radius: 10px 10px 0 0;">
             <div class="align-self-center">
                 <span class="me-1" style="color: #fff; font-size: 27px;"><strong>웹툰 키워드로 검색하기</strong></span>
                 <span style="color: #fff;">키워드로 마음에 드는 웹툰을 찾아보세요!</span>
@@ -31,7 +32,7 @@
             <div class="w-25 me-2 p-2">
                 <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">장르
                 </h5>
-                <div style="height: 100px; overflow: auto;">
+                <div style="height: 200px; overflow: auto;">
                     <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                         <!-- 장르 -->
                         {% for gen in genre %}
@@ -43,7 +44,7 @@
             <div class="w-25 me-2 p-2">
                 <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">소재
                 </h5>
-                <div style="height: 100px; overflow: auto;">
+                <div style="height: 200px; overflow: auto;">
                     <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                         <!-- 소재 -->
                         {% for soj in sojae %}
@@ -55,7 +56,7 @@
             <div class="w-25 me-2 p-2">
                 <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">분위기
                 </h5>
-                <div style="height: 100px; overflow: auto;">
+                <div style="height: 200px; overflow: auto;">
                     <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                         <!-- 분위기 -->
                         {% for atm in atm %}
@@ -67,7 +68,7 @@
             <div class="w-25 me-2 p-2">
                 <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">
                     등장인물/관계</h5>
-                <div style="height: 100px; overflow: auto;">
+                <div style="height: 200px; overflow: auto;">
                     <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                         <!-- 등장인물/관계 -->
                         {% for chr in chrel %}
@@ -79,7 +80,7 @@
             <div class="w-25 me-2 p-2">
                 <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">수상작
                 </h5>
-                <div style="height: 100px; overflow: auto;">
+                <div style="height: 200px; overflow: auto;">
                     <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                         <!-- 수상작 -->
                         {% for soo in soosang %}
@@ -91,7 +92,7 @@
             <div class="w-25 me-2 p-2">
                 <h5 class="p-1" style="font-size: 15px; font-weight: lighter; border-bottom: 1.5px solid #cddde6;">원작웹툰
                 </h5>
-                <div style="height: 100px; overflow: auto;">
+                <div style="height: 200px; overflow: auto;">
                     <ul style="font-weight: bolder; color: #23466e;" class="p-2">
                         <!-- 원작웹툰 -->
                         {% for ori in origin %}
