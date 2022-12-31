@@ -437,9 +437,8 @@ def reset_pw():
         return redirect(url_for('auth.user_login'))
 
 #추천 페이지 출력
-@auth.route("/recommend/<date>/<cs>",methods=["GET"])
-def recommend(date,cs):
-    print(cs)
+@auth.route("/recommend/<date>",methods=["GET"])
+def recommend(date):
     try:
         webtoon_db = db.conn()
         try:
@@ -455,7 +454,13 @@ def recommend(date,cs):
                 if(webtoon[1] == 'it'):
                     it.append(db.select_query(webtoon_db,f"select * from webtoon_info where no={webtoon[0]}"))
                 if(webtoon[1] == 'sv'):
+                    cs = 1
                     sv.append(db.select_query(webtoon_db,f"select * from webtoon_info where no={webtoon[0]}"))
+                if(webtoon[1] == 'jw'):
+                    cs = 0
+                    sv.append(db.select_query(webtoon_db,f"select * from webtoon_info where no={webtoon[0]}"))
+
+            print(cs)
 
             return render_template("recommend_page.html", dss = ds, its = it, svs = sv, cs=cs)
         except:
@@ -491,13 +496,19 @@ def get_rcm(name):
 
             #추천 결과 history insert sql
             sql = "insert into history (user_id,webtoon_no,rcm_type) values "
-            for survey in surveys_no:
-                sql += f"('{session['user_id']}', {survey}, 'sv'),"
+            if check_survey == 0:
+                for survey in surveys_no:
+                    sql += f"('{session['user_id']}', {survey}, 'jw'),"
+            else:
+                for survey in surveys_no:
+                    sql += f"('{session['user_id']}', {survey}, 'sv'),"
             for drawing in drawings:
                 sql += f"('{session['user_id']}', {drawing}, 'ds'),"
             for intro in intros_no:
                 sql += f"('{session['user_id']}', {intro}, 'it'),"
             sql = sql[:-1]
+
+            print(sql)
 
             #history insert
             db.update_query(webtoon_db,sql)
@@ -505,7 +516,7 @@ def get_rcm(name):
             #가장 최근 날짜
             date = db.select_query(webtoon_db,f"select max(rcm_date) from history where user_id='{session['user_id']}'")
 
-            return redirect(url_for("auth.recommend",date = date[0][0],cs=check_survey))
+            return redirect(url_for("auth.recommend",date = date[0][0]))
         except:
             flash("execute error",category="error")
             return render_template("input_keyword.html")
