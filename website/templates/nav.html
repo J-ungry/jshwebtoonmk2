@@ -90,13 +90,13 @@
     {% for category,message in messages %}
     <!-- error message -->
     {% if category=="error" %}
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div style="margin-bottom: 0;" class="alert alert-danger alert-dismissible fade show" role="alert">
         {{message}}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <!-- success message -->
     {% elif category=="success" %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <div style="margin-bottom: 0;" class="alert alert-success alert-dismissible fade show" role="alert">
         {{message}}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
