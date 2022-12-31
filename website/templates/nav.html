@@ -72,11 +72,11 @@
                     <a href="/introduce_team" class="nav-item nav-link me-4" id="nav-team">Develop Team</a>
                     {% if session["user_id"] %}
                     <a href="/input_rate" class="nav-item nav-link me-4" id="nav-rating">Rating</a>
-                    <a href="/user_detail" class="nav-item nav-link me-4"
-                        id="nav-detail"><strong>{{session["user_name"]}}님</strong></a>
-                    <a href="/logout" class="nav-item nav-link me-4">Logout</a>
+                    <a href="/user_detail" class="nav-item nav-link me-4" id="nav-detail"><strong>{{session["user_name"]}}님</strong></a>
+                    <a href="/logout" class="nav-item nav-link me-4">로그아웃</a>
                     {% else %}
-                    <a href="/sign_up" class="nav-item nav-link me-4" id="nav-signup">SignUp</a>
+                    <a href="/user_login" class="nav-item nav-link me-4" id="nav-signup">로그인</a>
+                    <a href="/sign_up" class="nav-item nav-link me-4" id="nav-signup">회원가입</a>
                     {% endif %}
                 </div>
             </div>
