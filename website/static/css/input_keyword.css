@@ -145,3 +145,10 @@ ul li:hover {
 #select_keyword{
     border-bottom: 1px solid #CDDDE6;
 }
+
+#scroll_up_btn {
+    cursor: pointer;
+    position: fixed;
+    bottom: 10%;
+    right: 8%;
+}
