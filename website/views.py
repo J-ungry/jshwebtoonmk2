@@ -20,67 +20,66 @@ def introduce_team():
 def input_keyword():
     if request.method=="GET":
         #장르 = genre, 소재=sojae, 분위기 = atm, 수상작 = soosang, 등장인물/관계 = charel, 원작웹툰 = origin
-        if session:
-            return_genre=[] 
-            return_sojae=[]
-            return_atm=[]
-            return_soosang=[]
-            return_chrel=[]
-            return_origin=[]
-            return_title=[]
-        
+        return_genre=[] 
+        return_sojae=[]
+        return_atm=[]
+        return_soosang=[]
+        return_chrel=[]
+        return_origin=[]
+        return_title=[]
+    
+        try:
+            webtoon_db = db.conn()
             try:
-                webtoon_db = db.conn()
-                try:
-                    #장르 = 1 소재 = 2 분위기 = 3 수상작 = 4 등장인물관계 = 5 원작웹툰 =6 
-                    for type in range(1,7):
-                        datas=db.select_query(webtoon_db,f"SELECT DISTINCT keyword FROM keyword WHERE type='{type}' ORDER BY keyword")
-                        if type==1:
-                            genre=datas
-                        elif type==2:
-                            sojae=datas
-                        elif type==3:
-                            atm=datas
-                        elif type==4:
-                            soosang=datas
-                        elif type==5:
-                            chrel=datas
-                        else:
-                            origin=datas
-                    
-                    data=db.select_query(webtoon_db,f"SELECT title FROM webtoon_info")
+                #장르 = 1 소재 = 2 분위기 = 3 수상작 = 4 등장인물관계 = 5 원작웹툰 =6 
+                for type in range(1,7):
+                    datas=db.select_query(webtoon_db,f"SELECT DISTINCT keyword FROM keyword WHERE type='{type}' ORDER BY keyword")
+                    if type==1:
+                        genre=datas
+                    elif type==2:
+                        sojae=datas
+                    elif type==3:
+                        atm=datas
+                    elif type==4:
+                        soosang=datas
+                    elif type==5:
+                        chrel=datas
+                    else:
+                        origin=datas
+                
+                data=db.select_query(webtoon_db,f"SELECT title FROM webtoon_info")
 
-                    for i in range(len(data)):
-                        return_title.append(data[i][0])
+                for i in range(len(data)):
+                    return_title.append(data[i][0])
+                
+                for i in range(len(genre)):
+                    return_genre.append(genre[i][0])
                     
-                    for i in range(len(genre)):
-                        return_genre.append(genre[i][0])
-                        
-                    for i in range(len(sojae)):
-                        return_sojae.append(sojae[i][0])
-                        
-                    for i in range(len(atm)):
-                        return_atm.append(atm[i][0])
+                for i in range(len(sojae)):
+                    return_sojae.append(sojae[i][0])
                     
-                    for i in range(len(soosang)):
-                        return_soosang.append(soosang[i][0])
-                    
-                    for i in range(len(chrel)):
-                        return_chrel.append(chrel[i][0])
-                    
-                    for i in range(len(origin)):
-                        return_origin.append(origin[i][0])
-                    
-                    return render_template("input_keyword.html",genre=return_genre,sojae=return_sojae,atm=return_atm,soosang=return_soosang,chrel=return_chrel,origin=return_origin,titles=return_title)
-                except:
-                    flash("execute error",category="error")
-                    return redirect(url_for("/input_keyword"))
-                finally:
-                    webtoon_db.close()
+                for i in range(len(atm)):
+                    return_atm.append(atm[i][0])
+                
+                for i in range(len(soosang)):
+                    return_soosang.append(soosang[i][0])
+                
+                for i in range(len(chrel)):
+                    return_chrel.append(chrel[i][0])
+                
+                for i in range(len(origin)):
+                    return_origin.append(origin[i][0])
+                
+                return render_template("input_keyword.html",genre=return_genre,sojae=return_sojae,atm=return_atm,soosang=return_soosang,chrel=return_chrel,origin=return_origin,titles=return_title)
             except:
-                #DB 에러 발생 시 실행되는 코드
-                flash("DB connect error",category="error")
+                flash("execute error",category="error")
                 return redirect(url_for("/input_keyword"))
+            finally:
+                webtoon_db.close()
+        except:
+            #DB 에러 발생 시 실행되는 코드
+            flash("DB connect error",category="error")
+            return redirect(url_for("/input_keyword"))
     
     elif request.method=="POST":    #키워드 결과 ajax
         keyword=request.form["keyword"]             #6

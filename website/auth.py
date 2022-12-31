@@ -8,15 +8,6 @@ import secrets
 from flask_mail import Mail, Message
 from website import init
 
-"""
-    **1228 예외처리 시작
-    1. DB 연결 관한 예외처리
-        로그인 같은 경우 유효성 검사 후에만 쿼리 호출 => 그 후 작업이 끝나면 db.close()
-        finally로 넣지마세요.
-    2. 한번만 쓰는 변수는 삭제했습니다.
-    3. 테스트 후 print는 거의 삭제하겠습니다.
-"""
-
 #auth.py에서는 주로 로그인에 관련된 코드 작성
 auth = Blueprint("auth",__name__)
 
