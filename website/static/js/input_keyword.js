@@ -78,7 +78,7 @@ $('li').on('click', function (event) {
         error: function (request, status, error) {
             console.log("no ajax")
         }
-    });
+    });3
 })
 
 // 키워드 삭제 버튼

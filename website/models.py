@@ -68,10 +68,9 @@ def preprocessing_data(rating_data,webtoon_data):
 
 def truncateSVD(rating_data,webtoon_data):
     webtoon_usr_pivot,webtoon_title  = preprocessing_data(rating_data,webtoon_data)
-    #임의의 12개의 조건 생성
-    SVD = TruncatedSVD(n_components=12) 
+    #임의의 20개의 조건 생성
+    SVD = TruncatedSVD(n_components=20) 
     matrix = SVD.fit_transform(webtoon_usr_pivot)
-
     corr = np.corrcoef(matrix)
 
     return corr,webtoon_title
@@ -89,7 +88,8 @@ def recommend_webtoon(title):
         dic_corr = dict(enumerate(corr_target))
         dic_corr = list(dict(sorted(dic_corr.items(),key=lambda item:item[1],reverse=1)).keys())[:6] #6인 이유는 자기자신 제외를 위해
         for i in dic_corr:
-            result.append(webtoon_title[i])
+            result.append(webtoon_title[i]) #["마루는 강쥐","레사 시즌1","마음의소리","김부장","화산귀환"]
+        
         return result[1:],1 #1 : 결과가 있는 상태 
     except:
         return ["마루는 강쥐","레사 시즌1","마음의소리","김부장","화산귀환"],0 #결과가 없는 상태
