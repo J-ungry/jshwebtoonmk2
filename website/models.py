@@ -154,11 +154,11 @@ def itModel(wt_title):
 
             transformer = TfidfVectorizer(stop_words=korean_stop_words_list)
             tfidf_matrix = transformer.fit_transform(fake_intro_list)
-            print(tfidf_matrix.shape)
+            print(tfidf_matrix.shape) # (2044, 34668)
 
             # 코사인 유사도
             cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
-            print(cosine_sim.shape)
+            print(cosine_sim.shape) # (2044, 2044)
 
             # webtoon_info to dataframe
             column = ['no', 'title', 'link', 'thumb_link', 'status', 'author', 'fake_intro', 'real_intro','likes', 'episodes', 'first_register_date', 'last_register_date', 'age','rate', 'genre1_pre', 'genre2_pre']
