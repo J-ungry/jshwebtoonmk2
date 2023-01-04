@@ -133,29 +133,39 @@ def dsModel(webtoon_no):
 #승환이코드
 
 def itModel(wt_title):
-    num = 5
+    # wt_title : 입력받은 웹툰 제목
+
+    num = 5 # wt_title과 가장 비슷한 웹툰 5개 출력
 
     try:
         webtoon_db = db.conn()
         try:
             fake_intro = db.select_query(webtoon_db, "SELECT fake_intro FROM webtoon_info")
-            #print("fake_intro = ",fake_intro[0][0])
             fake_intro_list = []
             for x in fake_intro:
                 fake_intro_list.append(x[0])
-            transformer = TfidfVectorizer()
-            tfidf_matrix = transformer.fit_transform(fake_intro_list)
-            print(tfidf_matrix.shape) #(1000, 9662)
 
+            # website\static\korean_stop_words.txt
+            file = open("website/static/korean_stop_words.txt", "r", encoding='utf-8')
+            strings = file.readlines()
+            korean_stop_words_list = strings[0].split()
+            print(korean_stop_words_list)
+            file.close()
+
+            transformer = TfidfVectorizer(stop_words=korean_stop_words_list)
+            tfidf_matrix = transformer.fit_transform(fake_intro_list)
+            print(tfidf_matrix.shape) # (2044, 34668)
+
+            # 코사인 유사도
             cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
-            print(cosine_sim.shape) #(2044, 2044)
+            print(cosine_sim.shape) # (2044, 2044)
 
             # webtoon_info to dataframe
             column = ['no', 'title', 'link', 'thumb_link', 'status', 'author', 'fake_intro', 'real_intro','likes', 'episodes', 'first_register_date', 'last_register_date', 'age','rate', 'genre1_pre', 'genre2_pre']
             datas = db.select_query(webtoon_db,"select * from webtoon_info")
             webtoon_data = pd.DataFrame(datas,columns=column)
 
-            # 선택한 웹툰의 title로부터 해당되는 인덱스를 받아옵니다. 이제 선택한 웹툰를 가지고 연산할 수 있습니다.
+            # 선택한 웹툰의 title로부터 해당되는 인덱스를 받아옵니다
             indices = pd.Series(webtoon_data.index, index=webtoon_data['title'])
             idx = indices[wt_title]
 
@@ -169,7 +179,7 @@ def itModel(wt_title):
             # 가장 유사한 num개의 웹툰를 받아옵니다.
             sim_scores = sim_scores[1:num+1]
 
-            # 가장 유사한 5개의 영화의 인덱스를 받아옵니다.
+            # 가장 유사한 5개의 웹툰 인덱스를 받아옵니다.
             webtoon_indices = [i[0] for i in sim_scores]
             recommended_it_lists = webtoon_data['title'].iloc[webtoon_indices].to_list()
             print(recommended_it_lists) # ['오직 나의 주인님', '개를 낳았다', '토니와 함께', '그 개, 만두', '언럭키 맨션']
