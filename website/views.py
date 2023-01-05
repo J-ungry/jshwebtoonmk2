@@ -169,8 +169,6 @@ def keyword_autocomplete():
 # 검색한 키워드 추가
 @views.route("/addAutoCompleteKeyword",methods=["POST"])
 def addSearchedKeyword():
-    # AJAX 통신 확인
-    print("WOW AJAX!🌟")
     try:
         webtoon_db = db.conn()
         try:
@@ -180,17 +178,14 @@ def addSearchedKeyword():
                 all_keyword_list.append(result[0])
 
             inputValue = request.form["inputValue"]
-            print("inputValue 키워드 검색창에 입력한 값 = ", inputValue)
 
             # 키워드 검색창에 입력한 값이 DB에 있나요?
             if (inputValue in all_keyword_list):
                 # DB에 있어요 ^^b
                 existInDB = True
-                print(existInDB, '검색한 키워드가 DB에 있어요✨')
             else:
                 # DB에 없어요 ㅠㅠ
                 existInDB = False
-                print(existInDB, '검색한 키워드가 DB에 없어요💥')
             
             if(existInDB):
                 # 검색한 키워드가 DB에 존재하면 실행
@@ -205,12 +200,10 @@ def addSearchedKeyword():
                 autoCompleteKeyword_num_db_data = db.select_query(webtoon_db,
                 f"SELECT DISTINCT type FROM keyword WHERE keyword='{inputValue}'")
                 autoCompleteKeyword_num = autoCompleteKeyword_num_db_data[0][0]
-                print("autoCompleteKeyword_num :", autoCompleteKeyword_num)
 
                 # 검색한 키워드와 type 번호가 일치하는 웹툰들은 무엇인가요?
                 autoCompleteKeyword_webtoon_no_db_data=db.select_query(webtoon_db,
                 f"SELECT no FROM keyword WHERE keyword IN('{inputValue}') AND type='{autoCompleteKeyword_num}'")
-                print("autoCompleteKeyword_webtoon_no_db_data :", autoCompleteKeyword_webtoon_no_db_data)
 
                 for i in range(len(autoCompleteKeyword_webtoon_no_db_data)):
                     return_webtoon_data=db.select_query(webtoon_db,
@@ -223,9 +216,6 @@ def addSearchedKeyword():
                     return_webtoon_author.append(return_webtoon_data[0][1])
                     return_webtoon_thumb.append(return_webtoon_data[0][2])
                     return_webtoon_intro.append(return_webtoon_data[0][3])
-                
-                for i in range(len(return_webtoon_title)):
-                    print(return_webtoon_title[i])
                 
                 return jsonify({
                     "existInDB" : existInDB,                 # 검색한 키워드의 DB 존재 유무
