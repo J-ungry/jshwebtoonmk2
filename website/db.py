@@ -20,7 +20,6 @@ def conn():
         db=DB_NAME,
         charset="utf8"
         )
-    print("connect MySQL🎉")
     return webtoon_db
 
 def select_query(db, query):
@@ -34,4 +33,3 @@ def update_query(db, query):
     cursor.execute(query)
     result = db.commit()
     return result
-

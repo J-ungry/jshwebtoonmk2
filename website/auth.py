@@ -50,7 +50,6 @@ def user_login():
                 return redirect(url_for("auth.user_login"))              
             finally:
                 webtoon_db.close()
-                print('close')
         except:
             #DB 에러 발생 시 실행되는 코드
             flash("DB connect error",category="error")
@@ -82,7 +81,6 @@ def sign_up():
                     
             finally:
                 webtoon_db.close()
-                print('close')
         except:
             #DB 에러 발생 시 실행되는 코드
             flash("DB connect error",category="error")
@@ -109,7 +107,6 @@ def duplicate_id():
                     
             finally:
                 webtoon_db.close()
-                print('close')
         except:
             #DB 에러 발생 시 실행되는 코드
             flash("DB connect error",category="error")
@@ -150,7 +147,6 @@ def user_detail():
                     return redirect(url_for("views.index"))
                 finally:
                     webtoon_db.close()
-                    print('close')
             except:
                 #DB 에러 발생 시 실행되는 코드
                 flash("DB connect error",category="error")
@@ -231,7 +227,6 @@ def update_information():
                 return redirect("/user_detail")
             finally:
                 webtoon_db.close()
-                print('close')
 
         except:
             #DB 에러 발생 시 실행되는 코드
@@ -276,7 +271,6 @@ def delete_user():
                     return render_template("user_detail.html")
                 finally:
                     webtoon_db.close()
-                    print('close')
             except:
                 #DB 에러 발생 시 실행되는 코드
                 flash("DB connect error",category="error")
@@ -338,7 +332,6 @@ def input_rate():
                     return redirect("/input_rate")
                 finally:
                     webtoon_db.close()
-                    print('close')
             except:
                 #DB 에러 발생 시 실행되는 코드
                 flash("DB connect error",category="error")
@@ -370,7 +363,6 @@ def find_id():
             return redirect("/user_login")
         finally:
             webtoon_db.close()
-            print('close')
     except:
         #DB 에러 발생 시 실행되는 코드
         flash("DB connect error",category="error")
@@ -421,7 +413,6 @@ def reset_pw():
             return redirect(url_for('auth.user_login'))
         finally:
             webtoon_db.close()
-            print('close')
     except:
         #DB 에러 발생 시 실행되는 코드
         flash("DB connect error",category="error")
@@ -457,7 +448,6 @@ def recommend(date):
             return redirect(url_for("views.index"))
         finally:
             webtoon_db.close()
-            print('close')
     except:
         #DB 에러 발생 시 실행되는 코드
         flash("DB connect error",category="error")
@@ -493,7 +483,6 @@ def recommend_nonmember(surveys_no,drawing_no,intros_no,check_survey):
             return redirect(url_for("views.index"))
         finally:
             webtoon_db.close()
-            print('close')
     except:
         #DB 에러 발생 시 실행되는 코드
         flash("DB connect error",category="error")
@@ -541,8 +530,6 @@ def get_rcm(name):
                 sql += f"('{session['user_id']}', {intro}, 'it'),"
             sql = sql[:-1]
 
-            print(sql)
-
             #history insert
             db.update_query(webtoon_db,sql)
 
@@ -551,12 +538,10 @@ def get_rcm(name):
 
             return redirect(url_for("auth.recommend",date = date[0][0]))
         except:
-            print("야야야야")
             flash("execute error",category="error")
             return render_template("input_keyword.html")
         finally:
             webtoon_db.close()
-            print('close')
     except:
         #DB 에러 발생 시 실행되는 코드
         flash("DB connect error",category="error")
